@@ -6,26 +6,24 @@ import os
 
 
 class Log_Entry:
-    def __init__(self, date, title, amount, logType, subtype, logID, logCount=0, day=0):
-        self.date     = date
-        self.logType  = logType
-        self.subtype  = subtype
-        self.title    = title
-        self.amount   = amount
-        self.logID    = logID
-        self.logCount = logCount
-        self.day      = day
+    def __init__(self, date, title, amount, logType, subtype, logID, entryCount=0):
+        self.date       = date
+        self.logType    = logType
+        self.subtype    = subtype
+        self.title      = title
+        self.amount     = amount
+        self.logID      = logID
+        self.entryCount = entryCount
 
     def to_dict(self) -> None:
         return {
-            "logCount": self.logCount,
-            "day":      self.day,
-            "date":     self.date,
-            "logType":  self.logType,
-            "subtype":  self.subtype,
-            "title":    self.title,
-            "amount":   self.amount,
-            "logID":    self.logID
+            "entryCount": self.entryCount,
+            "date":       self.date,
+            "logType":    self.logType,
+            "subtype":    self.subtype,
+            "title":      self.title,
+            "amount":     self.amount,
+            "logID":      self.logID
         }    
 
 
@@ -34,24 +32,23 @@ class Auditing:
     default_audit_name = "AUDIT_LOG.csv"
     default_audit_path = os.path.join(os.getcwd(), default_audit_name)
     audit_file_path    = ""
-    logList            = []
+    mainLogList            = []
     currentDateLogList = []
-    logCount           = len(logList) # PLACEHOLDER VALUE
-    currentDate        = datetime.now().strftime('%Y-%m-%d')
+    currentDate        = ""
 
     @classmethod
     def audit_startup(cls):
         cls.audit_file_path = FileGetter.get_path(cls.default_audit_path)
 
-        cls.logList = FileGetter.get_main_log()
+        cls.mainLogList = FileGetter.get_main_log()
 
-        if cls.has_date_changed():
+        if cls.date_has_changed():
             FileSaver.save_previous_entries(cls.audit_file_path)
         # and other potential startup methods
 
     @classmethod
-    def has_date_changed(cls) -> bool:
-        return cls.currentDate == cls.logList[-1].date 
+    def date_has_changed(cls) -> bool:
+        return cls.currentDate == cls.mainLogList[-1].date 
     
 
     @classmethod
@@ -60,7 +57,7 @@ class Auditing:
 
 
     # DETERMINE TRANSACTION LOCATION FOR DEBIT CREDIT BY ASSIGNING THE AMOUNT WITH NEGATIVE OR POSITIVE NUMBERS
-    # ADD has_date_changed() LOGIC TO THIS PRIOR TO ENTRY CREATION
+    # ADD date_has_changed() LOGIC TO THIS PRIOR TO ENTRY CREATION
     @classmethod    # class methods do not involve the specific instances whatsoever
     def create_new_entry(cls):
         cls.__logSubType :str   = None
@@ -68,6 +65,9 @@ class Auditing:
         cls.__title      :str   = None
         cls.__logID      :str   = None
         cls.__amount     :float = None
+        cls.__entryCount :int   = 1 + len(cls.mainLogList)
+        cls.__currCount  :int   = 1 + len(cls.currentDateLogList)
+        cls.__currDate   :str   = datetime.now().strftime('%Y-%m-%d')
         
         cls.determine_entry_metadata()
         cls.check_generic_title()
@@ -80,13 +80,16 @@ class Auditing:
 
 
         # TEST TEST TEST TEST REMOVE THESE CODE BLOCKS
-        print(f"\n{cls.currentDate  = }\n{cls.__logType    = }\n{cls.__logSubType = }\n{cls.__title      = }\n{cls.__amount     = }\n")
 
         print(f"log ID format: \'LogCount\'+\'LogType\'+\'Subtype\'+\'Date\'")
         print(f"{cls.__logID = }\n")
 
         print(f"{cls.default_audit_path = }")
 
+        entry = Log_Entry(cls.__currDate, cls.__title, cls.__amount, cls.__logType, cls.__logSubType, cls.__logID, cls.__entryCount)
+        cls.mainLogList.append(entry)
+
+        print(f"\n{cls.mainLogList[0].date  = }\n{cls.mainLogList[0].title    = }\n{cls.mainLogList[0].amount = }\n{cls.mainLogList[0].logType      = }\n{cls.mainLogList[0].subtype     = }\n{cls.mainLogList[0].logID     = }\n{cls.mainLogList[0].entryCount     = }\n")
 
 
     @classmethod
@@ -153,7 +156,7 @@ class Auditing:
 
     @classmethod
     def create_log_ID(cls):
-        cls.__logID = f"{cls.logCount}//{cls.__logType}//{cls.__logSubType}//{cls.currentDate}"
+        cls.__logID = f"{cls.__entryCount}//{cls.__logType}//{cls.__logSubType}//{cls.__currDate}"
 
 
 
