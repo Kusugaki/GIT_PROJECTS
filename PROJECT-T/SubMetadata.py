@@ -13,18 +13,19 @@ class LogMetadata(ABC):
     @abstractmethod # not an actual abstract method, child classes don't actually modify or specialize the method individually
     def fetch_metadata_details(cls, choicesList, subtypeIDlist) -> None:
         options = ['A','B']
+        _user_input = None
         
         for i in range(5):
-            choice = input(f"""Enter Log Subtype:\n\tA. \'{choicesList[0]}\'\n\tB. \'{choicesList[1]}\'\n  > """).upper()
+            _user_input = input(f"""Enter Log Type:\n\tA. \'{choicesList[0]}\'\n\tB. \'{choicesList[1]}\'\n  > """).upper()
             
             try: 
-                assert choice in options 
+                assert _user_input in options 
                 break
-            except AssertionError: print(f"ASSERTION_ERROR: \'{choice}\' is not in the Options.\n")
+            except AssertionError: print(f"ASSERTION_ERROR: \'{_user_input}\' is not in the Options.\n")
         else:
             print("FAILED TO INPUT TRANSACTION SUBTYPE\n") 
 
-        match choice:
+        match _user_input:
             case 'A':
                 cls.titleChoice = choicesList[0]
                 cls.subtype     = subtypeIDlist[0]
