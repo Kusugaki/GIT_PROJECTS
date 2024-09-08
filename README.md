@@ -1,5 +1,7 @@
 # I'm gay 🦌🦌🦌🦌
 
+###### (or am i?)
+
 ## Program IDEAS: Functions & Definitions
 
 1. Program automatically updates important changes at startup
