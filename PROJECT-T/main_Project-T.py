@@ -148,7 +148,7 @@ class Auditing(LogEntry):
                         Transac.fetch_entry_details()
                         self.logType = Transac.logType
                         self.subtype = Transac.subtype
-                        self.title   = input("Input Log Title: ")
+                        self.title   = input("Input Log Title: ").strip()
                     case 'B':
                         Liabili.fetch_entry_details()
                         self.logType = Liabili.logType
@@ -183,6 +183,8 @@ class Auditing(LogEntry):
         init_fetch_amount()
         init_create_ID()
 
+
+        # TEST TEST TEST TEST
         print(f"\n{Auditing.mainLogList = }\n")
 
         Auditing.mainLogList.append(self)

@@ -1,6 +1,3 @@
-import json
-import csv
-
 class FileGetter():
     def get_path(self, default_path:str) -> str: 
         path_input = input("Enter CSV file path:\n>")
