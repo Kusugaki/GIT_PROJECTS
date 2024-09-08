@@ -1,28 +1,3 @@
-# Functions & Definitions
-# 1. Program automatically updates important changes at startup
-# 2. Automatically determine the date and create a new log once it changes
-# 3. At the end of the day, display out the main compiled auditTrail of all logTypes as one
-# 4. Create attributes for Debit:Credit, Deposit:Withdrawals, and Loaned:Debt
-# 5. All changes in the logs shall automatically be inputted into the Audit Trail
-# 6. A list of methods shall be:
-#       a.) New Transaction (with parameter of logType)
-#       b.) Delete Transaction
-#       c.) Modify Log
-#       d.) Display Log (with parameter of logType)
-#       e.) Display Audit Trail (logs compiler)
-#       f.) Search Logs (using date, day, logType, etc.)
-# 7. All final changes shall be saved to a .json or .csv file
-# 8. A list of important attributes shall be:
-#       a.) day
-#       b.) date
-#       c.) title (log Title)
-#       d.) amount
-#       e.) logType (transac/savings/lendings)
-#       f.) logID (identifiers for specific logs to modify)
-#           i.) FORMAT ==> %day-%index-%logType (example: 02-253-sav)
-#       g.) logCount (total amount of logs created in the main Audit Trail)
-#           i.) possibly add a checkpoint/achievement system for every "count % 100" logs
-
 from datetime import datetime
 from AuditFileHandling import FileGetter, FileSaver
 from SubMetadata import Transac, Liabili, Savings
