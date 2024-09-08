@@ -30,7 +30,8 @@
 
 # Supposed Outputs
 
-# Main Log
+## Main Log Sample
+###### Does not represent final output
 
 | Day | Date     | Transactions | Debit   | Credit   |
 | --- | :----    | :----------- | :-----: | :------: |
@@ -40,6 +41,7 @@
 | 4   | 08-08-24 | Day out      | 213     | 136      |
 
 # End of Day Status Screen Sample
+###### Only possible ideas
 
 <!-- <code> -->
 
