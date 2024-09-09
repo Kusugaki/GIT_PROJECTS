@@ -1,37 +1,19 @@
-from datetime import datetime
-from AuditFileHandling import FileGetter, FileSaver
+from LogFileHandling import FileGetter, FileSaver
+from LogEntry_dataclass import LogEntry
 from LogDetails import Transac, Liabili, Savings
+from debugger import debug
+
 from dataclasses import dataclass
-import json
-import csv
+from datetime import datetime
 import os
 
 # GLOBAL VARIABLES
 DEFAULT_FILE_NAME:str = "AUDIT_LOG.csv"
-DEFAULT_FILE_PATH:str = os.path.join(os.getcwd(), DEFAULT_FILE_NAME)
-
+DEFAULT_FILE_PATH:str = os.path.join(__file__[0:-len(os.path.basename(__file__))], DEFAULT_FILE_NAME)
 
 ''' NOTES: CREATE A SINGLE LIST THAT IS SAVED, AND HAVE SPECIFIC FUNCTIONS 
     TO SEGREGATE EACH ENTRY INTO THEIR OWN RESPECTIVE LOG TYPES AND SUBTYPE 
     DATA STOP MESSING AROUND WITH CSV, JSON, PY FILE HANDLING, FOCUS ON ONE '''
-
-
-class LogEntry:
-    def __init__(self, date:str, logType:str, subtype:str, title:str, amount:float):
-        self.date    = date
-        self.logType = logType
-        self.subtype = subtype
-        self.title   = title
-        self.amount  = amount
-
-    # def to_dict(self) -> None:
-    #     return {
-    #         "date":       self.date,
-    #         "logType":    self.logType,
-    #         "subtype":    self.subtype,
-    #         "title":      self.title,
-    #         "amount":     self.amount
-    #     }    
 
 
 
@@ -40,70 +22,56 @@ class Auditing(LogEntry):
     mainLogList:list = []
     currLoglist:list = []
 
-    def __init__(self, 
-                 date:str=None, 
-                 logType:str=None,
-                 subtype:str=None,
-                 title:str=None, 
-                 amount:float=0, 
-                 logID:str=None, 
-                 totalCount:int=1):
-        super().__init__(date, logType, subtype, title, amount)
-        self.logID      = logID
-        self.totalCount = totalCount
+    def __init__(self) -> None:
+        self.startup()
+
+    def __str__(self) -> str:
+        return str(self.total)
 
 
-    # just use dunder dict
-    # __dict__
-
-    # @staticmethod
-    # def obj_to_dict(fetched_obj) -> dict:
-    #     return {
-    #         "date":       fetched_obj.date,
-    #         "logType":    fetched_obj.logType,
-    #         "subtype":    fetched_obj.subtype,
-    #         "title":      fetched_obj.title,
-    #         "amount":     fetched_obj.amount,
-    #         "logID":      fetched_obj.logID,
-    #         "totalCount": fetched_obj.totalCount
-    #     }
-          
-
-    def dict_to_obj(obj, fetched_dict) -> object:
-        # for dict_entry in fetched_dict:
-        obj.date       = fetched_dict["date"]
-        obj.logType    = fetched_dict["logType"]
-        obj.subtype    = fetched_dict["subtype"]
-        obj.title      = fetched_dict["title"]
-        obj.amount     = fetched_dict["amount"]
-        obj.logID      = fetched_dict["logID"]
-        obj.totalCount = fetched_dict["totalCount"]
-
-        return Auditing(obj.date, obj.logType, obj.subtype, obj.title, obj.amount, obj.logID, obj.totalCount)
+    def startup(self) -> None:
+        self.check_date_change()
+        Auditing.mainLogList = FileGetter.fetch_saved_database(DEFAULT_FILE_PATH)
+        Auditing.currLoglist = self.get_curr_list()
 
 
-    def temp_save_mainLog(self) -> None:
-        if not os.path.exists(DEFAULT_FILE_PATH):
-            with open(DEFAULT_FILE_PATH, 'x'):
-                pass
+    def add_entry(self) -> None:
+        entry = LogEntry(
+                        total=self.total,
+                        date=self.date,
+                        logType=self.logType,
+                        subtype=self.subtype,
+                        title=self.title,
+                        amount=self.amount,
+                        logID=self.logID
+                        )
 
-        with open(DEFAULT_FILE_PATH, 'a', newline='', encoding="utf-8") as output:
-            csv_writer = csv.writer(output)
+        Auditing.mainLogList.append(entry)
 
-            for entry in Auditing.get_main_list():
-                csv_writer.writerow([self.date, self.logType, self.subtype, self.title, self.amount, self.logID, self.totalCount])
-
-
-    @classmethod
-    def temp_fetch_mainLog(cls) -> None:
-        with open(DEFAULT_FILE_NAME, 'r', encoding="utf-8") as input:
-            csv_reader = csv.reader(input)
-
-            for entry in csv_reader:
-                Auditing.get_main_list().append(cls.dict_to_obj(entry))
-                
+        if Auditing.mainLogList[-1].date == entry.date:
+            Auditing.currLoglist.append(entry)
+        else:
+            debug("Date has changed.")
+            self.set_changed_date()
 
 
+    def get_curr_list(self) -> list:
+        currentList = []
+        for obj in Auditing.mainLogList:
+            if obj.date == self.date:
+                currentList.append(obj)
+        return currentList
+    
+    def check_date_change(self) -> None:
+        tempDate = datetime.now().strftime('%d-%m-%Y')
+        if not self.date == tempDate:
+            self.date = tempDate
+
+    def set_changed_date(self) -> None:
+        self.date = datetime.now().strftime("%d-%m-%Y")
+
+
+    
 
     def create_entry(self):
         # Auditing.temp_fetch_mainLog()
@@ -117,7 +85,7 @@ class Auditing(LogEntry):
             def add_title_count(duplicateTitle) -> None:
                 ''' Adds an increasing number to a duplicate/generic title '''
 
-                if " " in duplicateTitle:
+                if " " in duplicateTitle and (duplicateTitle[-1]):
                     duplicateTitle = duplicateTitle.split(" ")
                     try:
                         duplicateTitle[-1] = str(int(duplicateTitle[-1]) + 1)
@@ -131,12 +99,16 @@ class Auditing(LogEntry):
 
             def check_generic_title() -> None:
                 genericTitles = [ "Pamasahe", "Found", "Lost", "Deposit", "Withdrawal", "Random Magic Sorcery" ]
-                if self.title in genericTitles:
+                if self.title in genericTitles and not " " in self.title:
                     add_title_count(self.title)
 
             def check_title_duplicates() -> None:
-                for i in range(len(Auditing.get_curr_list())):
-                    if self.title == Auditing.get_curr_list()[i].title:
+                # excludedTitles = [ "Loaned", "Owed"]
+                for obj in Auditing.currLoglist:
+                    if self.title == obj.title:
+                        debug(f"{obj = }")
+                        debug(f"{obj.logID = }")
+                        debug(f"{self.title = } == {obj.title = }, ")
                         print(f"Duplicate title \'{self.title}\' found, adding...")
                         add_title_count(self.title)
 
@@ -173,38 +145,37 @@ class Auditing(LogEntry):
 
 
         def init_fetch_amount() -> None:
-            while self.amount == 0: 
+            self.amount = 0
+            while self.amount == 0:
                 try: self.amount = abs(float(input("Input Transaction Amount: ")))
                 except ValueError as e: print(f"NaN_ERROR: {e}")
 
-        def init_create_ID() -> None:
-            self.logID = f"{self.totalCount}//{self.logType}//{self.subtype}//{self.date}"
-        
+        def init_fetch_total_count() -> None:
+            self.total = len(Auditing.mainLogList) + 1
 
+        def init_create_ID() -> None:
+            self.logID = f"{self.total}//{self.logType}//{self.subtype}//{self.date}"
+
+        
         # FUNCTION CALLS
         init_fetch_date()
         init_fetch_entry_details()
         init_fetch_amount()
+        init_fetch_total_count()
         init_create_ID()
 
-
-        # TEST TEST TEST TEST
-        print(f"\n{Auditing.mainLogList = }\n")
-
-        self.temp_save_mainLog()
+        self.add_entry()
+        FileSaver.save_data(self.__dict__, DEFAULT_FILE_PATH)
 
         return self
     # END OF CREATE_ENTRY
 
 
-    def display_entry(self) -> object:
-        print(f"\n{self.date = }\n{self.logType = }\n{self.subtype = }\n{self.title = }\n{self.amount = }\n{self.logID = }\n")
-        return self
-
-    def save_to_list(self) -> object:
-        Auditing.get_main_list().append(self)
-        Auditing.get_curr_list().append(self)
-        return self
+    @classmethod
+    def display_all_entries(cls) -> bool:
+        if len(cls.mainLogList) < 100:  # temp_max_limit
+            for obj in cls.mainLogList:
+                print(f"{obj}")
 
     @classmethod
     def get_total_entry_count(cls) -> int:
@@ -214,19 +185,21 @@ class Auditing(LogEntry):
     def get_main_list(cls) -> list:
         return cls.mainLogList
     
-    @classmethod
-    def get_curr_list(cls) -> list:
-        return cls.currLoglist
-
-
-
 
 
 
 if __name__ == '__main__':
     prog_input:str = ''
-    audits = Auditing()
+
+    audit = Auditing()
 
     while prog_input not in ['y']:
-        audits.save_to_list().display_entry().create_entry()
-        prog_input = input("exit?: ").lower()    
+        audit.create_entry()
+
+        prog_input = input("exit? [y/n]: ").lower()    
+
+        debug()
+        debug(f"{Auditing.mainLogList = }")
+        debug()
+        audit.display_all_entries()
+        debug("end.")
