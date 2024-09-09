@@ -8,14 +8,10 @@ from LogEntry_dataclass import LogEntry
 from LogDetails import Transac, Liabili, Savings
 from debugger import debug
 
+
 # GLOBAL VARIABLES
 DEFAULT_FILE_NAME:str = "AUDIT_LOG.csv"
 DEFAULT_FILE_PATH:str = os.path.join(os.path.dirname(__file__), DEFAULT_FILE_NAME)
-
-''' NOTES: CREATE A SINGLE LIST THAT IS SAVED, AND HAVE SPECIFIC FUNCTIONS 
-    TO SEGREGATE EACH ENTRY INTO THEIR OWN RESPECTIVE LOG TYPES AND SUBTYPE 
-    DATA STOP MESSING AROUND WITH CSV, JSON, PY FILE HANDLING, FOCUS ON ONE '''
-
 
 
 # MAIN CLASS - OVERHAULED
