@@ -1,7 +1,8 @@
 from datetime import datetime
 from AuditFileHandling import FileGetter, FileSaver
 from LogDetails import Transac, Liabili, Savings
-# import json
+from dataclasses import dataclass
+import json
 import csv
 import os
 
@@ -51,33 +52,34 @@ class Auditing(LogEntry):
         self.logID      = logID
         self.totalCount = totalCount
 
-    
-    def obj_to_dict(self, fetched_obj) -> dict:
-        return {
-            "date":       fetched_obj.date,
-            "logType":    fetched_obj.logType,
-            "subtype":    fetched_obj.subtype,
-            "title":      fetched_obj.title,
-            "amount":     fetched_obj.amount,
-            "logID":      fetched_obj.logID,
-            "totalCount": fetched_obj.totalCount
-        }
+
+    # just use dunder dict
+    # __dict__
+
+    # @staticmethod
+    # def obj_to_dict(fetched_obj) -> dict:
+    #     return {
+    #         "date":       fetched_obj.date,
+    #         "logType":    fetched_obj.logType,
+    #         "subtype":    fetched_obj.subtype,
+    #         "title":      fetched_obj.title,
+    #         "amount":     fetched_obj.amount,
+    #         "logID":      fetched_obj.logID,
+    #         "totalCount": fetched_obj.totalCount
+    #     }
           
-    
-    def dict_to_obj(self, fetched_dict) -> None:
+
+    def dict_to_obj(obj, fetched_dict) -> object:
         # for dict_entry in fetched_dict:
-        self.date       = fetched_dict["date"]
-        self.logType    = fetched_dict["logType"]
-        self.subtype    = fetched_dict["subtype"]
-        self.title      = fetched_dict["title"]
-        self.amount     = fetched_dict["amount"]
-        self.logID      = fetched_dict["logID"]
-        self.totalCount = fetched_dict["totalCount"]
+        obj.date       = fetched_dict["date"]
+        obj.logType    = fetched_dict["logType"]
+        obj.subtype    = fetched_dict["subtype"]
+        obj.title      = fetched_dict["title"]
+        obj.amount     = fetched_dict["amount"]
+        obj.logID      = fetched_dict["logID"]
+        obj.totalCount = fetched_dict["totalCount"]
 
-        Auditing.get_main_list().append(
-            Auditing(self.date, self.logType, self.subtype, self.title, self.amount, self.logID, self.totalCount)
-            )
-
+        return Auditing(obj.date, obj.logType, obj.subtype, obj.title, obj.amount, obj.logID, obj.totalCount)
 
 
     def temp_save_mainLog(self) -> None:
@@ -133,8 +135,8 @@ class Auditing(LogEntry):
                     add_title_count(self.title)
 
             def check_title_duplicates() -> None:
-                for entry in Auditing.get_main_list():
-                    if entry.title == Auditing.get_curr_list():
+                for i in range(len(Auditing.get_curr_list())):
+                    if self.title == Auditing.get_curr_list()[i].title:
                         print(f"Duplicate title \'{self.title}\' found, adding...")
                         add_title_count(self.title)
 
@@ -189,21 +191,20 @@ class Auditing(LogEntry):
         # TEST TEST TEST TEST
         print(f"\n{Auditing.mainLogList = }\n")
 
-        Auditing.mainLogList.append(self)
-        Auditing.currLoglist.append(self)
-
-        print(f"\n{Auditing.mainLogList = }\n")
-
         self.temp_save_mainLog()
 
         return self
     # END OF CREATE_ENTRY
 
 
-    def display_entry(self):
+    def display_entry(self) -> object:
         print(f"\n{self.date = }\n{self.logType = }\n{self.subtype = }\n{self.title = }\n{self.amount = }\n{self.logID = }\n")
         return self
 
+    def save_to_list(self) -> object:
+        Auditing.get_main_list().append(self)
+        Auditing.get_curr_list().append(self)
+        return self
 
     @classmethod
     def get_total_entry_count(cls) -> int:
@@ -223,4 +224,9 @@ class Auditing(LogEntry):
 
 
 if __name__ == '__main__':
-    Auditing().display_entry().create_entry().display_entry()
+    prog_input:str = ''
+    audits = Auditing()
+
+    while prog_input not in ['y']:
+        audits.save_to_list().display_entry().create_entry()
+        prog_input = input("exit?: ").lower()    
