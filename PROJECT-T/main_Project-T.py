@@ -9,6 +9,7 @@ from LogDetails import Transac, Liabili, Savings
 from LogCreateEntry import CreateEntry
 from debugger import debug
 
+
 # GLOBAL VARIABLES
 DEFAULT_FILE_NAME:str = "AUDIT_LOG.csv"
 DEFAULT_FILE_PATH:str = os.path.join(os.path.dirname(__file__), DEFAULT_FILE_NAME)
