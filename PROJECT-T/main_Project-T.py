@@ -5,9 +5,8 @@ from datetime import datetime
 
 from LogFileHandling import FileGetter, FileSaver
 from LogEntry_dataclass import LogEntry
-from LogDetails import Transac, Liabili, Savings
 from LogCreateEntry import CreateEntry
-from debugger import debug
+# from debugger import debug
 
 
 # GLOBAL VARIABLES
