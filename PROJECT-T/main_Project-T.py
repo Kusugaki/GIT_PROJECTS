@@ -30,16 +30,12 @@ class Auditing(LogEntry):
         Auditing.mainLogList = FileGetter.fetch_saved_database(path=DEFAULT_FILE_PATH)
         Auditing.currLoglist = FileGetter.fetch_curr_list(today=self.date)
 
-        print(Auditing.currLoglist)
-
-
     def get_total_entry_count(self) -> int:
         '''Fetches the total count of log Entries in the dynamic main list'''
         return len(Auditing.mainLogList) + 1
     
     def get_current_date(self) -> str:
         return datetime.now().strftime("%d-%m-%Y")
-
 
     def create_entry(self) -> object:
         ''' Takes in user input to dynamically and automatically make entry data details '''
@@ -68,14 +64,14 @@ class Auditing(LogEntry):
                 finally: 
                     return " ".join(parts)
             else:
-                return "{} 1".format(duplicateTitle)
+                return "{} 2".format(duplicateTitle)
 
         # TITLE HANDLING
-        genericTitles = [ "Pamasahe", "Found", "Lost", "Deposit", "Withdrawal", "Random Magic Sorcery" ]
+        genericTitles = [ "Pamasahe", "Lost", "Found", "Random Magic Sorcery" ]
         excludedTitles= [ "Loaned", "Owed" ]
 
         if self.title in genericTitles and not " " in self.title:
-            self.title = add_title_count(self.title)
+            self.title = "{} 1".format(self.title)
 
         for obj in Auditing.currLoglist:
             if self.title == obj.title and self.title not in excludedTitles:
@@ -83,45 +79,37 @@ class Auditing(LogEntry):
                 self.title = add_title_count(self.title)
 
         # ENTRY SAVING
-        self.__append_entry()
+        entry = LogEntry(
+                    total=self.total,
+                    date=self.date,
+                    logType=self.logType,
+                    subtype=self.subtype,
+                    title=self.title,
+                    amount=self.amount,
+                    logID=self.logID
+                ) 
+        Auditing.mainLogList.append(entry)
+        Auditing.currLoglist.append(entry)
+
         FileSaver.save_data(self.__dict__, DEFAULT_FILE_PATH)
         
         return self
 
 
-
-
-
-    def __append_entry(self) -> None:
-        ''' Appends created entry'''
-        Auditing.mainLogList.append(
-            LogEntry(
-                total=self.total,
-                date=self.date,
-                logType=self.logType,
-                subtype=self.subtype,
-                title=self.title,
-                amount=self.amount,
-                logID=self.logID
-            )
-        )
-
-
-
-
-
     @classmethod
     def display_all_entries(cls) -> bool:
-        if len(cls.mainLogList) < 100:  # temp_max_limit
-            for obj in cls.mainLogList:
-                print(f"{obj}")
+        max_display_limit = 100
+        for obj in cls.mainLogList[-max_display_limit+1:]:
+            # print(f"{obj.total}\t{obj}")
+            print(f"{obj.total}\t{obj.date}\t{obj.logType}\t{obj.subtype}\t{obj.title:<20}\t{obj.amount:<15}\t{obj.logID}")
+        print(f"TOTAL\tDATE\t\tTYPE\tSUBTYPE\tTITLE\t\t\tAMOUNT\t\tLOG ID")
 
 
 
 if __name__ == '__main__':
     audit = Auditing()
     while True: 
-        # audit.create_entry()
+        audit.create_entry()
         audit.display_all_entries()
         if input("exit? [y/n]: ").lower() == 'y':
             break

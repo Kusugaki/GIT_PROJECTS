@@ -31,7 +31,7 @@ class LogDetails(ABC):
     @classmethod
     @abstractmethod
     def get_log_title_from_subtype(cls) -> str:
-        return cls.logTitleDetail[:4].lower()
+        return cls.logTitleDetail
 
 
 
