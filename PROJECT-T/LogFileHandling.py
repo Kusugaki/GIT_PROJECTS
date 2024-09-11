@@ -20,12 +20,12 @@ class FileGetter():
                 for row in csv_reader:
                         fetched_list.append(
                             LogEntry(
-                                total   = row[0],
+                                total   = int(row[0]),
                                 date    = row[1],
                                 logType = row[2], 
                                 subtype = row[3],
                                 title   = row[4],   
-                                amount  = row[5],
+                                amount  = float(row[5]),
                                 logID   = row[6]
                             )
                         )
