@@ -2,52 +2,57 @@ from abc import ABC, abstractmethod
 
 # ABSTRACT CLASS - (dahil trip ko lang)
 class LogDetails(ABC):
-    titleChoice:str
-    subtype:str
+    logTypeDetail:str
+    subtypeChoiceDetail:list[str]
+    titleDetail:str
 
     @classmethod
-    @abstractmethod # not an actual abstract method, child classes don't actually modify or specialize the method individually
-    def fetch_entry_details(cls, choicesList, subtypeIDlist) -> None:
-        _user_input = None
-        
-        while _user_input not in ['A','B']: 
-            _user_input = input(f"""Enter Log Type:\n\tA. \'{choicesList[0]}\'\n\tB. \'{choicesList[1]}\'\n  > """).upper()
+    @abstractmethod
+    def get_log_type(cls) -> str:
+        return cls.logTypeDetail[:3].lower()
+    
+    @classmethod
+    @abstractmethod
+    def get_log_subtype(cls) -> str:
+        user_input:str = None
+        while user_input not in ['A','B']:
+            user_input = input(f"Enter subtype:\n\tA. \'{cls.subtypeChoiceDetail[0]}\'\n\tB. \'{cls.subtypeChoiceDetail[1]}\'\n  > ").upper()
 
-            match _user_input:
+            match user_input:
                 case 'A':
-                    cls.titleChoice = choicesList[0]
-                    cls.subtype     = subtypeIDlist[0]
+                    cls.titleDetail = cls.subtypeChoiceDetail[0]
+                    return cls.subtypeChoiceDetail[0][:4].lower()
                 case 'B':
-                    cls.titleChoice = choicesList[1]
-                    cls.subtype     = subtypeIDlist[1]
+                    cls.titleDetail = cls.subtypeChoiceDetail[1]
+                    return cls.subtypeChoiceDetail[1][:4].lower()
                 case _:
-                    print(f"INPUT_ERROR: \'{_user_input}\' is not part of the options.\n")
-                    continue
+                    print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
 
+    @classmethod
+    @abstractmethod
+    def get_log_title_from_log_type(cls) -> str:
+        return cls.titleDetail
 
 class Transac(LogDetails):
-    logType:str = "tra"
-    def fetch_entry_details() -> None:
-        LogDetails.fetch_entry_details(["Debit", "Credit"], ["debi", "cred"])
+    logTypeDetail = "Transactions"
+    subtypeChoiceDetail = ["Debit", "Credit"]
+
+    def get_log_title_from_log_type() -> str:
+        return input("Input Log Title: ").strip()
 
 class Liabili(LogDetails):
-    logType:str = "lia"
-    def fetch_entry_details() -> None:
-        LogDetails.fetch_entry_details(["Loaned", "Owed"], ["loan", "owed"])
+    logTypeDetail = "Liabilities"
+    subtypeChoiceDetail = ["Loaned", "Owed"]
 
 class Savings(LogDetails):
-    logType:str = "sav"
-    def fetch_entry_details() -> None:
-        LogDetails.fetch_entry_details(["Deposit", "Withdrawal"], ["depo", "draw"])
-    
+    logTypeDetail = "Savings"
+    subtypeChoiceDetail = ["Deposit", "Withdrawal"]
 
     
 
 if __name__ == '__main__':
     print("You are running the LogDetails.py file")
-    t = Transac.fetch_entry_details()
-    l = Liabili.fetch_entry_details()
-    s = Savings.fetch_entry_details()
-    print(f"{t = }")
-    print(f"{l = }")
-    print(f"{s = }")
+    print()
+    print(f"{Transac.get_log_type() = }\n{Transac.get_log_subtype() = }\n{Transac.get_log_title_from_log_type() = }")
+    print(f"{Liabili.get_log_type() = }\n{Liabili.get_log_subtype() = }\n{Liabili.get_log_title_from_log_type() = }")
+    print(f"{Savings.get_log_type() = }\n{Savings.get_log_subtype() = }\n{Savings.get_log_title_from_log_type() = }")

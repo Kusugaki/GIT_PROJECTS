@@ -8,3 +8,8 @@ TOTAL,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID
 7,09-09-2024,lia,owed,Owed,15.0,7//lia//owed//09-09-2024
 8,09-09-2024,tra,debi,Day in,200.0,8//tra//debi//09-09-2024
 9,09-09-2024,tra,cred,Pamasahe 3,43.0,9//tra//cred//09-09-2024
+10,09-09-2024,tra,cred,Pamasahe 4,34.0,10//tra//cred//09-09-2024
+11,09-09-2024,tra,cred,Pamasahe 5,62.0,11//tra//cred//09-09-2024
+12,11-09-2024,lia,owed,Owed,4000.0,12//lia//owed//11-09-2024
+13,11-09-2024,tra,cred,Pamasahe 1,,13//tra//cred//11-09-2024
+14,11-09-2024,sav,with,Withdrawal 1,,14//sav//with//11-09-2024
