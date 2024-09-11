@@ -1,12 +1,14 @@
-from LogEntry_dataclass import LogEntry
 import csv
 import os
 
+from LogEntry_dataclass import LogEntry
+
 class FileGetter():
+    fetched_list: list[LogEntry] = []
+    fetched_todayList: list[LogEntry] = []
 
     @classmethod
     def fetch_saved_database(cls, path:str) -> list:
-        fetched_list: list[LogEntry] = []
         
         if not os.path.exists(path):
             print(f"no database found in \'{path}\'.")
@@ -18,7 +20,7 @@ class FileGetter():
                 next(csv_reader)
 
                 for row in csv_reader:
-                        fetched_list.append(
+                        cls.fetched_list.append(
                             LogEntry(
                                 total   = int(row[0]),
                                 date    = row[1],
@@ -32,8 +34,15 @@ class FileGetter():
         except Exception as e:
             print(f"ERROR_READING_FILE \'{path}\': {e}")
 
-        return fetched_list
+        return cls.fetched_list
 
+    @classmethod
+    def fetch_curr_list(cls, today:str) -> list[LogEntry]:
+        currentList = []
+        for obj in cls.fetched_list:
+            if obj.date == today:
+                currentList.append(obj)
+        return currentList
 
     @staticmethod
     def get_custom_path(default_path:str) -> str: 

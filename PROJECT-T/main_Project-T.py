@@ -26,28 +26,19 @@ class Auditing(LogEntry):
 
     def __init__(self) -> None:
         ''' Program Startup sequence '''
-        if self.check_date_change():
-            self.date = self.get_current_date()
-        Auditing.mainLogList = FileGetter.fetch_saved_database(DEFAULT_FILE_PATH)
-        Auditing.currLoglist = self.get_curr_list()
+        self.date = self.get_current_date()
+        Auditing.mainLogList = FileGetter.fetch_saved_database(path=DEFAULT_FILE_PATH)
+        Auditing.currLoglist = FileGetter.fetch_curr_list(today=self.date)
+
+        print(Auditing.currLoglist)
 
 
-    def get_curr_list(self) -> list[LogEntry]:
-        currentList = []
-        for obj in Auditing.mainLogList:
-            if obj.date == self.date:
-                currentList.append(obj)
-        return currentList
-    
     def get_total_entry_count(self) -> int:
         '''Fetches the total count of log Entries in the dynamic main list'''
         return len(Auditing.mainLogList) + 1
     
     def get_current_date(self) -> str:
         return datetime.now().strftime("%d-%m-%Y")
-    
-    def check_date_change(self) -> bool:
-        return self.date == datetime.now().strftime('%d-%m-%Y')
 
 
     def create_entry(self) -> object:
@@ -130,7 +121,7 @@ class Auditing(LogEntry):
 if __name__ == '__main__':
     audit = Auditing()
     while True: 
-        audit.create_entry()
+        # audit.create_entry()
         audit.display_all_entries()
         if input("exit? [y/n]: ").lower() == 'y':
             break
