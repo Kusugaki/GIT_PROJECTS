@@ -78,7 +78,7 @@ class Auditing(LogEntry):
 
         user_input:str = None
         while user_input not in ['A','B','C','D']:
-            user_input = input("Choose data to modify:\n\tA. \'LogType\'\n\tB. \'Subtype\'\n\tC. \'Title\'\n\tD. \'Amount\'\n   >").strip().upper()
+            user_input = input("Choose data to modify:\n\tA. \'LogType\'\n\tB. \'Subtype\'\n\tC. \'Title\'\n\tD. \'Amount\'\n   > ").strip().upper()
 
             match user_input:
                 case 'A':
@@ -101,7 +101,7 @@ class Auditing(LogEntry):
                     else:
                         print("\nMODIFYING_SUBTYPE_ERROR\n")
                 case 'C':
-                    moddedEntry.title = input("Input new Entry Title\n   >").strip()
+                    moddedEntry.title = input("Input new Entry Title\n   > ").strip()
                 case 'D':
                     moddedEntry.amount = CreateEntry.fetch_amount()
                 case _:
@@ -128,7 +128,7 @@ class Auditing(LogEntry):
 
         cls.display_single_entry(entry_to_be_deleted, show_header=True)
         
-        if input("Confirm Entry Deletion (\"yes\")\n\t>").strip().lower() == "yes":
+        if input("Confirm Entry Deletion (\"yes\")\n\t> ").strip().lower() == "yes":
             cls.mainLogList.pop(searched_index)
             print(f"Entry has been succesfully deleted.\nSave changes to update the CSV file.")
         else:
@@ -193,8 +193,8 @@ class Auditing(LogEntry):
     @classmethod
     def display_single_entry(cls, entry, show_header=False) -> None:
         if show_header == True:
+            print(f"COUNT\tDAY\tDATE\t\tTYPE\tSUBTYPE\tTITLE\t\t\tAMOUNT\t\tLOG ID")
             print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}")
-            print(f"TOTAL\tDAY\tDATE\t\tTYPE\tSUBTYPE\tTITLE\t\t\tAMOUNT\t\tLOG ID")
         else:
             print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}")            
                 
