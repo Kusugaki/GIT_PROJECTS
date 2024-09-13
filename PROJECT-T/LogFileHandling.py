@@ -22,13 +22,14 @@ class FileGetter():
                 for row in csv_reader:
                         cls.fetched_list.append(
                             LogEntry(
-                                total   = int(row[0]),
-                                date    = row[1],
-                                logType = row[2], 
-                                subtype = row[3],
-                                title   = row[4],   
-                                amount  = float(row[5]),
-                                logID   = row[6]
+                                count   = int(row[0]),
+                                day     = int(row[1]),
+                                date    = row[2],
+                                logType = row[3], 
+                                subtype = row[4],
+                                title   = row[5],   
+                                amount  = float(row[6]),
+                                logID   = row[7]
                             )
                         )
         except Exception as e:
@@ -37,10 +38,10 @@ class FileGetter():
         return cls.fetched_list
 
     @classmethod
-    def fetch_curr_list(cls, today:str) -> list[LogEntry]:
+    def fetch_curr_list(cls, dateToday:str) -> list[LogEntry]:
         currentList = []
         for obj in cls.fetched_list:
-            if obj.date == today:
+            if obj.date == dateToday:
                 currentList.append(obj)
         return currentList
 
@@ -55,18 +56,19 @@ class FileGetter():
 
 class FileSaver():
     @staticmethod
-    def save_data(dict:dict, path: str) -> bool:
+    def save_and_append_data(dict:dict, path: str) -> bool:
         try:
             if not os.path.exists(path):
                 with open(path, 'w', newline='', encoding="utf-8") as csv_header:
                     csv_writer = csv.writer(csv_header)
-                    csv_writer.writerow(["TOTAL", "DATE", "LOGTYPE", "SUBTYPE", "TITLE", "AMOUNT", "LOG-ID"])
+                    csv_writer.writerow(["COUNT", "DAY", "DATE", "LOGTYPE", "SUBTYPE", "TITLE", "AMOUNT", "LOG-ID"])
                     print("Created a NEW csv file since none was found")
 
             with open(path, 'a', newline='', encoding="utf-8") as csv_file:
                 csv_writer = csv.writer(csv_file)
                 csv_writer.writerow([
-                    dict["total"],
+                    dict["count"],
+                    dict["day"],
                     dict["date"],
                     dict["logType"],
                     dict["subtype"],
@@ -79,6 +81,34 @@ class FileSaver():
             print(f"ERROR_SAVING_FILE \'{path}\': {e}")
             return False
 
+    @staticmethod
+    def save_all_data(mainlog:list, path: str) -> bool:
+        try:
+            if not os.path.exists(path):
+                with open(path, 'x') as created_file:
+                    print("Created a NEW csv file since none was found")
+
+            with open(path, 'w', newline='', encoding="utf-8") as csv_file:
+                csv_writer = csv.writer(csv_file)
+                csv_writer.writerow(["COUNT", "DAY", "DATE", "LOGTYPE", "SUBTYPE", "TITLE", "AMOUNT", "LOG-ID"])
+                
+                for entry in mainlog:
+                    entryDict = entry.__dict__
+
+                    csv_writer.writerow([
+                        entryDict["count"],
+                        entryDict["day"],
+                        entryDict["date"],
+                        entryDict["logType"],
+                        entryDict["subtype"],
+                        entryDict["title"],
+                        entryDict["amount"],
+                        entryDict["logID"]
+                    ])
+            return True
+        except Exception as e:
+            print(f"ERROR_SAVING_FILE \'{path}\': {e}")
+            return False
 
 
 

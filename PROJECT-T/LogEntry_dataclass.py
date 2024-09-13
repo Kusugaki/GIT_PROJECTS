@@ -2,7 +2,8 @@ from dataclasses import dataclass
 
 @dataclass(kw_only=True)
 class LogEntry:
-    total:   int    = 0
+    count:   int    = 0
+    day:     str    = 0
     date:    str    = "DEFAULT"    
     logType: str    = "DEFAULT" 
     subtype: str    = "DEFAULT" 

@@ -12,7 +12,7 @@ class CreateEntry:
 
         user_input = None
         while user_input not in ['A','B','C']:
-            user_input = input("""Enter Log Type:\n\tA. \'Transactions\'\n\tB. \'Liabilities\'\n\tC. \'Savings\'\n  > """).upper()
+            user_input = input("""Enter Log Type:\n\tA. \'Transactions\'\n\tB. \'Liabilities\'\n\tC. \'Savings\'\n  > """).strip().upper()
 
             match user_input:
                 case 'A':
@@ -34,13 +34,13 @@ class CreateEntry:
     @staticmethod
     def fetch_amount() -> float:
         while True:
-            try: return abs(float(input("Input Transaction Amount: ")))
+            try: return abs(float(input("Input Transaction Amount: ").strip()))
             except ValueError as e: print(f"NaN_ERROR: {e}")
 
     @staticmethod
-    def create_ID(total, logType, subtype, date) -> str:
+    def create_ID(count, logType, subtype, date) -> str:
         '''Creates a unique ID'''
-        return f"{total}//{logType}//{subtype}//{date}"
+        return f"{count}//{logType}//{subtype}//{date}"
 
 
 
@@ -59,7 +59,7 @@ class LogDetails(ABC):
     def get_log_subtype(cls) -> str:
         user_input:str = None
         while user_input not in ['A','B']:
-            user_input = input(f"Enter subtype:\n\tA. \'{cls.subtypeChoiceDetail[0]}\'\n\tB. \'{cls.subtypeChoiceDetail[1]}\'\n  > ").upper()
+            user_input = input(f"Enter subtype:\n\tA. \'{cls.subtypeChoiceDetail[0]}\'\n\tB. \'{cls.subtypeChoiceDetail[1]}\'\n  > ").strip().upper()
 
             match user_input:
                 case 'A':
@@ -86,7 +86,7 @@ class Transac(LogDetails):
     subtypeChoiceDetail = ["Debit", "Credit"]
 
     def get_log_title_from_subtype() -> str:
-        return input("Input Log Title: ").strip()
+        return input("Input Entry Title: ").strip()
 
 class Liabili(LogDetails):
     logTypeDetail = "Liabilities"

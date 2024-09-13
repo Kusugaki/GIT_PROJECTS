@@ -1,0 +1,66 @@
+COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID
+1,1,09-09-2024,tra,debi,Day in,523.0,1//tra//debi//09-09-2024
+2,1,09-09-2024,tra,cred,Pamasahe 1,13.0,2//tra//cred//09-09-2024
+3,1,09-09-2024,tra,cred,Pamasahe 2,23.0,3//tra//cred//09-09-2024
+4,1,09-09-2024,tra,cred,Burger Tapsilog,2415.0,4//tra//cred//09-09-2024
+5,1,09-09-2024,tra,debi,Found 1,10.0,5//tra//debi//09-09-2024
+6,1,09-09-2024,sav,depo,Deposit 1,2000.0,6//sav//depo//09-09-2024
+7,1,09-09-2024,lia,owed,Owed,15.0,7//lia//owed//09-09-2024
+8,1,09-09-2024,tra,debi,Day in,200.0,8//tra//debi//09-09-2024
+9,1,09-09-2024,tra,cred,Pamasahe 3,43.0,9//tra//cred//09-09-2024
+10,1,09-09-2024,tra,cred,Pamasahe 4,34.0,10//tra//cred//09-09-2024
+11,1,09-09-2024,tra,cred,Pamasahe 5,62.0,11//tra//cred//09-09-2024
+12,2,11-09-2024,lia,owed,Owed,4000.0,12//lia//owed//11-09-2024
+13,2,11-09-2024,tra,cred,Pamasahe 1,25.0,13//tra//cred//11-09-2024
+14,2,11-09-2024,sav,with,Withdrawal 1,14.0,14//sav//with//11-09-2024
+15,2,11-09-2024,tra,cred,Pamasahe 2,230.0,15//tra//cred//11-09-2024
+16,2,11-09-2024,lia,owed,owed,155.0,16//lia//owed//11-09-2024
+17,2,11-09-2024,sav,depo,depo,2000.0,17//sav//depo//11-09-2024
+18,2,11-09-2024,tra,cred,Amongus,25.0,18//tra//cred//11-09-2024
+19,2,11-09-2024,lia,owed,owed,2525.0,19//lia//owed//11-09-2024
+20,2,11-09-2024,tra,cred,Pamasahe 1,42.0,20//tra//cred//11-09-2024
+21,2,11-09-2024,tra,cred,Pamasahe 2,24.0,21//tra//cred//11-09-2024
+22,2,12-09-2024,tra,cred,Pamasahe 1,24.0,22//tra//cred//12-09-2024
+23,2,12-09-2024,tra,cred,Pamasahe 2,26.0,23//tra//cred//12-09-2024
+24,3,12-09-2024,tra,debi,Day in,2000.0,24//tra//debi//12-09-2024
+25,3,12-09-2024,tra,cred,Pamasahe 2,64.0,25//tra//cred//12-09-2024
+26,3,12-09-2024,tra,cred,Pamasahe 2,95.0,26//tra//cred//12-09-2024
+27,3,12-09-2024,tra,cred,Pamasahe 2,24.0,27//tra//cred//12-09-2024
+28,3,12-09-2024,tra,debi,Day in,25.0,28//tra//debi//12-09-2024
+29,3,12-09-2024,tra,cred,Pamasahe 3,26.0,29//tra//cred//12-09-2024
+30,3,12-09-2024,tra,cred,Pamasahe 4,75.0,30//tra//cred//12-09-2024
+31,3,12-09-2024,tra,cred,Pamasahe 5,216.0,31//tra//cred//12-09-2024
+32,3,12-09-2024,tra,debi,Day in,215.0,32//tra//debi//12-09-2024
+33,3,12-09-2024,tra,debi,Day in,251.0,33//tra//debi//12-09-2024
+34,3,12-09-2024,tra,debi,Amongus,215.0,34//tra//debi//12-09-2024
+35,3,12-09-2024,tra,debi,Amongus 1,12.0,35//tra//debi//12-09-2024
+36,3,12-09-2024,tra,debi,Amongus 2,194.0,36//tra//debi//12-09-2024
+37,3,12-09-2024,tra,cred,Amongus 3,215.0,37//tra//cred//12-09-2024
+38,3,12-09-2024,lia,loan,loan,214.0,38//lia//loan//12-09-2024
+39,3,12-09-2024,sav,depo,depo,2142.0,39//sav//depo//12-09-2024
+40,3,12-09-2024,sav,with,with,214.0,40//sav//with//12-09-2024
+41,3,12-09-2024,sav,depo,Deposit 1,213.0,41//sav//depo//12-09-2024
+42,3,12-09-2024,sav,with,Withdrawal 1,14.0,42//sav//with//12-09-2024
+43,3,12-09-2024,sav,depo,Deposit 2,214.0,43//sav//depo//12-09-2024
+44,3,12-09-2024,sav,with,Withdrawal 2,562.0,44//sav//with//12-09-2024
+45,3,12-09-2024,lia,owed,Owed,251.0,45//lia//owed//12-09-2024
+46,3,12-09-2024,lia,owed,Owed,51.0,46//lia//owed//12-09-2024
+47,3,12-09-2024,lia,loan,Loaned,215.0,47//lia//loan//12-09-2024
+48,3,12-09-2024,tra,cred,215,21442.0,48//tra//cred//12-09-2024
+49,3,12-09-2024,tra,debi,Amogus,215.0,49//tra//debi//12-09-2024
+50,3,12-09-2024,tra,debi,Amogus 2,214.0,50//tra//debi//12-09-2024
+51,3,12-09-2024,tra,cred,Pamasahe 6,215.0,51//tra//cred//12-09-2024
+52,3,12-09-2024,tra,cred,Day Out,215.0,52//tra//cred//12-09-2024
+53,3,12-09-2024,tra,debi,Day in,10.0,53//tra//debi//12-09-2024
+54,3,12-09-2024,tra,debi,Big Chungus,1000.0,54//tra//debi//12-09-2024
+55,3,12-09-2024,tra,cred,Chungus,1000000.009,55//tra//cred//12-09-2024
+56,3,12-09-2024,tra,debi,Day in,19000.0,56//tra//debi//12-09-2024
+57,3,12-09-2024,sav,with,Withdrawal,6000.249,57//sav//with//12-09-2024
+58,3,12-09-2024,lia,owed,Owed,888.0,58//lia//owed//12-09-2024
+59,3,12-09-2024,lia,loan,Loaned,252.0,59//lia//loan//12-09-2024
+60,4,13-09-2024,tra,debi,Pamasahe 1,25.0,60//tra//debi//13-09-2024
+61,4,13-09-2024,sav,depo,Deposit,1000.0,61//sav//depo//13-09-2024
+62,4,13-09-2024,tra,debi,pamasahe,10.0,62//tra//debi//13-09-2024
+63,4,13-09-2024,sav,depo,Deposit 2,1001.0,63//sav//depo//13-09-2024
+64,4,13-09-2024,lia,owed,Owed,888.0,64//lia//owed//13-09-2024
+65,4,13-09-2024,tra,cred,pamasahe 2,13.0,65//tra//cred//13-09-2024
