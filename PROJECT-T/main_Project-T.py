@@ -101,8 +101,10 @@ class Auditing(LogEntry):
                     else:
                         print("\nMODIFYING_SUBTYPE_ERROR\n")
                 case 'C':
+                    print(f"Previous title: \'{moddedEntry.title}\'\n")
                     moddedEntry.title = input("Input new Entry Title\n   > ").strip()
                 case 'D':
+                    print(f"Previous amount: \'{moddedEntry.amount}\'\n")
                     moddedEntry.amount = CreateEntry.fetch_amount()
                 case _:
                     print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
@@ -110,9 +112,8 @@ class Auditing(LogEntry):
         moddedEntry.title = Auditing.title_handling(moddedEntry.title)
         moddedEntry.logID = CreateEntry.create_ID(moddedEntry.count, moddedEntry.logType, moddedEntry.subtype, moddedEntry.date)
 
-        print("Modified Entry:")
+        print("Entry has been modified. Save changes to update the CSV file.")
         Auditing.display_single_entry(moddedEntry, show_header=True)
-        print("Save changes to update the CSV file.\n")
 
 
     @classmethod
@@ -130,7 +131,7 @@ class Auditing(LogEntry):
         
         if input("Confirm Entry Deletion (\"yes\")\n\t> ").strip().lower() == "yes":
             cls.mainLogList.pop(searched_index)
-            print(f"Entry has been succesfully deleted.\nSave changes to update the CSV file.")
+            print(f"Entry has been succesfully deleted. Save changes to update the CSV file.")
         else:
             print(f"Stopping deletion process...\n")
             return
@@ -213,7 +214,7 @@ class Auditing(LogEntry):
 
         user_input:str = None
         while True:
-            user_input = input("What log type to search for? (tra/lia/sav) (debi/cred/loan/owed/depo/with): ").strip().lower()
+            user_input = input("What log type to search for? (tra/lia/sav) (debi/cred/loan/owed/depo/with) (\'back\' to return): ").strip().lower()
 
             if user_input == "back":
                 return
