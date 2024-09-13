@@ -1,6 +1,8 @@
-# I'm gay 🦌🦌🦌🦌
+# Personal Project 🦌🦌🦌🦌
 
-###### (or am i?)
+Project Based Learning for OOP by basing off of mostly only a single youtube video with minimal help from stackoverflow.
+
+Highly recommend for Beginner OOP Introduction: [Python Object Oriented Programming (OOP) - For Beginners (by Tech with Tim)](https://www.youtube.com/watch?v=JeznW_7DlB0)
 
 ## Program IDEAS: Functions & Definitions
 
@@ -28,33 +30,32 @@
       - logCount (total amount of logs created in the main Audit Trail)  
         - possibly add a checkpoint/achievement system for every "count % 100" logs  
 
-# Supposed Outputs
+## Supposed Outputs
 
-## Main Log Sample
-###### Does not represent final output
+### Main Log Sample Idea
 
-| Day | Date     | Transactions | Debit   | Credit   |
-| --- | :----    | :----------- | :-----: | :------: |
-| 1   | 08-08-24 | Day in       | 213     |          |
-| 2   | 08-08-24 | Pamasahe 1   |         | 100      |
-| 3   | 08-08-24 | Burgersilog  |         | 36       |
-| 4   | 08-08-24 | Day out      | 213     | 136      |
+| Day | Date     | Transactions    | Debit   | Credit   |
+| --- | :------- | :-------------- | :-----: | :------: |
+| 1   | 08-08-24 | Day in          | 213     |          |
+|     |          | Pamasahe 1      |         | 100      |
+|     |          | Burgersilog     |         | 36       |
+|     |          |                 |         |          |
+|     |          | Day out (Total) | 213     | 272      |
 
-# End of Day Status Screen Sample
-###### Only possible ideas
+## End of Day Status Screen Idea
 
 <!-- <code> -->
 
 |                    |         |
 | :----------------- | :-----: |
 | TOTALS:            |         |
-| Initial Day in     | 213     |
+| Day out Debit      | 213     |
 | Day out Credit     | 136     |
 |                    |         |
 |                    |         |
 | DETAILS:           |         |
 | Saved Amount       | 77      |
-| Savings Percentage | 36.15%  | 
+| Savings Percentage | 36.15%  |
 |                    |         |
 |                    |         |
 | EXTRAS:            |         |
@@ -63,3 +64,4 @@
 | Unpayed Loans      | 1,200   |
 
 <!-- </code> -->
+###### shika
