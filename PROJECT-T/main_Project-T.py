@@ -48,7 +48,7 @@ class Auditing(LogEntry):
         self.logID   = CreateEntry.create_ID(self.count, self.logType, self.subtype, self.date)
 
         # CHECKS DUPLICATES AND GENERIC TITLES
-        self.title = Auditing.title_handling(self.title)
+        self.title = Auditing.check_generic_or_duplicate_titles(self.title)
 
         # ENTRY SAVING
         entry = LogEntry(
@@ -97,7 +97,6 @@ class Auditing(LogEntry):
                     elif moddedEntry.logType == "sav":
                         moddedEntry.subtype = Savings.get_log_subtype()
                         moddedEntry.title   = Savings.get_log_title_from_subtype()
-                    
                     else:
                         print("\nMODIFYING_SUBTYPE_ERROR\n")
                 case 'C':
@@ -109,7 +108,7 @@ class Auditing(LogEntry):
                 case _:
                     print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
 
-        moddedEntry.title = Auditing.title_handling(moddedEntry.title)
+        moddedEntry.title = Auditing.check_generic_or_duplicate_titles(moddedEntry.title)
         moddedEntry.logID = CreateEntry.create_ID(moddedEntry.count, moddedEntry.logType, moddedEntry.subtype, moddedEntry.date)
 
         print("Entry has been modified. Save changes to update the CSV file.")
@@ -119,14 +118,15 @@ class Auditing(LogEntry):
     @classmethod
     def delete_entry(cls) -> None:
         print("\n!!! YOU ARE CURRENTLY IN THE PROCESS OF DELETING AN ENTRY !!!\n")
+
         searched_index:int = cls.search_entry()
 
         if searched_index == None:
             print("Entry not found. stopping deletion process...\n")
             return
-        
-        entry_to_be_deleted:object = cls.mainLogList[searched_index]
 
+        entry_to_be_deleted:object = cls.mainLogList[searched_index]
+        
         cls.display_single_entry(entry_to_be_deleted, show_header=True)
         
         if input("Confirm Entry Deletion (\"yes\")\n\t> ").strip().lower() == "yes":
@@ -140,11 +140,15 @@ class Auditing(LogEntry):
         for i in range(searched_index, len(cls.mainLogList)):
             if cls.mainLogList[i].count != i:
                 cls.mainLogList[i].count = i + 1
-
-
+                cls.mainLogList[i].logID = CreateEntry.create_ID(
+                                                cls.mainLogList[i].count, 
+                                                cls.mainLogList[i].logType, 
+                                                cls.mainLogList[i].subtype, 
+                                                cls.mainLogList[i].date
+                                            )
     # UTILS
     def get_total_entry_count(self) -> int:
-        '''Fetches the count count of log Entries in the dynamic main list'''
+        '''Fetches the total count of log Entries in the dynamic main list'''
         return len(Auditing.mainLogList) + 1
     
     def get_current_date(self) -> str:
@@ -156,9 +160,9 @@ class Auditing(LogEntry):
         return previousDay
     
     @classmethod
-    def title_handling(cls, title:str) -> str:
+    def check_generic_or_duplicate_titles(cls, title:str) -> str:
         def add_title_count(duplicateTitle) -> None:
-            '''Adds an increasing number to a duplicate/generic title'''
+            '''Adds an increasing number to a duplicate title'''
 
             if " " in duplicateTitle:
                 parts = duplicateTitle.split(" ")
@@ -176,6 +180,7 @@ class Auditing(LogEntry):
         excludedTitles= [ "Loaned", "Owed" ]
 
         if title in genericTitles and not " " in title:
+            '''These titles are usually done multiple times throughout the day hence the numbering'''
             title = "{} 1".format(title)
 
         for entry in cls.currLoglist:
@@ -214,28 +219,30 @@ class Auditing(LogEntry):
 
         user_input:str = None
         while True:
-            user_input = input("What log type to search for? (tra/lia/sav) (debi/cred/loan/owed/depo/with) (\'back\' to return): ").strip().lower()
+            while True:
+                user_input = input("What log type to search for? (tra/lia/sav) (debi/cred/loan/owed/depo/with) (\'back\' to return): ").strip().lower()
 
-            if user_input == "back":
-                return
-            elif user_input not in ["tra","lia","sav",  "debi","cred","loan","owed","depo","with"]:
-                print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
-                continue
+                if user_input == "back":
+                    return
+                elif user_input not in ["tra","lia","sav",  "debi","cred","loan","owed","depo","with"]:
+                    print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
+                    continue
 
-            break
+                break
 
-        cls.display_entries(specified=True, search_parameter=user_input)
+            cls.display_entries(specified=True, search_parameter=user_input)
 
-        while True:
-            user_input = input("Enter the logID: ").strip()
-            
-            for entry in cls.mainLogList:
-                if entry.logID == user_input:
-                    return cls.mainLogList.index(entry)
-            
-            print(f"ID of \'{user_input}\' not found")
-            return
+            while True:
+                user_input = input("Enter the logID (\'back\' to return): ").strip()
 
+                if user_input == "back":
+                    break
+                else:
+                    for entry in cls.mainLogList:
+                        if entry.logID == user_input:
+                            return cls.mainLogList.index(entry)
+                    
+                    print(f"ID of \'{user_input}\' not found")
 
 
 
@@ -246,9 +253,12 @@ class Auditing(LogEntry):
 if __name__ == '__main__':
     audit = Auditing()
     while True: 
+        print("ENTRY CREATION\n")
         audit.create_entry()
+        print("ENTRY SEARCHING\n")
         print(f"ENTRY FOUND: {audit.search_entry()}")
         audit.delete_entry()
+        print("ENTRY MODIFICATION\n")
         audit.modify_entry()
         audit.save_all_entries()
         audit.display_entries()
