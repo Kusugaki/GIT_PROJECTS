@@ -48,10 +48,7 @@ class CreateEntry:
 
 
 
-
-
-
-# ABSTRACT CLASS - (dahil trip ko lang)
+# ABSTRACT CLASS
 class LogDetails(ABC):
     logTypeDetail:       str
     subtypeChoiceDetail: list[str] # peaniths
@@ -88,12 +85,14 @@ class LogDetails(ABC):
 
 
 
+
 class Transac(LogDetails):
     logTypeDetail = "tra" # "Transactions"
     subtypeChoiceDetail = ["Debit", "Credit"]
 
     def get_log_title_from_subtype() -> str:
         return input("Input Entry Title: ").strip()
+
 
 class Liabili(LogDetails):
     logTypeDetail = "lia" # "Liabilities"
@@ -105,19 +104,12 @@ class Liabili(LogDetails):
 
     @staticmethod
     def get_liable_entity(liable_subtype) -> str:
-        name = "NO_NAME_SET"
         if liable_subtype == Liabili.subtypeChoiceDetail[0]: # Loaned
-            name = input("Loaned to whom?: ").strip()
-            name[0] = name[0].upper()
-            return name
-        else:
-            name = input("Who do you owe?: ").strip()
-            name[0] = name[0].upper()
-            return name
+            return input("Loaned to whom?: ").strip().title()
+        else: # Owed
+            return input("Who do you owe?: ").strip().title()
 
 
 class Savings(LogDetails):
     logTypeDetail = "sav"   # "Savings"
     subtypeChoiceDetail = ["Deposit", "Withdrawal"]
-
-

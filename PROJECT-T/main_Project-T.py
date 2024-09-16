@@ -11,7 +11,7 @@ from LogCreateEntry import CreateEntry
 
 
 # GLOBAL VARIABLES
-DEFAULT_FILE_NAME:str = "COMPILED_MAIN_LOG.csv"
+DEFAULT_FILE_NAME:str = "MAIN_AUDIT_LOG.csv"
 DEFAULT_FILE_PATH:str = os.path.join(os.path.dirname(__file__), DEFAULT_FILE_NAME)
 
 
@@ -46,7 +46,7 @@ class Auditing(LogEntry):
         self.title   = CreateEntry.title
         self.amount  = CreateEntry.fetch_amount()
         self.logID   = CreateEntry.create_ID(self.count, self.logType, self.subtype, self.date)
-        self.liable  = CreateEntry.liable if self.logType == Liabili.logTypeDetail else "NON-LIABILITY"
+        self.liable  = CreateEntry.liable if self.logType == Liabili.logTypeDetail else "NON-LIA"
 
         # CHECKS DUPLICATES AND GENERIC TITLES
         self.title = Auditing.check_generic_or_duplicate_titles(self.title)
