@@ -1,4 +1,0 @@
-COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID,LIABLE
-1,1,16-09-2024,lia,loan,Loaned -> (Marc),500.0,1//lia//loan//16-09-2024,Marc
-2,1,16-09-2024,lia,owed,Owed -> (Kurt),30.0,2//lia//owed//16-09-2024,Kurt
-3,1,16-09-2024,sav,depo,Deposit,1000.0,3//sav//depo//16-09-2024,NOT_SET
