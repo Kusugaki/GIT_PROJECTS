@@ -29,7 +29,8 @@ class FileGetter():
                                 subtype = row[4],
                                 title   = row[5],   
                                 amount  = float(row[6]),
-                                logID   = row[7]
+                                logID   = row[7],
+                                liable  = row[8]
                             )
                         )
         except Exception as e:
@@ -61,7 +62,7 @@ class FileSaver():
             if not os.path.exists(path):
                 with open(path, 'w', newline='', encoding="utf-8") as csv_header:
                     csv_writer = csv.writer(csv_header)
-                    csv_writer.writerow(["COUNT", "DAY", "DATE", "LOGTYPE", "SUBTYPE", "TITLE", "AMOUNT", "LOG-ID"])
+                    csv_writer.writerow(["COUNT", "DAY", "DATE", "LOGTYPE", "SUBTYPE", "TITLE", "AMOUNT", "LOG-ID", "LIABLE"])
                     print("Created a NEW csv file since none was found")
 
             with open(path, 'a', newline='', encoding="utf-8") as csv_file:
@@ -74,7 +75,8 @@ class FileSaver():
                     dict["subtype"],
                     dict["title"],
                     dict["amount"],
-                    dict["logID"]
+                    dict["logID"],
+                    dict["liable"]
                 ])
             return True
         except Exception as e:
@@ -90,7 +92,7 @@ class FileSaver():
 
             with open(path, 'w', newline='', encoding="utf-8") as csv_file:
                 csv_writer = csv.writer(csv_file)
-                csv_writer.writerow(["COUNT", "DAY", "DATE", "LOGTYPE", "SUBTYPE", "TITLE", "AMOUNT", "LOG-ID"])
+                csv_writer.writerow(["COUNT", "DAY", "DATE", "LOGTYPE", "SUBTYPE", "TITLE", "AMOUNT", "LOG-ID", "LIABLE"])
                 
                 for entry in mainlog:
                     entryDict = entry.__dict__
@@ -103,7 +105,8 @@ class FileSaver():
                         entryDict["subtype"],
                         entryDict["title"],
                         entryDict["amount"],
-                        entryDict["logID"]
+                        entryDict["logID"],
+                        entryDict["liable"]
                     ])
             return True
         except Exception as e:

@@ -2,9 +2,10 @@ from abc import ABC, abstractmethod
 
 
 class CreateEntry:
-    logType:str
-    subtype:str
-    title:str
+    logType:str = "CREATE_ENTRY_DEFAULT"
+    subtype:str = "CREATE_ENTRY_DEFAULT"
+    title:str   = "CREATE_ENTRY_DEFAULT"
+    liable:str  = "CREATE_ENTRY_DEFAULT"
 
     @classmethod
     def fetch_entry_details(cls) -> None:
@@ -22,7 +23,8 @@ class CreateEntry:
                 case 'B':
                     cls.logType = Liabili.get_log_type()
                     cls.subtype = Liabili.get_log_subtype()
-                    cls.title   = Liabili.get_log_title_from_subtype()
+                    cls.liable  = Liabili.get_liable_entity(cls.subtype)
+                    cls.title   = Liabili.get_log_title_from_subtype(cls.liable)
                 case 'C':
                     cls.logType = Savings.get_log_type()
                     cls.subtype = Savings.get_log_subtype()
@@ -41,6 +43,10 @@ class CreateEntry:
     def create_ID(count, logType, subtype, date) -> str:
         '''Creates a unique ID'''
         return f"{count}//{logType}//{subtype}//{date}"
+    
+
+
+
 
 
 
@@ -53,7 +59,8 @@ class LogDetails(ABC):
 
     @classmethod
     def get_log_type(cls) -> str:
-        return cls.logTypeDetail[:3].lower()
+        return cls.logTypeDetail
+        # return cls.logTypeDetail[:3].lower()  # previously for "Transactions", "Liabilities", "Savings" LogTypeFulltitles
     
     @classmethod
     def get_log_subtype(cls) -> str:
@@ -82,18 +89,35 @@ class LogDetails(ABC):
 
 
 class Transac(LogDetails):
-    logTypeDetail = "Transactions"
+    logTypeDetail = "tra" # "Transactions"
     subtypeChoiceDetail = ["Debit", "Credit"]
 
     def get_log_title_from_subtype() -> str:
         return input("Input Entry Title: ").strip()
 
 class Liabili(LogDetails):
-    logTypeDetail = "Liabilities"
+    logTypeDetail = "lia" # "Liabilities"
     subtypeChoiceDetail = ["Loaned", "Owed"]
+        
+    @classmethod
+    def get_log_title_from_subtype(cls, person) -> str:
+        return f"{cls.logTitleDetail} -> ({person})"
+
+    @staticmethod
+    def get_liable_entity(liable_subtype) -> str:
+        name = "NO_NAME_SET"
+        if liable_subtype == Liabili.subtypeChoiceDetail[0]: # Loaned
+            name = input("Loaned to whom?: ").strip()
+            name[0] = name[0].upper()
+            return name
+        else:
+            name = input("Who do you owe?: ").strip()
+            name[0] = name[0].upper()
+            return name
+
 
 class Savings(LogDetails):
-    logTypeDetail = "Savings"
+    logTypeDetail = "sav"   # "Savings"
     subtypeChoiceDetail = ["Deposit", "Withdrawal"]
 
 

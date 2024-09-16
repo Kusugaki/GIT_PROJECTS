@@ -11,7 +11,7 @@ from LogCreateEntry import CreateEntry
 
 
 # GLOBAL VARIABLES
-DEFAULT_FILE_NAME:str = "MAIN_AUDIT_LOG.csv"
+DEFAULT_FILE_NAME:str = "COMPILED_MAIN_LOG.csv"
 DEFAULT_FILE_PATH:str = os.path.join(os.path.dirname(__file__), DEFAULT_FILE_NAME)
 
 
@@ -46,6 +46,7 @@ class Auditing(LogEntry):
         self.title   = CreateEntry.title
         self.amount  = CreateEntry.fetch_amount()
         self.logID   = CreateEntry.create_ID(self.count, self.logType, self.subtype, self.date)
+        self.liable  = CreateEntry.liable if self.logType == Liabili.logTypeDetail else "NON-LIABILITY"
 
         # CHECKS DUPLICATES AND GENERIC TITLES
         self.title = Auditing.check_generic_or_duplicate_titles(self.title)
@@ -59,7 +60,8 @@ class Auditing(LogEntry):
                     subtype=self.subtype,
                     title=self.title,
                     amount=self.amount,
-                    logID=self.logID
+                    logID=self.logID,
+                    liable=self.liable
                 ) 
         Auditing.mainLogList.append(entry)
         Auditing.currLoglist.append(entry)
@@ -85,14 +87,19 @@ class Auditing(LogEntry):
                     CreateEntry.fetch_entry_details()
                     moddedEntry.logType = CreateEntry.logType
                     moddedEntry.subtype = CreateEntry.subtype
-                    moddedEntry.title   = CreateEntry.title
+                    if moddedEntry.logType == Liabili.logTypeDetail:
+                        moddedEntry.liable  = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
+                        moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liable)
+                    else:
+                        moddedEntry.title   = CreateEntry.title
                 case 'B':
                     if moddedEntry.logType == "tra":
                         moddedEntry.subtype = Transac.get_log_subtype()
 
                     elif moddedEntry.logType == "lia":
                         moddedEntry.subtype = Liabili.get_log_subtype()
-                        moddedEntry.title   = Liabili.get_log_title_from_subtype()
+                        moddedEntry.liable  = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
+                        moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liable)
                     
                     elif moddedEntry.logType == "sav":
                         moddedEntry.subtype = Savings.get_log_subtype()
@@ -161,6 +168,10 @@ class Auditing(LogEntry):
     
     @classmethod
     def check_generic_or_duplicate_titles(cls, title:str) -> str:
+        ''' 
+        Can be improved to only read and set title once instead of 
+        reiterating reading & writing of title multiple times
+        '''
         def add_title_count(duplicateTitle) -> None:
             '''Adds an increasing number to a duplicate title'''
 
@@ -200,9 +211,9 @@ class Auditing(LogEntry):
     def display_single_entry(cls, entry, show_header=False) -> None:
         if show_header == True:
             print(f"COUNT\tDAY\tDATE\t\tTYPE\tSUBTYPE\tTITLE\t\t\tAMOUNT\t\tLOG ID")
-            print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}")
+            print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}\t{entry.liable}")
         else:
-            print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}")            
+            print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}\t{entry.liable}")
                 
     @classmethod
     def display_entries(cls, specified=False, search_parameter=None) -> None:
