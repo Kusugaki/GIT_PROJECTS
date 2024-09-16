@@ -7,7 +7,7 @@ class LogEntry:
     date:    str   = "NOT_SET"    
     logType: str   = "NOT_SET" 
     subtype: str   = "NOT_SET" 
-    title:   str   = "NOT_SET"   
+    title:   str   = "NOT_SET"
     amount:  float = 0.0
     logID:   str   = "NOT_SET"
-    liable:  str   = "NOT_SET"
+    liaName: str   = "NOT_SET"

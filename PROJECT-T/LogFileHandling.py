@@ -30,7 +30,7 @@ class FileGetter():
                                 title   = row[5],   
                                 amount  = float(row[6]),
                                 logID   = row[7],
-                                liable  = row[8]
+                                liaName = row[8]
                             )
                         )
         except Exception as e:
@@ -62,7 +62,7 @@ class FileSaver():
             if not os.path.exists(path):
                 with open(path, 'w', newline='', encoding="utf-8") as csv_header:
                     csv_writer = csv.writer(csv_header)
-                    csv_writer.writerow(["COUNT", "DAY", "DATE", "LOGTYPE", "SUBTYPE", "TITLE", "AMOUNT", "LOG-ID", "LIABLE"])
+                    csv_writer.writerow(["COUNT", "DAY", "DATE", "LOGTYPE", "SUBTYPE", "TITLE", "AMOUNT", "LOG-ID", "LIABLE NAME"])
                     print("Created a NEW csv file since none was found")
 
             with open(path, 'a', newline='', encoding="utf-8") as csv_file:
@@ -76,7 +76,7 @@ class FileSaver():
                     dict["title"],
                     dict["amount"],
                     dict["logID"],
-                    dict["liable"]
+                    dict["liaName"]
                 ])
             return True
         except Exception as e:
@@ -92,7 +92,7 @@ class FileSaver():
 
             with open(path, 'w', newline='', encoding="utf-8") as csv_file:
                 csv_writer = csv.writer(csv_file)
-                csv_writer.writerow(["COUNT", "DAY", "DATE", "LOGTYPE", "SUBTYPE", "TITLE", "AMOUNT", "LOG-ID", "LIABLE"])
+                csv_writer.writerow(["COUNT", "DAY", "DATE", "LOGTYPE", "SUBTYPE", "TITLE", "AMOUNT", "LOG-ID", "LIABLE NAME"])
                 
                 for entry in mainlog:
                     entryDict = entry.__dict__
@@ -106,7 +106,7 @@ class FileSaver():
                         entryDict["title"],
                         entryDict["amount"],
                         entryDict["logID"],
-                        entryDict["liable"]
+                        entryDict["liaName"]
                     ])
             return True
         except Exception as e:

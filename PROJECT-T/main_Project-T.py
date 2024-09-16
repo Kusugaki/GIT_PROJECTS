@@ -43,10 +43,10 @@ class Auditing(LogEntry):
         self.date    = self.get_current_date()        
         self.logType = CreateEntry.logType
         self.subtype = CreateEntry.subtype
-        self.title   = CreateEntry.title
+        self.title   = CreateEntry.title.title()
         self.amount  = CreateEntry.fetch_amount()
         self.logID   = CreateEntry.create_ID(self.count, self.logType, self.subtype, self.date)
-        self.liable  = CreateEntry.liable if self.logType == Liabili.logTypeDetail else "NON-LIA"
+        self.liaName = CreateEntry.liaName if self.logType == Liabili.logTypeDetail else "NON-LIA"
 
         # CHECKS DUPLICATES AND GENERIC TITLES
         self.title = Auditing.check_generic_or_duplicate_titles(self.title)
@@ -61,7 +61,7 @@ class Auditing(LogEntry):
                     title=self.title,
                     amount=self.amount,
                     logID=self.logID,
-                    liable=self.liable
+                    liaName=self.liaName
                 ) 
         Auditing.mainLogList.append(entry)
         Auditing.currLoglist.append(entry)
@@ -88,8 +88,8 @@ class Auditing(LogEntry):
                     moddedEntry.logType = CreateEntry.logType
                     moddedEntry.subtype = CreateEntry.subtype
                     if moddedEntry.logType == Liabili.logTypeDetail:
-                        moddedEntry.liable  = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
-                        moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liable)
+                        moddedEntry.liaName = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
+                        moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liaName)
                     else:
                         moddedEntry.title   = CreateEntry.title
                 case 'B':
@@ -98,8 +98,8 @@ class Auditing(LogEntry):
 
                     elif moddedEntry.logType == "lia":
                         moddedEntry.subtype = Liabili.get_log_subtype()
-                        moddedEntry.liable  = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
-                        moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liable)
+                        moddedEntry.liaName = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
+                        moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liaName)
                     
                     elif moddedEntry.logType == "sav":
                         moddedEntry.subtype = Savings.get_log_subtype()
@@ -211,17 +211,19 @@ class Auditing(LogEntry):
     def display_single_entry(cls, entry, show_header=False) -> None:
         if show_header == True:
             print(f"COUNT\tDAY\tDATE\t\tTYPE\tSUBTYPE\tTITLE\t\t\tAMOUNT\t\tLOG ID")
-            print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}\t{entry.liable}")
+            print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}\t{entry.liaName}")
         else:
-            print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}\t{entry.liable}")
+            print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}\t{entry.liaName}")
                 
     @classmethod
-    def display_entries(cls, specified=False, search_parameter=None) -> None:
+    def display_entries(cls, filtered=False, search_parameter=None) -> None:
         max_display_limit = 100
         for entry in cls.mainLogList[-max_display_limit-1:]:
-            if not specified:
+            if not filtered:
                 cls.display_single_entry(entry)
             elif search_parameter in entry.logType or search_parameter in entry.subtype:
+                cls.display_single_entry(entry)
+            elif search_parameter in entry.liaName:
                 cls.display_single_entry(entry)
 
     @classmethod
@@ -230,19 +232,29 @@ class Auditing(LogEntry):
 
         user_input:str = None
         while True:
+            # MAIN BROAD SEARCH
             while True:
-                user_input = input("What log type to search for? (tra/lia/sav) (debi/cred/loan/owed/depo/with) (\'back\' to return): ").strip().lower()
+                user_input = input("What log type to search for? (tra/lia/sav)-(debi/cred/loan/owed/depo/with)-(name) (\'back\' to return): ").strip().lower()
 
                 if user_input == "back":
                     return
-                elif user_input not in ["tra","lia","sav",  "debi","cred","loan","owed","depo","with"]:
-                    print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
-                    continue
+                elif user_input in ["tra","lia","sav",  "debi","cred","loan","owed","depo","with",   "name"]:
+                    break
+                print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
 
-                break
+            # LIABILITIES NAME SEARCH
+            if user_input == "name":
+                print("DISPLAY")
+                for entry in cls.mainLogList:
+                    if entry.liaName != "NON-LIA" and \
+                        entry.liaName != "NOT_SET":
+                        cls.display_single_entry(entry)
+                user_input = input("Enter the name to display all logs of: ").strip().title()
 
-            cls.display_entries(specified=True, search_parameter=user_input)
 
+            cls.display_entries(filtered=True, search_parameter=user_input)
+
+            # SPECIFIC ENTRY SEARCH
             while True:
                 user_input = input("Enter the logID (\'back\' to return): ").strip()
 
@@ -252,7 +264,6 @@ class Auditing(LogEntry):
                     for entry in cls.mainLogList:
                         if entry.logID == user_input:
                             return cls.mainLogList.index(entry)
-                    
                     print(f"ID of \'{user_input}\' not found")
 
 
@@ -274,4 +285,4 @@ if __name__ == '__main__':
         audit.save_all_entries()
         audit.display_entries()
         if input("exit? [y/n]: ").lower() == 'y':
-            break
+            exit()

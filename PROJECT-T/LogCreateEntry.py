@@ -5,7 +5,7 @@ class CreateEntry:
     logType:str = "CREATE_ENTRY_DEFAULT"
     subtype:str = "CREATE_ENTRY_DEFAULT"
     title:str   = "CREATE_ENTRY_DEFAULT"
-    liable:str  = "CREATE_ENTRY_DEFAULT"
+    liaName:str = "CREATE_ENTRY_DEFAULT"
 
     @classmethod
     def fetch_entry_details(cls) -> None:
@@ -23,8 +23,8 @@ class CreateEntry:
                 case 'B':
                     cls.logType = Liabili.get_log_type()
                     cls.subtype = Liabili.get_log_subtype()
-                    cls.liable  = Liabili.get_liable_entity(cls.subtype)
-                    cls.title   = Liabili.get_log_title_from_subtype(cls.liable)
+                    cls.liaName = Liabili.get_liable_entity(cls.subtype)
+                    cls.title   = Liabili.get_log_title_from_subtype(cls.liaName)
                 case 'C':
                     cls.logType = Savings.get_log_type()
                     cls.subtype = Savings.get_log_subtype()
@@ -99,8 +99,8 @@ class Liabili(LogDetails):
     subtypeChoiceDetail = ["Loaned", "Owed"]
         
     @classmethod
-    def get_log_title_from_subtype(cls, person) -> str:
-        return f"{cls.logTitleDetail} -> ({person})"
+    def get_log_title_from_subtype(cls, name) -> str:
+        return f"{cls.logTitleDetail} -> ({name})"
 
     @staticmethod
     def get_liable_entity(liable_subtype) -> str:
