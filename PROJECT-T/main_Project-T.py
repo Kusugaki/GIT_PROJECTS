@@ -69,6 +69,7 @@ class Auditing(LogEntry):
 
     
     def modify_entry(self) -> LogEntry:
+        ''' (-) note: implementation of this could be / should be improved '''
         print("^^^ Choose an entry to modify ^^^")
         searched_index:int = Auditing.search_entry()
         
@@ -169,8 +170,8 @@ class Auditing(LogEntry):
     @classmethod
     def check_generic_or_duplicate_titles(cls, title:str) -> str:
         ''' 
-        Can be improved to only read and set title once instead of 
-        reiterating reading & writing of title multiple times
+        (-) note: Can be improved to only read and set title once instead
+                 of reiterating reading & writing of title multiple times
         '''
         def add_title_count(duplicateTitle) -> None:
             '''Adds an increasing number to a duplicate title'''
@@ -210,7 +211,7 @@ class Auditing(LogEntry):
     @classmethod
     def display_single_entry(cls, entry, show_header=False) -> None:
         if show_header == True:
-            print(f"COUNT\tDAY\tDATE\t\tTYPE\tSUBTYPE\tTITLE\t\t\tAMOUNT\t\tLOG ID")
+            print(f"COUNT\tDAY\tDATE\t\tTYPE\tSUBTYPE\tTITLE\t\t\tAMOUNT\t\tLOG ID\t\LIABLE NAME")
             print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}\t{entry.liaName}")
         else:
             print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}\t{entry.liaName}")
