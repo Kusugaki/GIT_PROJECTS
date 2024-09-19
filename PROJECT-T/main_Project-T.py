@@ -31,15 +31,14 @@ class Auditing(LogEntry):
         Auditing.currLoglist = FileGetter.fetch_curr_list(dateToday=self.date)
 
     # OBJECT MANIPULATION
-    def create_entry(self) -> object:
+    def create_entry(self) -> int:
         ''' Takes in user input to dynamically and automatically make entry data details '''
 
         # FETCHING ENTRY DETAILS
         CreateEntry.fetch_entry_details()
 
         self.count   = self.get_total_entry_count()
-        try: self.day= self.get_day(Auditing.mainLogList[-1].day)
-        except IndexError: self.day = 1
+        self.day     = self.get_day()
         self.date    = self.get_current_date()        
         self.logType = CreateEntry.logType
         self.subtype = CreateEntry.subtype
@@ -67,15 +66,17 @@ class Auditing(LogEntry):
         Auditing.currLoglist.append(entry)
         FileSaver.save_and_append_data(entry.__dict__, DEFAULT_FILE_PATH)
 
+        return 1
+
     
-    def modify_entry(self) -> LogEntry:
+    def modify_entry(self) -> int:
         ''' (-) note: implementation of this could be / should be improved '''
         print("^^^ Choose an entry to modify ^^^")
         searched_index:int = Auditing.search_entry()
         
         if searched_index == None:
             print("Entry not found. stopping modification process...\n")
-            return
+            return 0
         
         moddedEntry:object = Auditing.mainLogList[searched_index]
 
@@ -124,14 +125,14 @@ class Auditing(LogEntry):
 
 
     @classmethod
-    def delete_entry(cls) -> None:
+    def delete_entry(cls) -> int:
         print("\n!!! YOU ARE CURRENTLY IN THE PROCESS OF DELETING AN ENTRY !!!\n")
 
         searched_index:int = cls.search_entry()
 
-        if searched_index == None:
+        if searched_index == None or searched_index == 0:
             print("Entry not found. stopping deletion process...\n")
-            return
+            return 0
 
         entry_to_be_deleted:object = cls.mainLogList[searched_index]
         
@@ -142,7 +143,7 @@ class Auditing(LogEntry):
             print(f"Entry has been succesfully deleted. Save changes to update the CSV file.")
         else:
             print(f"Stopping deletion process...\n")
-            return
+            return 0
         
         # Fixing entry count jumps
         for i in range(searched_index, len(cls.mainLogList)):
@@ -162,10 +163,15 @@ class Auditing(LogEntry):
     def get_current_date(self) -> str:
         return datetime.now().strftime("%d-%m-%Y")
 
-    def get_day(self, previousDay) -> int:
-        if self.date != Auditing.mainLogList[-1].date:
-            return previousDay + 1
-        return previousDay
+    def get_day(self) -> int:
+        try:
+            previousDay = Auditing.mainLogList[-1].day
+            if self.date != Auditing.mainLogList[-1].date:
+                return previousDay + 1
+            return previousDay
+        except IndexError as e:
+            ''' (-) note: should only happen if no Database CSV file was found '''
+            return 1
     
     @classmethod
     def check_generic_or_duplicate_titles(cls, title:str) -> str:
@@ -204,17 +210,22 @@ class Auditing(LogEntry):
     
 
     @classmethod
-    def save_all_entries(cls) -> None:
-        for entry in cls.mainLogList:
-            FileSaver.save_all_data(cls.mainLogList, DEFAULT_FILE_PATH)
+    def save_all_entries(cls) -> int:
+        FileSaver.save_all_data(cls.mainLogList, DEFAULT_FILE_PATH)
+        return 1
+    
+    @staticmethod
+    def display_transactions():
+        ExtraDisplays.display_transactions()
     
     @classmethod
     def display_single_entry(cls, entry, show_header=False) -> None:
         if show_header == True:
-            print(f"COUNT\tDAY\tDATE\t\tTYPE\tSUBTYPE\tTITLE\t\t\tAMOUNT\t\tLOG ID\tLIABLE NAME")
-            print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}\t{entry.liaName}")
+            '''Used for entry deletion and modification visual confirmation'''
+            print(f"{"COUNT":<7} {"DAY":<5} {"DATE":<14} {"LOGTYPE":<9} {"SUBTYPE":<10} {"TITLE":<27} {"AMOUNT":<10} {"LOG ID":<30} {"LIABLE NAME":<15}")
+            print(f"{entry.count:<7} {entry.day:<5} {entry.date:<14} {entry.logType:<9} {entry.subtype:<10} {entry.title:<27} {entry.amount:<10} {entry.logID:<30} {entry.liaName:<15}")
         else:
-            print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}\t{entry.liaName}")
+            print(f"{entry.count:<7} {entry.day:<5} {entry.date:<14} {entry.logType:<9} {entry.subtype:<10} {entry.title:<27} {entry.amount:<10} {entry.logID:<30} {entry.liaName:<15}")
                 
     @classmethod
     def display_entries(cls, filtered=False, search_parameter=None) -> None:
@@ -226,6 +237,7 @@ class Auditing(LogEntry):
                 cls.display_single_entry(entry)
             elif search_parameter in entry.liaName:
                 cls.display_single_entry(entry)
+        print(f"{"COUNT":<7} {"DAY":<5} {"DATE":<14} {"LOGTYPE":<9} {"SUBTYPE":<10} {"TITLE":<27} {"AMOUNT":<15} {"LOG ID":<30} {"LIABLE NAME":<15}")
 
     @classmethod
     def search_entry(cls) -> int:
@@ -235,20 +247,31 @@ class Auditing(LogEntry):
         while True:
             # MAIN BROAD SEARCH
             while True:
-                user_input = input("What log type to search for? (tra/lia/sav)-(debi/cred/loan/owed/depo/with)-(name) (\'back\' to return): ").strip().lower()
+                print("What log entry to search for?: ")
+                print("\tLOGTYPES:     -> (tra/lia/sav)")
+                print("\tSUBTYPES: tra -> (debi/cred)")
+                print("\t          lia -> (loan/retu/owed/paid)")
+                print("\t          sav -> (depo/with)")
+                print("\tNAMES:        -> (name)")
+                print("\tGo Back:      -> (back)")
+
+                user_input = input("   > ").strip().lower()
 
                 if user_input == "back":
-                    return
-                elif user_input in ["tra","lia","sav",  "debi","cred","loan","owed","depo","with",   "name"]:
+                    return 0
+                elif user_input in ["tra","lia","sav"] or \
+                    user_input in ["debi","cred","loan","owed","depo","with"] or \
+                    user_input in ["name"]:
+
                     break
+
                 print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
 
             # LIABILITIES NAME SEARCH
             if user_input == "name":
                 print("DISPLAY")
                 for entry in cls.mainLogList:
-                    if entry.liaName != "NON-LIA" and \
-                        entry.liaName != "NOT_SET":
+                    if entry.liaName != "NON-LIA" and entry.liaName != "NOT_SET":
                         cls.display_single_entry(entry)
                 user_input = input("Enter the name to display all logs of: ").strip().title()
 
@@ -266,7 +289,119 @@ class Auditing(LogEntry):
                         if entry.logID == user_input:
                             return cls.mainLogList.index(entry)
                     print(f"ID of \'{user_input}\' not found")
+                    return 0
 
+
+
+class ExtraDisplays(Auditing):
+    @classmethod
+    def display_transactions(cls) -> None:
+        print(f"| {"COUNT":<7} | {"DAY":<5} | {"DATE":<14} | {"TITLE":<21} | {"DEBIT":^13} | {"CREDIT":^13} |")
+        prevDate = None
+
+        max_display_limit = 100
+        for entry in cls.mainLogList[-max_display_limit-1:]:
+
+            if entry.logType == "tra":
+                if prevDate != entry.date:
+                    '''add linebreaks between new dates'''
+                    print(f"{"":-<92}")
+                    '''only shows day and date once per new date'''
+                    if entry.subtype == "debi":
+                        print(f"| {entry.count:<7} | {entry.day:<5} | {entry.date:<14} | {entry.title:<21} | {entry.amount:^13} | {"":^13} |")
+                    else:   # credit
+                        print(f"| {entry.count:<7} | {entry.day:<5} | {entry.date:<14} | {entry.title:<21} | {"":^13} | {entry.amount:^13} |")
+                    prevDate = entry.date
+                else:
+                    '''no longer shows day and date'''
+                    if entry.subtype == "debi":
+                        print(f"| {entry.count:<7} | {"":<5} | {"":<14} | {entry.title:<21} | {entry.amount:^13} | {"":^13} |")
+                    else:   # credit
+                        print(f"| {entry.count:<7} | {"":<5} | {"":<14} | {entry.title:<21} | {"":^13} | {entry.amount:^13} |")
+
+    @classmethod
+    def display_liabilities(cls) -> None:
+        print(f"| {"COUNT":<7} | {"DAY":<5} | {"DATE":<14} | {"TITLE":<30} | {"DEBIT":^13} | {"CREDIT":^13} |")
+        prevDate = None
+
+        max_display_limit = 100
+        for entry in cls.mainLogList[-max_display_limit-1:]:
+
+            if entry.logType == "lia":
+                if prevDate != entry.date:
+                    '''add linebreaks between new dates'''
+                    print(f"{"":-<92}")
+                    '''only shows day and date once per new date'''
+                    if entry.subtype in ["returned", "owed"]:
+                        print(f"| {entry.count:<7} | {entry.day:<5} | {entry.date:<14} | {entry.title:<21} | {entry.amount:^13} | {"":^13} |")
+                    else:   # loaned, paid
+                        print(f"| {entry.count:<7} | {entry.day:<5} | {entry.date:<14} | {entry.title:<21} | {"":^13} | {entry.amount:^13} |")
+                    prevDate = entry.date
+                else:
+                    '''no longer shows day and date'''
+                    if entry.subtype in ["returned", "owed"]:
+                        print(f"| {entry.count:<7} | {"":<5} | {"":<14} | {entry.title:<21} | {entry.amount:^13} | {"":^13} |")
+                    else:   # credit
+                        print(f"| {entry.count:<7} | {"":<5} | {"":<14} | {entry.title:<21} | {"":^13} | {entry.amount:^13} |")
+
+
+class Main:
+    def main() -> None:
+        audit = Auditing()
+
+        user = None
+        status = None
+
+        while user != 0:
+            try:
+                print("What to do?:")
+                print("\t  1. \'Create Entry\'") 
+                print("\t  2. \'Modify Entry\'") 
+                print("\t  3. \'Delete Entry\'") 
+                print("\t  4. \'Use Search Filter\'")
+                print("\t  5. \'Display Transactions\'")
+                print("\t  6. \'Display all Entries\'") 
+                print("\t  7. \'Save all Entries\'") 
+                print("\t  0. \'Save and Exit\'") 
+
+                user = int(input("   > ").strip())
+            except ValueError as e: print(f"INVALID_INPUT: {e}")
+
+            if   user == 1: # Create an Entry
+                status = audit.create_entry()
+                if status == 1: print("\n" ," Entry successfully created! ".center(54,"~"), "\n")
+                else:           print("\n" ," Entry creation failed... ".center(54,"~"), "\n")
+
+            elif user == 2: # Modify an Entry
+                status = audit.modify_entry()
+                if status == 1: print("\n" ," Entry successfully modified! ".center(54,"~"), "\n")
+                else:           print("\n" ," Entry modification failed... ".center(54,"~"), "\n")
+
+            elif user == 3: # Delete an Entry
+                status = audit.delete_entry()
+                if status == 1: print("\n" ," Entry successfully deleted! ".center(54,"~"), "\n")
+                else:           print("\n" ," Entry deletion failed... ".center(54,"~"), "\n")
+
+            elif user == 4: # Search for specific categories
+                status = audit.search_entry()
+                if status == 1: print("\n" ," Entry search success! ".center(54,"~"), "\n")
+                else:           print("\n" ," Entry search failed... ".center(54,"~"), "\n")
+
+            elif user == 5: # Display all TRANSACTIONS
+                audit.display_transactions()
+
+            elif user == 6: # Display ALL Entries
+                audit.display_entries()
+
+            elif user == 7: # Save all Entries
+                status = audit.save_all_entries()
+                print("\n" ," Saved all Entries! ".center(54,"~"), "\n")
+
+        audit.save_all_entries()
+        print(f"\'{DEFAULT_FILE_PATH}\' saved successfully".center(100,"~"), "\n")
+        print("exiting...")
+        del audit
+        return
 
 
 
@@ -274,17 +409,8 @@ class Auditing(LogEntry):
 
 
 if __name__ == '__main__':
-    audit = Auditing()
-    while True: 
-        audit.display_entries()
-        print("ENTRY CREATION\n")
-        # audit.create_entry()
-        # print("ENTRY SEARCHING\n")
-        # print(f"ENTRY FOUND: {audit.search_entry()}")
-        audit.delete_entry()
-        # print("ENTRY MODIFICATION\n")
-        # audit.modify_entry()
-        audit.save_all_entries()
-        audit.display_entries()
-        if input("exit? [y/n]: ").lower() == 'y':
-            exit()
+    print("/","".center(50,"-"),"\\")
+    print("|","Welcome to Audit Manager v.1".center(50,"-"),"|")
+    print("\\","".center(50,"-"),"/")
+
+    Main.main()
