@@ -4,6 +4,20 @@ Project Based Learning for OOP by basing off of mostly only a single youtube vid
 
 Highly recommend for Beginner OOP Introduction: [Python Object Oriented Programming (OOP) - For Beginners (by Tech with Tim)](https://www.youtube.com/watch?v=JeznW_7DlB0)
 
+## To-do List: Ver 1.1
+
+- [ ] Auto create "Total" rows per new day
+- [ ] Change display_single_entry() to use variables for column widths
+- [ ] Find other lackluster features
+
+## To-do List: Ver 2.0
+
+- [ ] GUI update
+- [x] Lose sanity
+- [ ] Regain sanity
+- [ ] Find a life
+- [ ] Profit
+
 ## Program IDEAS: Functions & Definitions
 
 1. Program automatically updates important changes at startup
@@ -39,7 +53,6 @@ Highly recommend for Beginner OOP Introduction: [Python Object Oriented Programm
 | 1   | 08-08-24 | Day in          | 213     |          |
 |     |          | Pamasahe 1      |         | 100      |
 |     |          | Burgersilog     |         | 36       |
-|     |          |                 |         |          |
 |     |          | Day out (Total) | 213     | 272      |
 
 ## End of Day Status Screen Idea
