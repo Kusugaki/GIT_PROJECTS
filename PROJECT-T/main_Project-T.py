@@ -84,7 +84,7 @@ class Auditing(LogEntry):
             user_input = input("Choose data to modify:\n\tA. \'LogType\'\n\tB. \'Subtype\'\n\tC. \'Title\'\n\tD. \'Amount\'\n   > ").strip().upper()
 
             match user_input:
-                case 'A':
+                case 'A':   # Logtype
                     CreateEntry.fetch_entry_details()
                     moddedEntry.logType = CreateEntry.logType
                     moddedEntry.subtype = CreateEntry.subtype
@@ -93,7 +93,7 @@ class Auditing(LogEntry):
                         moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liaName)
                     else:
                         moddedEntry.title   = CreateEntry.title
-                case 'B':
+                case 'B':   # Subtype
                     if moddedEntry.logType == "tra":
                         moddedEntry.subtype = Transac.get_log_subtype()
 
@@ -107,10 +107,10 @@ class Auditing(LogEntry):
                         moddedEntry.title   = Savings.get_log_title_from_subtype()
                     else:
                         print("\nMODIFYING_SUBTYPE_ERROR\n")
-                case 'C':
+                case 'C':   # Title
                     print(f"Previous title: \'{moddedEntry.title}\'\n")
                     moddedEntry.title = input("Input new Entry Title\n   > ").strip()
-                case 'D':
+                case 'D':   # Amount
                     print(f"Previous amount: \'{moddedEntry.amount}\'\n")
                     moddedEntry.amount = CreateEntry.fetch_amount()
                 case _:
@@ -211,7 +211,7 @@ class Auditing(LogEntry):
     @classmethod
     def display_single_entry(cls, entry, show_header=False) -> None:
         if show_header == True:
-            print(f"COUNT\tDAY\tDATE\t\tTYPE\tSUBTYPE\tTITLE\t\t\tAMOUNT\t\tLOG ID\t\LIABLE NAME")
+            print(f"COUNT\tDAY\tDATE\t\tTYPE\tSUBTYPE\tTITLE\t\t\tAMOUNT\t\tLOG ID\tLIABLE NAME")
             print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}\t{entry.liaName}")
         else:
             print(f"{entry.count}\t{entry.day}\t{entry.date}\t{entry.logType}\t{entry.subtype}\t{entry.title:<20}\t{entry.amount:<15}\t{entry.logID}\t{entry.liaName}")
@@ -276,13 +276,14 @@ class Auditing(LogEntry):
 if __name__ == '__main__':
     audit = Auditing()
     while True: 
+        audit.display_entries()
         print("ENTRY CREATION\n")
-        audit.create_entry()
-        print("ENTRY SEARCHING\n")
-        print(f"ENTRY FOUND: {audit.search_entry()}")
+        # audit.create_entry()
+        # print("ENTRY SEARCHING\n")
+        # print(f"ENTRY FOUND: {audit.search_entry()}")
         audit.delete_entry()
-        print("ENTRY MODIFICATION\n")
-        audit.modify_entry()
+        # print("ENTRY MODIFICATION\n")
+        # audit.modify_entry()
         audit.save_all_entries()
         audit.display_entries()
         if input("exit? [y/n]: ").lower() == 'y':
