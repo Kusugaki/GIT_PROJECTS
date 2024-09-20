@@ -107,3 +107,4 @@ COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID,LIABLE NAME
 106,10,20-09-2024,sav,with,Withdrawal,100.0,106//sav//with//20-09-2024,NON-LIA
 107,10,20-09-2024,lia,retu,Returned -> (Mynamejeff),20000.0,107//lia//retu//20-09-2024,Mynamejeff
 108,10,20-09-2024,lia,retu,Returned -> (Gaben),4000000.0,108//lia//retu//20-09-2024,Gaben
+109,10,20-09-2024,tra,cred,Pamasahe 4,19.0,109//tra//cred//20-09-2024,NON-LIA

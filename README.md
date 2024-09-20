@@ -7,7 +7,7 @@ Highly recommend for Beginner OOP Introduction: [Python Object Oriented Programm
 ## To-do List: Ver 1.1
 
 - [ ] Auto create "Total" rows per new day
-- [ ] Change display_single_entry() to use variables for column widths
+- [x] Change display_single_entry() to use variables for column widths
 - [ ] Find other lackluster features
 
 ## To-do List: Ver 2.0
@@ -18,7 +18,7 @@ Highly recommend for Beginner OOP Introduction: [Python Object Oriented Programm
 - [ ] Find a life
 - [ ] Profit
 
-## Program IDEAS: Functions & Definitions
+## INITIAL Program Ideas: Functions & Definitions
 
 1. Program automatically updates important changes at startup
 2. Automatically determine the date and create a new log once it changes
@@ -57,8 +57,6 @@ Highly recommend for Beginner OOP Introduction: [Python Object Oriented Programm
 
 ## End of Day Status Screen Idea
 
-<!-- <code> -->
-
 |                    |         |
 | :----------------- | :-----: |
 | TOTALS:            |         |
@@ -76,5 +74,4 @@ Highly recommend for Beginner OOP Introduction: [Python Object Oriented Programm
 | Current Debts      | 0       |
 | Unpayed Loans      | 1,200   |
 
-<!-- </code> -->
 ###### shika
