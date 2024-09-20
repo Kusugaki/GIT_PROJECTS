@@ -1,13 +1,13 @@
 import os
 
-import AuditManager
+import AuditManager as AM   # to externally overwrite & configure global variables
 from AuditManager import Auditing, TableDisplays
 
-# GLOBAL VARIABLES
-DEFAULT_FILE_NAME:str = AuditManager.DEFAULT_FILE_NAME 
-DEFAULT_FILE_PATH:str = AuditManager.DEFAULT_FILE_PATH
-MAX_DISPLAY_LIMIT:int = AuditManager.MAX_DISPLAY_LIMIT
 
+# GLOBAL VARIABLES
+AM.DEFAULT_FILE_NAME = "audit_database.csv" 
+AM.DEFAULT_FILE_PATH = os.path.join(os.path.dirname(__file__), AM.DEFAULT_FILE_NAME)
+AM.MAX_DISPLAY_LIMIT = 100
 
 
 class Main():
@@ -82,11 +82,11 @@ class Main():
                 audit.debug_display_entries()
 
         audit.save_all_entries()
-        print(f"\'{DEFAULT_FILE_PATH}\' saved successfully".center(100,"~"), "\n")
+        print(f"\'{AM.DEFAULT_FILE_PATH}\' saved successfully".center(100,"~"), "\n")
         print("exiting...")
         del audit
         return
-
+    
 
 
 
