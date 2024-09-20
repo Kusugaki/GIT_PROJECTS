@@ -9,7 +9,7 @@ from LogCreateEntry import CreateEntry
 
 
 # GLOBAL VARIABLES
-DEFAULT_FILE_NAME:str = "MAIN_AUDIT_LOG.csv"
+DEFAULT_FILE_NAME:str = "audit_database.csv"
 DEFAULT_FILE_PATH:str = os.path.join(os.path.dirname(__file__), DEFAULT_FILE_NAME)
 MAX_DISPLAY_LIMIT:int = 100
 
