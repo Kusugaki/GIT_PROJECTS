@@ -50,7 +50,7 @@ class Auditing(LogEntry):
         self.title   = CreateEntry.title.title()    # built in string method ".title()"
         self.amount  = CreateEntry.fetch_amount()
         self.logID   = CreateEntry.create_ID(self.count, self.logType, self.subtype, self.date)
-        self.liaName = CreateEntry.liaName if self.logType == Liabili.logTypeDetail else "NON-LIA"
+        self.liaName = CreateEntry.liaName if self.logType == Liabili.logTypeDetail else "~~~~~~~"
 
         # CHECKS DUPLICATES AND GENERIC TITLES
         self.title = Auditing.check_generic_or_duplicate_titles(self.title)
@@ -235,7 +235,8 @@ class Auditing(LogEntry):
             if user_input == "name":
                 print("DISPLAY")
                 for entry in cls.mainLogList:
-                    if entry.liaName != "NON-LIA" and entry.liaName != "NOT_SET":
+                    if entry.liaName != "~~~~~~~" and entry.liaName != "NON-LIA" and entry.liaName != "NOT_SET":
+                        ''' (-) note: REMOVE FROM FINAL BUILD: "NON-LIA" and "NOT_SET" are placeholder values'''
                         cls.debug_display_single_entry(entry)
                 user_input = input("Enter the name to display all logs of: ").strip().title()
 

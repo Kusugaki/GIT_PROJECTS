@@ -110,3 +110,9 @@ COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID,LIABLE NAME
 109,10,20-09-2024,tra,cred,Pamasahe 4,19.0,109//tra//cred//20-09-2024,NON-LIA
 110,10,20-09-2024,lia,paid,Paid     -> (Jack),29.0,110//lia//paid//20-09-2024,Jack
 111,10,20-09-2024,tra,cred,Ice Cream,28.0,111//tra//cred//20-09-2024,NON-LIA
+112,10,20-09-2024,lia,owed,Owed     -> (Jack),30.0,112//lia//owed//20-09-2024,Jack
+113,10,20-09-2024,tra,cred,Hotdog,23.0,113//tra//cred//20-09-2024,~~~~~~~
+114,10,20-09-2024,sav,depo,Deposit,100.0,114//sav//depo//20-09-2024,~~~~~~~
+115,10,20-09-2024,sav,with,Withdrawal 2,100.0,115//sav//with//20-09-2024,~~~~~~~
+116,10,20-09-2024,lia,loan,Loaned   -> (Jack),214.0,116//lia//loan//20-09-2024,Jack
+117,10,20-09-2024,tra,cred,Shop,56.0,117//tra//cred//20-09-2024,~~~~~~~
