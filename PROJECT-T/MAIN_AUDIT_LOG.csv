@@ -17,88 +17,90 @@ COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID,LIABLE NAME
 16,2,11-09-2024,tra,cred,Amongus,25.0,16//tra//cred//11-09-2024,NOT_SET
 17,2,11-09-2024,lia,owed,owed,2525.0,17//lia//owed//11-09-2024,NOT_SET
 18,2,11-09-2024,tra,cred,Pamasahe 2,24.0,18//tra//cred//11-09-2024,NOT_SET
-19,2,12-09-2024,tra,cred,Pamasahe 1,24.0,19//tra//cred//12-09-2024,NOT_SET
-20,2,12-09-2024,tra,cred,Pamasahe 2,26.0,20//tra//cred//12-09-2024,NOT_SET
-21,3,12-09-2024,tra,debi,Day in,2000.0,21//tra//debi//12-09-2024,NOT_SET
-22,3,12-09-2024,tra,cred,Pamasahe 2,95.0,22//tra//cred//12-09-2024,NOT_SET
-23,3,12-09-2024,tra,cred,Pamasahe 2,24.0,23//tra//cred//12-09-2024,NOT_SET
-24,3,12-09-2024,tra,debi,Day in,25.0,24//tra//debi//12-09-2024,NOT_SET
-25,3,12-09-2024,tra,cred,Pamasahe 3,26.0,25//tra//cred//12-09-2024,NOT_SET
-26,3,12-09-2024,tra,cred,Pamasahe 4,75.0,26//tra//cred//12-09-2024,NOT_SET
-27,3,12-09-2024,tra,cred,Pamasahe 5,216.0,27//tra//cred//12-09-2024,NOT_SET
-28,3,12-09-2024,tra,debi,Day in,215.0,28//tra//debi//12-09-2024,NOT_SET
-29,3,12-09-2024,tra,debi,Day in,251.0,29//tra//debi//12-09-2024,NOT_SET
-30,3,12-09-2024,tra,debi,Amongus,215.0,30//tra//debi//12-09-2024,NOT_SET
-31,3,12-09-2024,tra,debi,Amongus 1,12.0,31//tra//debi//12-09-2024,NOT_SET
-32,3,12-09-2024,tra,debi,Amongus 2,194.0,32//tra//debi//12-09-2024,NOT_SET
-33,3,12-09-2024,tra,cred,Amongus 3,215.0,33//tra//cred//12-09-2024,NOT_SET
-34,3,12-09-2024,lia,loan,loan,214.0,34//lia//loan//12-09-2024,NOT_SET
-35,3,12-09-2024,sav,depo,depo,2142.0,35//sav//depo//12-09-2024,NOT_SET
-36,3,12-09-2024,sav,with,with,214.0,36//sav//with//12-09-2024,NOT_SET
-37,3,12-09-2024,sav,depo,Deposit 1,213.0,37//sav//depo//12-09-2024,NOT_SET
-38,3,12-09-2024,sav,with,Withdrawal 1,14.0,38//sav//with//12-09-2024,NOT_SET
-39,3,12-09-2024,sav,depo,Deposit 2,214.0,39//sav//depo//12-09-2024,NOT_SET
-40,3,12-09-2024,sav,with,Withdrawal 2,562.0,40//sav//with//12-09-2024,NOT_SET
-41,3,12-09-2024,lia,owed,Owed,251.0,41//lia//owed//12-09-2024,NOT_SET
-42,3,12-09-2024,lia,owed,Owed,51.0,42//lia//owed//12-09-2024,NOT_SET
-43,3,12-09-2024,lia,loan,Loaned,215.0,43//lia//loan//12-09-2024,NOT_SET
-44,3,12-09-2024,tra,cred,215,21442.0,44//tra//cred//12-09-2024,NOT_SET
-45,3,12-09-2024,tra,debi,Amogus,215.0,45//tra//debi//12-09-2024,NOT_SET
-46,3,12-09-2024,tra,debi,Amogus 2,214.0,46//tra//debi//12-09-2024,NOT_SET
-47,3,12-09-2024,tra,cred,Pamasahe 6,215.0,47//tra//cred//12-09-2024,NOT_SET
-48,3,12-09-2024,tra,cred,Day Out,215.0,48//tra//cred//12-09-2024,NOT_SET
-49,3,12-09-2024,tra,debi,Day in,10.0,49//tra//debi//12-09-2024,NOT_SET
-50,3,12-09-2024,tra,debi,Big Chungus,1000.0,50//tra//debi//12-09-2024,NOT_SET
-51,3,12-09-2024,tra,debi,Day in,19000.0,51//tra//debi//12-09-2024,NOT_SET
-52,3,12-09-2024,sav,with,Withdrawal,6000.249,52//sav//with//12-09-2024,NOT_SET
-53,3,12-09-2024,lia,owed,Owed,888.0,53//lia//owed//12-09-2024,NOT_SET
-54,3,12-09-2024,lia,loan,Loaned,252.0,54//lia//loan//12-09-2024,NOT_SET
-55,4,13-09-2024,tra,debi,Pamasahe 1,25.0,55//tra//debi//13-09-2024,NOT_SET
-56,4,13-09-2024,sav,depo,Deposit,1000.0,56//sav//depo//13-09-2024,NOT_SET
-57,4,13-09-2024,tra,debi,pamasahe,10.0,57//tra//debi//13-09-2024,NOT_SET
-58,4,13-09-2024,sav,depo,Deposit 2,1001.0,58//sav//depo//13-09-2024,NOT_SET
-59,4,13-09-2024,lia,owed,Owed,888.0,59//lia//owed//13-09-2024,NOT_SET
-60,4,13-09-2024,tra,cred,pamasahe 2,13.0,60//tra//cred//13-09-2024,NOT_SET
-61,4,13-09-2024,tra,debi,Found 1,50.0,61//tra//debi//13-09-2024,NOT_SET
-62,5,14-09-2024,tra,cred,Pamasahe 1,26.0,62//tra//cred//14-09-2024,NOT_SET
-63,5,14-09-2024,tra,cred,Pamasahe 2,9.0,63//tra//cred//14-09-2024,NOT_SET
-64,5,14-09-2024,sav,depo,Deposit,300.0,64//sav//depo//14-09-2024,NOT_SET
-65,5,14-09-2024,lia,owed,Owed,900.0,65//lia//owed//14-09-2024,NOT_SET
-66,5,14-09-2024,lia,loan,Loaned,200.0,66//lia//loan//14-09-2024,NOT_SET
-67,5,14-09-2024,lia,owed,Owed,23.0,67//lia//owed//14-09-2024,NOT_SET
-68,5,14-09-2024,sav,with,Withdrawal,400.0,68//sav//with//14-09-2024,NOT_SET
-69,5,14-09-2024,lia,loan,Loaned,234.0,69//lia//loan//14-09-2024,NOT_SET
-70,6,16-09-2024,lia,loan,Loaned -> (John Doe),2000.0,70//lia//loan//16-09-2024,John Doe
-71,6,16-09-2024,tra,cred,Double Burgersilog,38.0,71//tra//cred//16-09-2024,NON-LIA
-72,6,16-09-2024,lia,owed,Owed -> (My Name Jeff),450.5,72//lia//owed//16-09-2024,My Name Jeff
-73,6,16-09-2024,sav,with,Withdrawal,432.987,73//sav//with//16-09-2024,NON-LIA
-74,6,16-09-2024,lia,loan,Loaned -> (Spungbob),777.0,74//lia//loan//16-09-2024,Spungbob
-75,6,16-09-2024,lia,owed,Owed -> (Squidward),3405.0,75//lia//owed//16-09-2024,Squidward
-76,6,16-09-2024,lia,loan,Loaned -> (Sonic),1111.0,76//lia//loan//16-09-2024,Sonic
-77,6,16-09-2024,lia,loan,Loaned -> (Git Hub),10400.0,77//lia//loan//16-09-2024,Git Hub
-78,6,16-09-2024,lia,loan,Loaned -> (Git Hub),23003.0,78//lia//loan//16-09-2024,Git Hub
-79,6,16-09-2024,lia,owed,Owed -> (Git Hub),3000.0,79//lia//owed//16-09-2024,Git Hub
-80,6,16-09-2024,lia,owed,Owed -> (My Name Jeff),5555.0,80//lia//owed//16-09-2024,My Name Jeff
-81,6,16-09-2024,lia,owed,Owed -> (Projector),555.0,81//lia//owed//16-09-2024,Projector
-82,6,16-09-2024,lia,loan,Loaned -> (Doe),999.0,82//lia//loan//16-09-2024,Doe
-83,6,16-09-2024,lia,owed,Owed -> (Sacrebleu),80085.0,83//lia//owed//16-09-2024,Sacrebleu
-84,6,16-09-2024,tra,cred,pamasahe,24.0,84//tra//cred//16-09-2024,NON-LIA
-85,6,16-09-2024,sav,depo,Deposit,888.0,85//sav//depo//16-09-2024,NON-LIA
-86,6,16-09-2024,lia,loan,Loaned -> (Better),222.0,86//lia//loan//16-09-2024,Better
-87,7,17-09-2024,tra,cred,pamasahe,21.0,87//tra//cred//17-09-2024,NON-LIA
-88,7,17-09-2024,sav,with,Withdrawal,0.0,88//sav//with//17-09-2024,NON-LIA
-89,8,18-09-2024,tra,debi,Day In,300.0,89//tra//debi//18-09-2024,NON-LIA
-90,8,18-09-2024,lia,owed,Owed -> (Jeff Bezos),3000000.0,90//lia//owed//18-09-2024,Jeff Bezos
-91,8,18-09-2024,lia,owed,Owed -> (Amongus),300.0,91//lia//owed//18-09-2024,Amongus
-92,9,19-09-2024,lia,paid,Paid      -> (Amogus),300.0,92//lia//paid//19-09-2024,Amogus
-93,9,19-09-2024,lia,owed,Owed      -> (Amogus),200.0,93//lia//owed//19-09-2024,Amogus
-94,9,19-09-2024,lia,retu,Returned  -> (Amogus),100.0,94//lia//retu//19-09-2024,Amogus
-95,9,19-09-2024,lia,loan,Loaned    -> (Amogus),500.0,95//lia//loan//19-09-2024,Amogus
-96,9,19-09-2024,tra,debi,Day In,20.0,96//tra//debi//19-09-2024,NON-LIA
-97,9,19-09-2024,lia,paid,Paid     -> (Karp),10.0,97//lia//paid//19-09-2024,Karp
-98,9,19-09-2024,tra,cred,Pamasahe 1,56.0,98//tra//cred//19-09-2024,NON-LIA
-99,9,19-09-2024,sav,depo,Deposit,2000.0,99//sav//depo//19-09-2024,NON-LIA
-100,9,19-09-2024,tra,cred,Pamasahe 2,8.0,100//tra//cred//19-09-2024,NON-LIA
-101,9,19-09-2024,tra,debi,Day In,300.0,101//tra//debi//19-09-2024,NON-LIA
-102,9,19-09-2024,sav,with,Withdrawal,1000.0,102//sav//with//19-09-2024,NON-LIA
-103,9,19-09-2024,lia,paid,Paid     -> (Amogus),400.0,103//lia//paid//19-09-2024,Amogus
+19,3,12-09-2024,tra,debi,Day in,2000.0,19//tra//debi//12-09-2024,NOT_SET
+20,3,12-09-2024,tra,cred,Pamasahe 2,95.0,20//tra//cred//12-09-2024,NOT_SET
+21,3,12-09-2024,tra,cred,Pamasahe 2,24.0,21//tra//cred//12-09-2024,NOT_SET
+22,3,12-09-2024,tra,debi,Day in,25.0,22//tra//debi//12-09-2024,NOT_SET
+23,3,12-09-2024,tra,cred,Pamasahe 3,26.0,23//tra//cred//12-09-2024,NOT_SET
+24,3,12-09-2024,tra,cred,Pamasahe 4,75.0,24//tra//cred//12-09-2024,NOT_SET
+25,3,12-09-2024,tra,cred,Pamasahe 5,216.0,25//tra//cred//12-09-2024,NOT_SET
+26,3,12-09-2024,tra,debi,Day in,215.0,26//tra//debi//12-09-2024,NOT_SET
+27,3,12-09-2024,tra,debi,Day in,251.0,27//tra//debi//12-09-2024,NOT_SET
+28,3,12-09-2024,tra,debi,Amongus,215.0,28//tra//debi//12-09-2024,NOT_SET
+29,3,12-09-2024,tra,debi,Amongus 1,12.0,29//tra//debi//12-09-2024,NOT_SET
+30,3,12-09-2024,tra,debi,Amongus 2,194.0,30//tra//debi//12-09-2024,NOT_SET
+31,3,12-09-2024,tra,cred,Amongus 3,215.0,31//tra//cred//12-09-2024,NOT_SET
+32,3,12-09-2024,lia,loan,loan,214.0,32//lia//loan//12-09-2024,NOT_SET
+33,3,12-09-2024,sav,depo,depo,2142.0,33//sav//depo//12-09-2024,NOT_SET
+34,3,12-09-2024,sav,with,with,214.0,34//sav//with//12-09-2024,NOT_SET
+35,3,12-09-2024,sav,depo,Deposit 1,213.0,35//sav//depo//12-09-2024,NOT_SET
+36,3,12-09-2024,sav,with,Withdrawal 1,14.0,36//sav//with//12-09-2024,NOT_SET
+37,3,12-09-2024,sav,depo,Deposit 2,214.0,37//sav//depo//12-09-2024,NOT_SET
+38,3,12-09-2024,sav,with,Withdrawal 2,562.0,38//sav//with//12-09-2024,NOT_SET
+39,3,12-09-2024,lia,owed,Owed,251.0,39//lia//owed//12-09-2024,NOT_SET
+40,3,12-09-2024,lia,owed,Owed,51.0,40//lia//owed//12-09-2024,NOT_SET
+41,3,12-09-2024,lia,loan,Loaned,215.0,41//lia//loan//12-09-2024,NOT_SET
+42,3,12-09-2024,tra,cred,215,21442.0,42//tra//cred//12-09-2024,NOT_SET
+43,3,12-09-2024,tra,debi,Amogus,215.0,43//tra//debi//12-09-2024,NOT_SET
+44,3,12-09-2024,tra,debi,Amogus 2,214.0,44//tra//debi//12-09-2024,NOT_SET
+45,3,12-09-2024,tra,cred,Pamasahe 6,215.0,45//tra//cred//12-09-2024,NOT_SET
+46,3,12-09-2024,tra,cred,Day Out,215.0,46//tra//cred//12-09-2024,NOT_SET
+47,3,12-09-2024,tra,debi,Day in,10.0,47//tra//debi//12-09-2024,NOT_SET
+48,3,12-09-2024,tra,debi,Big Chungus,1000.0,48//tra//debi//12-09-2024,NOT_SET
+49,3,12-09-2024,tra,debi,Day in,19000.0,49//tra//debi//12-09-2024,NOT_SET
+50,3,12-09-2024,sav,with,Withdrawal,6000.249,50//sav//with//12-09-2024,NOT_SET
+51,3,12-09-2024,lia,owed,Owed,888.0,51//lia//owed//12-09-2024,NOT_SET
+52,3,12-09-2024,lia,loan,Loaned,252.0,52//lia//loan//12-09-2024,NOT_SET
+53,4,13-09-2024,tra,debi,Pamasahe 1,25.0,53//tra//debi//13-09-2024,NOT_SET
+54,4,13-09-2024,sav,depo,Deposit,1000.0,54//sav//depo//13-09-2024,NOT_SET
+55,4,13-09-2024,tra,debi,pamasahe,10.0,55//tra//debi//13-09-2024,NOT_SET
+56,4,13-09-2024,sav,depo,Deposit 2,1001.0,56//sav//depo//13-09-2024,NOT_SET
+57,4,13-09-2024,lia,owed,Owed,888.0,57//lia//owed//13-09-2024,NOT_SET
+58,4,13-09-2024,tra,cred,pamasahe 2,13.0,58//tra//cred//13-09-2024,NOT_SET
+59,4,13-09-2024,tra,debi,Found 1,50.0,59//tra//debi//13-09-2024,NOT_SET
+60,5,14-09-2024,tra,cred,Pamasahe 1,26.0,60//tra//cred//14-09-2024,NOT_SET
+61,5,14-09-2024,tra,cred,Pamasahe 2,9.0,61//tra//cred//14-09-2024,NOT_SET
+62,5,14-09-2024,sav,depo,Deposit,300.0,62//sav//depo//14-09-2024,NOT_SET
+63,5,14-09-2024,lia,owed,Owed,900.0,63//lia//owed//14-09-2024,NOT_SET
+64,5,14-09-2024,lia,loan,Loaned,200.0,64//lia//loan//14-09-2024,NOT_SET
+65,5,14-09-2024,lia,owed,Owed,23.0,65//lia//owed//14-09-2024,NOT_SET
+66,5,14-09-2024,sav,with,Withdrawal,400.0,66//sav//with//14-09-2024,NOT_SET
+67,5,14-09-2024,lia,loan,Loaned,234.0,67//lia//loan//14-09-2024,NOT_SET
+68,6,16-09-2024,lia,loan,Loaned -> (John Doe),2000.0,68//lia//loan//16-09-2024,John Doe
+69,6,16-09-2024,tra,cred,Double Burgersilog,38.0,69//tra//cred//16-09-2024,NON-LIA
+70,6,16-09-2024,lia,owed,Owed -> (My Name Jeff),450.5,70//lia//owed//16-09-2024,My Name Jeff
+71,6,16-09-2024,sav,with,Withdrawal,432.987,71//sav//with//16-09-2024,NON-LIA
+72,6,16-09-2024,lia,loan,Loaned -> (Spungbob),777.0,72//lia//loan//16-09-2024,Spungbob
+73,6,16-09-2024,lia,owed,Owed -> (Squidward),3405.0,73//lia//owed//16-09-2024,Squidward
+74,6,16-09-2024,lia,loan,Loaned -> (Sonic),1111.0,74//lia//loan//16-09-2024,Sonic
+75,6,16-09-2024,lia,loan,Loaned -> (Git Hub),10400.0,75//lia//loan//16-09-2024,Git Hub
+76,6,16-09-2024,lia,loan,Loaned -> (Git Hub),23003.0,76//lia//loan//16-09-2024,Git Hub
+77,6,16-09-2024,lia,owed,Owed -> (Git Hub),3000.0,77//lia//owed//16-09-2024,Git Hub
+78,6,16-09-2024,lia,owed,Owed -> (My Name Jeff),5555.0,78//lia//owed//16-09-2024,My Name Jeff
+79,6,16-09-2024,lia,owed,Owed -> (Projector),555.0,79//lia//owed//16-09-2024,Projector
+80,6,16-09-2024,lia,loan,Loaned -> (Doe),999.0,80//lia//loan//16-09-2024,Doe
+81,6,16-09-2024,lia,owed,Owed -> (Sacrebleu),80085.0,81//lia//owed//16-09-2024,Sacrebleu
+82,6,16-09-2024,tra,cred,pamasahe,24.0,82//tra//cred//16-09-2024,NON-LIA
+83,6,16-09-2024,sav,depo,Deposit,888.0,83//sav//depo//16-09-2024,NON-LIA
+84,6,16-09-2024,lia,loan,Loaned -> (Better),222.0,84//lia//loan//16-09-2024,Better
+85,7,17-09-2024,tra,cred,pamasahe,21.0,85//tra//cred//17-09-2024,NON-LIA
+86,7,17-09-2024,sav,with,Withdrawal,0.0,86//sav//with//17-09-2024,NON-LIA
+87,8,18-09-2024,tra,debi,Day In,300.0,87//tra//debi//18-09-2024,NON-LIA
+88,8,18-09-2024,lia,owed,Owed -> (Jeff Bezos),3000000.0,88//lia//owed//18-09-2024,Jeff Bezos
+89,8,18-09-2024,lia,owed,Owed -> (Amongus),300.0,89//lia//owed//18-09-2024,Amongus
+90,9,19-09-2024,lia,paid,Paid      -> (Amogus),300.0,90//lia//paid//19-09-2024,Amogus
+91,9,19-09-2024,lia,owed,Owed      -> (Amogus),200.0,91//lia//owed//19-09-2024,Amogus
+92,9,19-09-2024,lia,retu,Returned  -> (Amogus),100.0,92//lia//retu//19-09-2024,Amogus
+93,9,19-09-2024,lia,loan,Loaned    -> (Amogus),500.0,93//lia//loan//19-09-2024,Amogus
+94,9,19-09-2024,tra,debi,Day In,20.0,94//tra//debi//19-09-2024,NON-LIA
+95,9,19-09-2024,lia,paid,Paid     -> (Karp),10.0,95//lia//paid//19-09-2024,Karp
+96,9,19-09-2024,tra,cred,Pamasahe 1,56.0,96//tra//cred//19-09-2024,NON-LIA
+97,9,19-09-2024,sav,depo,Deposit,2000.0,97//sav//depo//19-09-2024,NON-LIA
+98,9,19-09-2024,tra,cred,Pamasahe 2,8.0,98//tra//cred//19-09-2024,NON-LIA
+99,9,19-09-2024,tra,debi,Day In,300.0,99//tra//debi//19-09-2024,NON-LIA
+100,9,19-09-2024,sav,with,Withdrawal,1000.0,100//sav//with//19-09-2024,NON-LIA
+101,9,19-09-2024,lia,paid,Paid     -> (Amogus),400.0,101//lia//paid//19-09-2024,Amogus
+102,10,20-09-2024,tra,debi,Day In,224.0,102//tra//debi//20-09-2024,NON-LIA
+103,10,20-09-2024,tra,cred,Pamasahe 1,13.0,103//tra//cred//20-09-2024,NON-LIA
+104,10,20-09-2024,tra,cred,Pamasahe 2,11.0,104//tra//cred//20-09-2024,NON-LIA
+105,10,20-09-2024,tra,cred,Pamasahe 3,11.0,105//tra//cred//20-09-2024,NON-LIA

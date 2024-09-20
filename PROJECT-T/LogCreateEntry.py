@@ -15,22 +15,21 @@ class CreateEntry:
         while user_input not in ['A','B','C']:
             user_input = input("""Enter Log Type:\n\tA. \'Transactions\'\n\tB. \'Liabilities\'\n\tC. \'Savings\'\n  > """).strip().upper()
 
-            match user_input:
-                case 'A':
-                    cls.logType = Transac.get_log_type()
-                    cls.subtype = Transac.get_log_subtype()
-                    cls.title   = Transac.get_log_title_from_subtype()
-                case 'B':
-                    cls.logType = Liabili.get_log_type()
-                    cls.subtype = Liabili.get_log_subtype()
-                    cls.liaName = Liabili.get_liable_entity(cls.subtype)
-                    cls.title   = Liabili.get_log_title_from_subtype(cls.liaName)
-                case 'C':
-                    cls.logType = Savings.get_log_type()
-                    cls.subtype = Savings.get_log_subtype()
-                    cls.title   = Savings.get_log_title_from_subtype()
-                case _:
-                    print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
+            if   user_input == 'A': # Transactions
+                cls.logType = Transac.get_log_type()
+                cls.subtype = Transac.get_log_subtype()
+                cls.title   = Transac.get_log_title_from_subtype()
+            elif user_input == 'B': # Liabilities
+                cls.logType = Liabili.get_log_type()
+                cls.subtype = Liabili.get_log_subtype()
+                cls.liaName = Liabili.get_liable_entity(cls.subtype)
+                cls.title   = Liabili.get_log_title_from_subtype(cls.liaName)
+            elif user_input =='C':  # Savings
+                cls.logType = Savings.get_log_type()
+                cls.subtype = Savings.get_log_subtype()
+                cls.title   = Savings.get_log_title_from_subtype()
+            else:
+                print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
 
     @staticmethod
     def fetch_amount() -> float:
@@ -64,15 +63,14 @@ class LogDetails(ABC):
         while user_input not in ['A','B']:
             user_input = input(f"Enter subtype:\n\tA. \'{cls.subtypeChoiceDetail[0]}\'\n\tB. \'{cls.subtypeChoiceDetail[1]}\'\n  > ").strip().upper()
 
-            match user_input:
-                case 'A':
-                    cls.logTitleDetail = cls.subtypeChoiceDetail[0]
-                    return cls.subtypeChoiceDetail[0][:4].lower()
-                case 'B':
-                    cls.logTitleDetail = cls.subtypeChoiceDetail[1]
-                    return cls.subtypeChoiceDetail[1][:4].lower()
-                case _:
-                    print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
+            if   user_input == 'A':
+                cls.logTitleDetail = cls.subtypeChoiceDetail[0]
+                return cls.subtypeChoiceDetail[0][:4].lower()
+            elif user_input == 'B':
+                cls.logTitleDetail = cls.subtypeChoiceDetail[1]
+                return cls.subtypeChoiceDetail[1][:4].lower()
+            else:
+                print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
 
     @classmethod
     @abstractmethod
@@ -101,21 +99,24 @@ class Liabili(LogDetails):
         while user_input not in ['A','B','C','D']:
             user_input = input(f"Enter liability type:\n\tA. \'{cls.subtypeChoiceDetail[0]}\'\n\tB. \'{cls.subtypeChoiceDetail[1]}\'\n\tC. \'{cls.subtypeChoiceDetail[2]}\'\n\tD. \'{cls.subtypeChoiceDetail[3]}\'\n   > ").strip().upper()
 
-            match user_input:
-                case 'A':   # Loaned
-                    cls.logTitleDetail = cls.subtypeChoiceDetail[0]
-                    return cls.subtypeChoiceDetail[0][:4].lower()
-                case 'B':   # Returned
-                    cls.logTitleDetail = cls.subtypeChoiceDetail[1]
-                    return cls.subtypeChoiceDetail[1][:4].lower()
-                case 'C':   # Owed
-                    cls.logTitleDetail = cls.subtypeChoiceDetail[2]
-                    return cls.subtypeChoiceDetail[2][:4].lower()
-                case 'D':   # Paid
-                    cls.logTitleDetail = cls.subtypeChoiceDetail[3]
-                    return cls.subtypeChoiceDetail[3][:4].lower()
-                case _:
-                    print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
+            if   user_input == 'A':   # Loaned
+                cls.logTitleDetail = cls.subtypeChoiceDetail[0]
+                return cls.subtypeChoiceDetail[0][:4].lower()
+            
+            elif user_input == 'B':   # Returned
+                cls.logTitleDetail = cls.subtypeChoiceDetail[1]
+                return cls.subtypeChoiceDetail[1][:4].lower()
+            
+            elif user_input == 'C':   # Owed
+                cls.logTitleDetail = cls.subtypeChoiceDetail[2]
+                return cls.subtypeChoiceDetail[2][:4].lower()
+            
+            elif user_input == 'D':   # Paid
+                cls.logTitleDetail = cls.subtypeChoiceDetail[3]
+                return cls.subtypeChoiceDetail[3][:4].lower()
+            
+            else:
+                print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
 
     @classmethod
     def get_log_title_from_subtype(cls, name) -> str:

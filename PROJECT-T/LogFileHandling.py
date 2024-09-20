@@ -8,7 +8,7 @@ class FileGetter():
     fetched_todayList: list[LogEntry] = []
 
     @classmethod
-    def fetch_saved_database(cls, path:str) -> list:
+    def fetch_saved_database(cls, path:str) -> list[LogEntry]:
         
         if not os.path.exists(path):
             print(f"no database found in \'{path}\'.")

@@ -13,6 +13,7 @@ from LogCreateEntry import CreateEntry
 # GLOBAL VARIABLES
 DEFAULT_FILE_NAME:str = "MAIN_AUDIT_LOG.csv"
 DEFAULT_FILE_PATH:str = os.path.join(os.path.dirname(__file__), DEFAULT_FILE_NAME)
+MAX_DISPLAY_LIMIT:int = 100
 
 
 
@@ -29,6 +30,13 @@ class Auditing(LogEntry):
         self.date = self.get_current_date()
         Auditing.mainLogList = FileGetter.fetch_saved_database(path=DEFAULT_FILE_PATH)
         Auditing.currLoglist = FileGetter.fetch_curr_list(dateToday=self.date)
+        
+        # Auditing.end_of_day_totaling()
+
+    @classmethod
+    def end_of_day_totaling(cls):
+        prevDate = Auditing.mainLogList[-1].date
+        raise NotImplementedError
 
     # OBJECT MANIPULATION
     def create_entry(self) -> int:
@@ -84,38 +92,43 @@ class Auditing(LogEntry):
         while user_input not in ['A','B','C','D']:
             user_input = input("Choose data to modify:\n\tA. \'LogType\'\n\tB. \'Subtype\'\n\tC. \'Title\'\n\tD. \'Amount\'\n   > ").strip().upper()
 
-            match user_input:
-                case 'A':   # Logtype
-                    CreateEntry.fetch_entry_details()
-                    moddedEntry.logType = CreateEntry.logType
-                    moddedEntry.subtype = CreateEntry.subtype
-                    if moddedEntry.logType == Liabili.logTypeDetail:
-                        moddedEntry.liaName = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
-                        moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liaName)
-                    else:
-                        moddedEntry.title   = CreateEntry.title
-                case 'B':   # Subtype
-                    if moddedEntry.logType == "tra":
-                        moddedEntry.subtype = Transac.get_log_subtype()
+            if user_input == 'A':   # Logtype
+                CreateEntry.fetch_entry_details()
+                moddedEntry.logType = CreateEntry.logType
+                moddedEntry.subtype = CreateEntry.subtype
 
-                    elif moddedEntry.logType == "lia":
-                        moddedEntry.subtype = Liabili.get_log_subtype()
-                        moddedEntry.liaName = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
-                        moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liaName)
-                    
-                    elif moddedEntry.logType == "sav":
-                        moddedEntry.subtype = Savings.get_log_subtype()
-                        moddedEntry.title   = Savings.get_log_title_from_subtype()
-                    else:
-                        print("\nMODIFYING_SUBTYPE_ERROR\n")
-                case 'C':   # Title
-                    print(f"Previous title: \'{moddedEntry.title}\'\n")
-                    moddedEntry.title = input("Input new Entry Title\n   > ").strip()
-                case 'D':   # Amount
-                    print(f"Previous amount: \'{moddedEntry.amount}\'\n")
-                    moddedEntry.amount = CreateEntry.fetch_amount()
-                case _:
-                    print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
+                if moddedEntry.logType == Liabili.logTypeDetail:
+                    moddedEntry.liaName = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
+                    moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liaName)
+                else:
+                    moddedEntry.title   = CreateEntry.title
+
+            elif user_input == 'B':   # Subtype
+                
+                if moddedEntry.logType == "tra":
+                    moddedEntry.subtype = Transac.get_log_subtype()
+
+                elif moddedEntry.logType == "lia":
+                    moddedEntry.subtype = Liabili.get_log_subtype()
+                    moddedEntry.liaName = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
+                    moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liaName)
+                
+                elif moddedEntry.logType == "sav":
+                    moddedEntry.subtype = Savings.get_log_subtype()
+                    moddedEntry.title   = Savings.get_log_title_from_subtype()
+                else:
+                    print("\nMODIFYING_SUBTYPE_ERROR\n")
+
+            elif user_input == 'C':   # Title
+                print(f"Previous title: \'{moddedEntry.title}\'\n")
+                moddedEntry.title = input("Input new Entry Title\n   > ").strip()
+
+            elif user_input == 'D':   # Amount
+                print(f"Previous amount: \'{moddedEntry.amount}\'\n")
+                moddedEntry.amount = CreateEntry.fetch_amount()
+                
+            else:
+                print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
 
         moddedEntry.title = Auditing.check_generic_or_duplicate_titles(moddedEntry.title)
         moddedEntry.logID = CreateEntry.create_ID(moddedEntry.count, moddedEntry.logType, moddedEntry.subtype, moddedEntry.date)
@@ -166,15 +179,22 @@ class Auditing(LogEntry):
     
     @staticmethod
     def display_transactions() -> None:
-        TableDisplays.display_table(specifiedLogtype="tra", debitList=["debi"])
+        TableDisplays.display_table(specifiedLogtype=[Transac.get_log_type()], debitList=["debi"])
 
     @staticmethod
     def display_liabilities() -> None:
-        TableDisplays.display_table(specifiedLogtype="lia", debitList=["retu", "owed"])
+        TableDisplays.display_table(specifiedLogtype=[Liabili.get_log_type()], debitList=["retu", "owed"])
 
     @staticmethod
     def display_savings() -> None:
-        TableDisplays.display_table(specifiedLogtype="sav", debitList=["depo"])
+        TableDisplays.display_table(specifiedLogtype=[Savings.get_log_type()], debitList=["depo"])
+
+    @staticmethod
+    def display_all_entries() -> None:
+        TableDisplays.display_table(specifiedLogtype=[Transac.get_log_type(), 
+                                                      Liabili.get_log_type(), 
+                                                      Savings.get_log_type()], 
+                                    debitList=['debi', 'retu', 'owed', 'with'])
     
     @classmethod
     def display_single_entry(cls, entry, show_header=False) -> None:
@@ -186,9 +206,8 @@ class Auditing(LogEntry):
             print(f"{entry.count:<7} {entry.day:<5} {entry.date:<14} {entry.logType:<9} {entry.subtype:<10} {entry.title:<27} {entry.amount:<10} {entry.logID:<30} {entry.liaName:<15}")
                 
     @classmethod
-    def display_entries(cls, filtered=False, search_parameter=None) -> None:
-        max_display_limit = 100
-        for entry in cls.mainLogList[-max_display_limit-1:]:
+    def debug_display_entries(cls, filtered=False, search_parameter=None) -> None:
+        for entry in cls.mainLogList[-MAX_DISPLAY_LIMIT-1:]:
             if not filtered:
                 cls.display_single_entry(entry)
             elif search_parameter in entry.logType or search_parameter in entry.subtype:
@@ -234,7 +253,7 @@ class Auditing(LogEntry):
                 user_input = input("Enter the name to display all logs of: ").strip().title()
 
 
-            cls.display_entries(filtered=True, search_parameter=user_input)
+            cls.debug_display_entries(filtered=True, search_parameter=user_input)
 
             # SPECIFIC ENTRY SEARCH
             while True:
@@ -298,8 +317,7 @@ class Auditing(LogEntry):
         for entry in cls.currLoglist:
             if entry.title == title and title not in excludedTitles:
                 print(f"Duplicate title \'{title}\' found, adding...")
-                title =  add_title_count(title)
-
+                title = add_title_count(title)
         return title
     
 
@@ -309,9 +327,7 @@ class Auditing(LogEntry):
 
 class TableDisplays(Auditing):
     @classmethod
-    def display_table(cls, specifiedLogtype, debitList) -> None:
-        max_display_limit = 100
-
+    def display_table(cls, specifiedLogtype:list[str], debitList:list[str]) -> None:
         '''Table column width "percentages" '''
         percount, perday, perdate, pertitle, perdebit, percredit = 7, 5, 14, 25, 13, 13
         perTotal = percount + perdate + perdate + pertitle + perdebit + percredit + 10 # accounting for table vertical line spacings
@@ -320,9 +336,9 @@ class TableDisplays(Auditing):
         print(f"| {"COUNT":<{percount}} | {"DAY":<{perday}} | {"DATE":<{perdate}} | {"TITLE":<{pertitle}} | {"DEBIT":^{perdebit}} | {"CREDIT":^{percredit}} |")
 
         prevDate = None
-        for entry in cls.mainLogList[-max_display_limit-1:]:
+        for entry in cls.mainLogList[-MAX_DISPLAY_LIMIT-1:]:
 
-            if entry.logType == specifiedLogtype:
+            if entry.logType in specifiedLogtype:
 
                 if prevDate != entry.date:
                     '''add linebreaks between new dates'''
@@ -347,8 +363,8 @@ class Main:
     def main() -> None:
         audit = Auditing()
 
-        user = None
-        status = None
+        user:str   = None
+        status:int = None
 
         while user != 0:
             try:
@@ -399,11 +415,13 @@ class Main:
                 audit.display_savings()
 
             elif user == 8: # Display ALL ENTRIES
-                audit.display_entries()
+                audit.display_all_entries()
 
             elif user == 9: # Save all Entries
                 status = audit.save_all_entries()
                 print("\n" ," Saved all Entries! ".center(54,"~"), "\n")
+
+        # audit.debug_display_entries()
 
         audit.save_all_entries()
         print(f"\'{DEFAULT_FILE_PATH}\' saved successfully".center(100,"~"), "\n")
