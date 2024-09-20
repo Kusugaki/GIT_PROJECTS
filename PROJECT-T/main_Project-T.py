@@ -79,7 +79,7 @@ class Auditing(LogEntry):
     
     def modify_entry(self) -> int | None:
         ''' (-) note: implementation of this could be / should be improved '''
-        print("^^^ Choose an entry to modify ^^^")
+        print("~~~ Search for an entry to modify ~~~")
         searched_index:int = Auditing.search_entry()
         
         if searched_index == None:
@@ -99,19 +99,19 @@ class Auditing(LogEntry):
 
                 if moddedEntry.logType == Liabili.logTypeDetail:
                     moddedEntry.liaName = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
-                    moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liaName)
+                    moddedEntry.title   = Liabili.get_log_title_from_subtype(name=moddedEntry.liaName)
                 else:
                     moddedEntry.title   = CreateEntry.title
 
             elif user_input == 'B':   # Subtype
-                
+
                 if moddedEntry.logType == "tra":
                     moddedEntry.subtype = Transac.get_log_subtype()
 
                 elif moddedEntry.logType == "lia":
                     moddedEntry.subtype = Liabili.get_log_subtype()
                     moddedEntry.liaName = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
-                    moddedEntry.title   = Liabili.get_log_title_from_subtype(person=moddedEntry.liaName)
+                    moddedEntry.title   = Liabili.get_log_title_from_subtype(name=moddedEntry.liaName)
                 
                 elif moddedEntry.logType == "sav":
                     moddedEntry.subtype = Savings.get_log_subtype()
@@ -196,25 +196,13 @@ class Auditing(LogEntry):
                                                       Savings.get_log_type()], 
                                     debitList=['debi', 'retu', 'owed', 'with'])
     
-    @classmethod
-    def display_single_entry(cls, entry, show_header=False) -> None:
-        if show_header == True:
-            '''Used for entry deletion and modification visual confirmation'''
-            print(f"{"COUNT":<7} {"DAY":<5} {"DATE":<14} {"LOGTYPE":<9} {"SUBTYPE":<10} {"TITLE":<27} {"AMOUNT":<10} {"LOG ID":<30} {"LIABLE NAME":<15}")
-            print(f"{entry.count:<7} {entry.day:<5} {entry.date:<14} {entry.logType:<9} {entry.subtype:<10} {entry.title:<27} {entry.amount:<10} {entry.logID:<30} {entry.liaName:<15}")
-        else:
-            print(f"{entry.count:<7} {entry.day:<5} {entry.date:<14} {entry.logType:<9} {entry.subtype:<10} {entry.title:<27} {entry.amount:<10} {entry.logID:<30} {entry.liaName:<15}")
+    @staticmethod
+    def display_single_entry(entry, show_header=False) -> None:
+        TableDisplays.debug_display_single_entry(entry=entry, show_header=show_header)
                 
-    @classmethod
-    def debug_display_entries(cls, filtered=False, search_parameter=None) -> None:
-        for entry in cls.mainLogList[-MAX_DISPLAY_LIMIT-1:]:
-            if not filtered:
-                cls.display_single_entry(entry)
-            elif search_parameter in entry.logType or search_parameter in entry.subtype:
-                cls.display_single_entry(entry)
-            elif search_parameter in entry.liaName:
-                cls.display_single_entry(entry)
-        print(f"{"COUNT":<7} {"DAY":<5} {"DATE":<14} {"LOGTYPE":<9} {"SUBTYPE":<10} {"TITLE":<27} {"AMOUNT":<10} {"LOG ID":<30} {"LIABLE NAME":<15}")
+    @staticmethod
+    def debug_display_entries(filtered=False, search_parameter=None) -> None:
+        TableDisplays.debug_display_table(filtered=filtered, search_parameter=search_parameter)
 
     @classmethod
     def search_entry(cls) -> int | None:
@@ -225,21 +213,20 @@ class Auditing(LogEntry):
             # MAIN BROAD SEARCH
             while True:
                 print("What log entry to search for?: ")
-                print("\tLOGTYPES:     -> (tra/lia/sav)")
-                print("\tSUBTYPES: tra -> (debi/cred)")
-                print("\t          lia -> (loan/retu/owed/paid)")
-                print("\t          sav -> (depo/with)")
-                print("\tNAMES:        -> (name)")
-                print("\tGo Back:      -> (back)")
+                print("\tLOGTYPES:      SUBTYPES:")
+                print("\t      (tra) -> (debi/cred)")
+                print("\t      (lia) -> (loan/retu/owed/paid)")
+                print("\t      (sav) -> (depo/with)")
+                print("\tNAMES:      -> (name)")
+                print("\tGo Back:    -> (back)")
 
                 user_input = input("   > ").strip().lower()
 
                 if user_input == "back":
                     return None
                 elif user_input in ["tra","lia","sav"] or \
-                    user_input in ["debi","cred","loan","owed","depo","with"] or \
+                    user_input in ["debi","cred","loan", "retu", "owed", "paid","depo","with"] or \
                     user_input in ["name"]:
-
                     break
 
                 print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
@@ -252,7 +239,7 @@ class Auditing(LogEntry):
                         cls.display_single_entry(entry)
                 user_input = input("Enter the name to display all logs of: ").strip().title()
 
-
+            # SHOW FILTERED ENTRIES
             cls.debug_display_entries(filtered=True, search_parameter=user_input)
 
             # SPECIFIC ENTRY SEARCH
@@ -292,7 +279,7 @@ class Auditing(LogEntry):
         (-) note: Can be improved to only read and set title once instead
                  of reiterating reading & writing of title multiple times
         '''
-        def add_title_count(duplicateTitle) -> None:
+        def add_title_count(duplicateTitle) -> str:
             '''Adds an increasing number to a duplicate title'''
 
             if " " in duplicateTitle:
@@ -300,7 +287,7 @@ class Auditing(LogEntry):
                 try:
                     parts[-1] = str(int(parts[-1]) + 1)
                 except ValueError or BaseException as e:
-                    print(f"TITLE_ADDITION_ERROR:\n\t{e}")
+                    print(f"TITLE_ADDITION_ERROR: {e}")
                 finally: 
                     return " ".join(parts)
             else:
@@ -326,37 +313,83 @@ class Auditing(LogEntry):
 
 
 class TableDisplays(Auditing):
+    '''Table column width "percentages" '''
+    percount   = 5
+    perday     = 3
+    perdate    = 12
+    perlogtype = 7
+    persubtype = 7
+    pertitle   = 25
+    peramount  = 13
+    perID      = 30
+    perliaName = 15
+
+    perdebit   = 13
+    percredit  = 12
+
     @classmethod
     def display_table(cls, specifiedLogtype:list[str], debitList:list[str]) -> None:
-        '''Table column width "percentages" '''
-        percount, perday, perdate, pertitle, perdebit, percredit = 7, 5, 14, 25, 13, 13
-        perTotal = percount + perdate + perdate + pertitle + perdebit + percredit + 10 # accounting for table vertical line spacings
+        perTotal = cls.percount + cls.perday + cls.perdate + cls.pertitle + cls.perdebit + cls.percredit + 19 # accounting for table vertical line spacings
+        prevDate = None
 
         '''Show header'''
-        print(f"| {"COUNT":<{percount}} | {"DAY":<{perday}} | {"DATE":<{perdate}} | {"TITLE":<{pertitle}} | {"DEBIT":^{perdebit}} | {"CREDIT":^{percredit}} |")
-
-        prevDate = None
+        print(f"{"":_<{perTotal}}")
+        print(f"| {"COUNT":^{cls.percount}} | {"DAY":^{cls.perday}} | {"DATE":^{cls.perdate}} | {"TITLE":^{cls.pertitle}} | {"DEBIT":^{cls.perdebit}} | {"CREDIT":^{cls.percredit}} |")
         for entry in cls.mainLogList[-MAX_DISPLAY_LIMIT-1:]:
 
             if entry.logType in specifiedLogtype:
 
                 if prevDate != entry.date:
                     '''add linebreaks between new dates'''
-                    print(f"{"":-<{perTotal}}")
+                    print(f"|-{"":-<{cls.percount}}-|-{"":-<{cls.perday}}-|-{"":-<{cls.perdate}}-|-{"":-<{cls.pertitle}}-|-{"":-<{cls.perdebit}}-|-{"":-<{cls.percredit}}-|")
                     '''only shows day and date once per new date'''
                     if entry.subtype in debitList:
-                        print(f"| {entry.count:<{percount}} | {entry.day:<{perday}} | {entry.date:<{perdate}} | {entry.title:<{pertitle}} | {entry.amount:^{perdebit}} | {"":^{percredit}} |")
+                        print(f"| {entry.count:<{cls.percount}} | {entry.day:^{cls.perday}} | {entry.date:^{cls.perdate}} | {entry.title:<{cls.pertitle}} | {entry.amount:^{cls.perdebit}} | {"":^{cls.percredit}} |")
                     else:   # loaned, paid
-                        print(f"| {entry.count:<{percount}} | {entry.day:<{perday}} | {entry.date:<{perdate}} | {entry.title:<{pertitle}} | {"":^{perdebit}} | {entry.amount:^{percredit}} |")
+                        print(f"| {entry.count:<{cls.percount}} | {entry.day:^{cls.perday}} | {entry.date:^{cls.perdate}} | {entry.title:<{cls.pertitle}} | {"":^{cls.perdebit}} | {entry.amount:^{cls.percredit}} |")
                     prevDate = entry.date
                 else:
                     '''no longer shows day and date'''
                     if entry.subtype in debitList:
-                        print(f"| {entry.count:<{percount}} | {"":<{perday}} | {"":<{perdate}} | {entry.title:<{pertitle}} | {entry.amount:^{perdebit}} | {"":^{percredit}} |")
+                        print(f"| {entry.count:<{cls.percount}} | {"":^{cls.perday}} | {"":^{cls.perdate}} | {entry.title:<{cls.pertitle}} | {entry.amount:^{cls.perdebit}} | {"":^{cls.percredit}} |")
                     else:   # credit
-                        print(f"| {entry.count:<{percount}} | {"":<{perday}} | {"":<{perdate}} | {entry.title:<{pertitle}} | {"":^{perdebit}} | {entry.amount:^{percredit}} |")
+                        print(f"| {entry.count:<{cls.percount}} | {"":^{cls.perday}} | {"":^{cls.perdate}} | {entry.title:<{cls.pertitle}} | {"":^{cls.perdebit}} | {entry.amount:^{cls.percredit}} |")
+        print(f"|-{"":-<{cls.percount}}-|-{"":-<{cls.perday}}-|-{"":-<{cls.perdate}}-|-{"":-<{cls.pertitle}}-|-{"":-<{cls.perdebit}}-|-{"":-<{cls.percredit}}-|")
+        print(f"| {"COUNT":^{cls.percount}} | {"DAY":^{cls.perday}} | {"DATE":^{cls.perdate}} | {"TITLE":^{cls.pertitle}} | {"DEBIT":^{cls.perdebit}} | {"CREDIT":^{cls.percredit}} |")
+        print(f"|-{"":-<{cls.percount}}-|-{"":-<{cls.perday}}-|-{"":-<{cls.perdate}}-|-{"":-<{cls.pertitle}}-|-{"":-<{cls.perdebit}}-|-{"":-<{cls.percredit}}-|")
+    
+    @classmethod
+    def debug_display_table(cls, filtered=False, search_parameter=None) -> None:
+        perTotal = cls.percount + cls.perday + cls.perdate + cls.perlogtype + cls.persubtype + cls.pertitle + cls.peramount + cls.perID + cls.perliaName + 27 # accounting for table vertical line spacings
 
+        print(f" {"":_<{perTotal-1}}")
+        
+        for entry in cls.mainLogList[-MAX_DISPLAY_LIMIT-1:]:
+            if not filtered:
+                cls.debug_display_single_entry(entry)
+            elif search_parameter in entry.logType or search_parameter in entry.subtype:
+                cls.debug_display_single_entry(entry)
+            elif search_parameter in entry.liaName:
+                cls.debug_display_single_entry(entry)
 
+        '''Show footer details'''
+        print(f"|-{"":-<{cls.percount}}-|-{"":-<{cls.perday}}-|-{"":-<{cls.perdate}}-|-{"":-<{cls.perlogtype}}-|-{"":-<{cls.persubtype}}-|-{"":-<{cls.pertitle}}-|-{"":-<{cls.peramount}}-|-{"":-<{cls.perID}}-|-{"":-<{cls.perliaName}}-|")
+        print(f"| {"COUNT":^{cls.percount}} | {"DAY":^{cls.perday}} | {"DATE":^{cls.perdate}} | {"LOGTYPE":^{cls.perlogtype}} | {"SUBTYPE":^{cls.persubtype}} | {"TITLE":^{cls.pertitle}} | {"AMOUNT":^{cls.peramount}} | {"LOG ID":^{cls.perID}} | {"LIABLE NAME":^{cls.perliaName}} |")
+        print(f"|-{"":-<{cls.percount}}-|-{"":-<{cls.perday}}-|-{"":-<{cls.perdate}}-|-{"":-<{cls.perlogtype}}-|-{"":-<{cls.persubtype}}-|-{"":-<{cls.pertitle}}-|-{"":-<{cls.peramount}}-|-{"":-<{cls.perID}}-|-{"":-<{cls.perliaName}}-|")
+
+    @classmethod
+    def debug_display_single_entry(cls, entry, show_header=False) -> None:
+        if show_header == False:
+            '''Used for displaying whole table'''
+            print(f"| {entry.count:<{cls.percount}} | {entry.day:<{cls.perday}} | {entry.date:<{cls.perdate}} | {entry.logType:<{cls.perlogtype}} | {entry.subtype:<{cls.persubtype}} | {entry.title:<{cls.pertitle}} | {entry.amount:<{cls.peramount}} | {entry.logID:<{cls.perID}} | {entry.liaName:<{cls.perliaName}} |")
+        else:
+            '''Used for entry deletion and modification visual confirmation'''
+            print(f" {"":_<{cls.percount + cls.perday + cls.perdate + cls.perlogtype + cls.persubtype + cls.pertitle + cls.peramount + cls.perID + cls.perliaName + 26}}")
+            print(f"| {"COUNT":^{cls.percount}} | {"DAY":^{cls.perday}} | {"DATE":^{cls.perdate}} | {"LOGTYPE":^{cls.perlogtype}} | {"SUBTYPE":^{cls.persubtype}} | {"TITLE":^{cls.pertitle}} | {"AMOUNT":^{cls.peramount}} | {"LOG ID":^{cls.perID}} | {"LIABLE NAME":^{cls.perliaName}} |")
+            print(f"|-{"":-<{cls.percount}}-|-{"":-<{cls.perday}}-|-{"":-<{cls.perdate}}-|-{"":-<{cls.perlogtype}}-|-{"":-<{cls.persubtype}}-|-{"":-<{cls.pertitle}}-|-{"":-<{cls.peramount}}-|-{"":-<{cls.perID}}-|-{"":-<{cls.perliaName}}-|")
+            print(f"| {entry.count:<{cls.percount}} | {entry.day:<{cls.perday}} | {entry.date:<{cls.perdate}} | {entry.logType:<{cls.perlogtype}} | {entry.subtype:<{cls.persubtype}} | {entry.title:<{cls.pertitle}} | {entry.amount:<{cls.peramount}} | {entry.logID:<{cls.perID}} | {entry.liaName:<{cls.perliaName}} |")
+            print(f"|-{"":-<{cls.percount}}-|-{"":-<{cls.perday}}-|-{"":-<{cls.perdate}}-|-{"":-<{cls.perlogtype}}-|-{"":-<{cls.persubtype}}-|-{"":-<{cls.pertitle}}-|-{"":-<{cls.peramount}}-|-{"":-<{cls.perID}}-|-{"":-<{cls.perliaName}}-|")
+    
 
 
 class Main:
@@ -402,6 +435,8 @@ class Main:
 
             elif user == 4: # Search for specific categories
                 status = audit.search_entry()
+                TableDisplays.debug_display_single_entry(Auditing.mainLogList[status], show_header=True)
+
                 if status != None: print("\n" ," Entry search success! ".center(54,"~"), "\n")
                 else:              print("\n" ," Entry search failed... ".center(54,"~"), "\n")
 
@@ -421,7 +456,8 @@ class Main:
                 status = audit.save_all_entries()
                 print("\n" ," Saved all Entries! ".center(54,"~"), "\n")
 
-        # audit.debug_display_entries()
+            elif user == 444: # DEBUG display
+                audit.debug_display_entries()
 
         audit.save_all_entries()
         print(f"\'{DEFAULT_FILE_PATH}\' saved successfully".center(100,"~"), "\n")

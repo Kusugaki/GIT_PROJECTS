@@ -124,16 +124,26 @@ class Liabili(LogDetails):
 
     @staticmethod
     def get_liable_entity(liable_subtype) -> str:
-        if   liable_subtype == Liabili.subtypeChoiceDetail[0][:4].lower(): # Loaned
-            return input("Loaned to whom?: ").strip().title()
-        elif liable_subtype == Liabili.subtypeChoiceDetail[1][:4].lower(): # Returned
-            return input("Who returned your loan?: ").strip().title()
-        elif liable_subtype == Liabili.subtypeChoiceDetail[2][:4].lower(): # Owed
-            return input("Who do you owe?: ").strip().title()
-        elif liable_subtype == Liabili.subtypeChoiceDetail[3][:4].lower(): # Paid
-            return input("Who did you pay back?: ").strip().title()
-        else:
-            print(f"LIABLE_NAME_ERROR: subtype was not found.\n")
+        charLimit:int = 11  # Based off of the CLI table display 'title' column width
+        name:str
+        
+        while True: # MAX CHARACTER LIMIT
+            if   liable_subtype == Liabili.subtypeChoiceDetail[0][:4].lower(): # Loaned
+                name = input("Loaned to whom?: ").strip().title()
+            elif liable_subtype == Liabili.subtypeChoiceDetail[1][:4].lower(): # Returned
+                name = input("Who returned your loan?: ").strip().title()
+            elif liable_subtype == Liabili.subtypeChoiceDetail[2][:4].lower(): # Owed
+                name = input("Who do you owe?: ").strip().title()
+            elif liable_subtype == Liabili.subtypeChoiceDetail[3][:4].lower(): # Paid
+                name = input("Who did you pay back?: ").strip().title()
+            else:
+                print(f"LIABLE_NAME_ERROR: subtype was not found.\n")
+
+            if len(name) <= charLimit:
+                break
+        
+            print("Name is too long, maximum of 11 characters only\n")
+        return name
 
 
 

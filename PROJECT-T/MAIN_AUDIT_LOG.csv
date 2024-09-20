@@ -88,9 +88,9 @@ COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID,LIABLE NAME
 87,8,18-09-2024,tra,debi,Day In,300.0,87//tra//debi//18-09-2024,NON-LIA
 88,8,18-09-2024,lia,owed,Owed -> (Jeff Bezos),3000000.0,88//lia//owed//18-09-2024,Jeff Bezos
 89,8,18-09-2024,lia,owed,Owed -> (Amongus),300.0,89//lia//owed//18-09-2024,Amongus
-90,9,19-09-2024,lia,paid,Paid      -> (Amogus),300.0,90//lia//paid//19-09-2024,Amogus
-91,9,19-09-2024,lia,owed,Owed      -> (Amogus),200.0,91//lia//owed//19-09-2024,Amogus
-92,9,19-09-2024,lia,retu,Returned  -> (Amogus),100.0,92//lia//retu//19-09-2024,Amogus
+90,9,19-09-2024,lia,paid,Paid     -> (Amogus),300.0,90//lia//paid//19-09-2024,Amogus
+91,9,19-09-2024,lia,owed,Owed     -> (Amogus),200.0,91//lia//owed//19-09-2024,Amogus
+92,9,19-09-2024,lia,retu,Returned -> (Amogus),100.0,92//lia//retu//19-09-2024,Amogus
 93,9,19-09-2024,lia,loan,Loaned    -> (Amogus),500.0,93//lia//loan//19-09-2024,Amogus
 94,9,19-09-2024,tra,debi,Day In,20.0,94//tra//debi//19-09-2024,NON-LIA
 95,9,19-09-2024,lia,paid,Paid     -> (Karp),10.0,95//lia//paid//19-09-2024,Karp
@@ -104,3 +104,6 @@ COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID,LIABLE NAME
 103,10,20-09-2024,tra,cred,Pamasahe 1,13.0,103//tra//cred//20-09-2024,NON-LIA
 104,10,20-09-2024,tra,cred,Pamasahe 2,11.0,104//tra//cred//20-09-2024,NON-LIA
 105,10,20-09-2024,tra,cred,Pamasahe 3,11.0,105//tra//cred//20-09-2024,NON-LIA
+106,10,20-09-2024,sav,with,Withdrawal,100.0,106//sav//with//20-09-2024,NON-LIA
+107,10,20-09-2024,lia,retu,Returned -> (Mynamejeff),20000.0,107//lia//retu//20-09-2024,Mynamejeff
+108,10,20-09-2024,lia,retu,Returned -> (Gaben),4000000.0,108//lia//retu//20-09-2024,Gaben
