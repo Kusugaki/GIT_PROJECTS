@@ -127,7 +127,7 @@ class Liabili(LogDetails):
         charLimit:int = 11  # Based off of the CLI table display 'title' column width
         name:str
         
-        while True: # MAX CHARACTER LIMIT
+        while True:
             if   liable_subtype == Liabili.subtypeChoiceDetail[0][:4].lower(): # Loaned
                 name = input("Loaned to whom?: ").strip().title()
             elif liable_subtype == Liabili.subtypeChoiceDetail[1][:4].lower(): # Returned
