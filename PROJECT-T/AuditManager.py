@@ -1,6 +1,5 @@
 import os
 
-from dataclasses import dataclass
 from datetime import datetime
 
 from LogFileHandling import FileGetter, FileSaver
@@ -77,7 +76,9 @@ class Auditing(LogEntry):
     
     def modify_entry(self) -> int | None:
         ''' (-) note: implementation of this could be / should be improved '''
-        print("~~~ Search for an entry to modify ~~~")
+
+        print('\n', " Search for an entry to MODIFY ".center(52,'~'), '\n')
+
         searched_index:int = Auditing.search_entry()
         
         if searched_index == None:
@@ -138,7 +139,8 @@ class Auditing(LogEntry):
 
     @classmethod
     def delete_entry(cls) -> int | None:
-        print("\n!!! YOU ARE CURRENTLY IN THE PROCESS OF DELETING AN ENTRY !!!\n")
+
+        print('\n', " Search for an entry to DELETE ".center(52,'!'), '\n')
 
         searched_index:int = cls.search_entry()
 

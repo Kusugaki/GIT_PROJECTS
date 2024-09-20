@@ -14,6 +14,7 @@ class Main():
     def main() -> None:
         audit = Auditing()
 
+        spacing:int= 80
         user:str   = None
         status:int = None
 
@@ -38,18 +39,18 @@ class Main():
 
             if   user == 1: # Create an Entry
                 status = audit.create_entry()
-                if status == 1: print("\n" ," Entry successfully created! ".center(54,"~"), "\n")
-                else:           print("\n" ," Entry creation failed... ".center(54,"~"), "\n")
+                if status == 1: print("\n" ," Entry successfully created! ".center(spacing,"~"), "\n")
+                else:           print("\n" ," Entry creation failed... ".center(spacing,"~"), "\n")
 
             elif user == 2: # Modify an Entry
                 status = audit.modify_entry()
-                if status == 1: print("\n" ," Entry successfully modified! ".center(54,"~"), "\n")
-                else:           print("\n" ," Entry modification failed... ".center(54,"~"), "\n")
+                if status == 1: print("\n" ," Entry successfully modified! ".center(spacing,"~"), "\n")
+                else:           print("\n" ," Entry modification failed... ".center(spacing,"~"), "\n")
 
             elif user == 3: # Delete an Entry
                 status = audit.delete_entry()
-                if status == 1: print("\n" ," Entry successfully deleted! ".center(54,"~"), "\n")
-                else:           print("\n" ," Entry deletion failed... ".center(54,"~"), "\n")
+                if status == 1: print("\n" ," Entry successfully deleted! ".center(spacing,"~"), "\n")
+                else:           print("\n" ," Entry deletion failed... ".center(spacing,"~"), "\n")
 
             elif user == 4: # Search for specific categories
                 '''(-) note: debug option, can be changed for something else'''
@@ -57,9 +58,9 @@ class Main():
 
                 if status != None: 
                     TableDisplays.debug_display_table_single_entry(Auditing.mainLogList[status], show_header=True)
-                    print("\n" ," Entry search success! ".center(54,"~"), "\n")
+                    print("\n" ," Entry search success! ".center(spacing,"~"), "\n")
                 else:              
-                    print("\n" ," Entry search failed... ".center(54,"~"), "\n")
+                    print("\n" ," Entry search failed... ".center(spacing,"~"), "\n")
 
             elif user == 5: # Display all TRANSACTIONS
                 audit.display_transactions()
@@ -75,7 +76,7 @@ class Main():
 
             elif user == 9: # Save all Entries
                 status = audit.save_all_entries()
-                print("\n" ," Saved all Entries! ".center(54,"~"), "\n")
+                print("\n" ," Saved all Entries! ".center(spacing,"~"), "\n")
 
             elif user == 444: # DEBUG display
                 audit.debug_display_entries()

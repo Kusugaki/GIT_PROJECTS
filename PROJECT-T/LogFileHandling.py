@@ -41,11 +41,6 @@ class FileGetter():
     @classmethod
     def fetch_curr_list(cls, dateToday:str) -> list[LogEntry]:
         return [obj for obj in cls.fetched_list if obj.date == dateToday]
-        # currentList = []
-        # for obj in cls.fetched_list:
-        #     if obj.date == dateToday:
-        #         currentList.append(obj)
-        # return currentList
 
     @staticmethod
     def get_custom_path(default_path:str) -> str: 
