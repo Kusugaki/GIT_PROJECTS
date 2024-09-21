@@ -7,7 +7,7 @@ from AuditManager import Auditing, TableDisplays
 # GLOBAL VARIABLES
 AM.DEFAULT_FILE_NAME = "audit_database.csv" 
 AM.DEFAULT_FILE_PATH = os.path.join(os.path.dirname(__file__), AM.DEFAULT_FILE_NAME)
-AM.MAX_DISPLAY_LIMIT = 100
+AM.MAX_DISPLAY_LIMIT = 150
 
 
 class Main():
@@ -24,7 +24,7 @@ class Main():
                 print("\t  1. \'Create Entry\'") 
                 print("\t  2. \'Modify Entry\'") 
                 print("\t  3. \'Delete Entry\'") 
-                print("\t  4. \'Use Search Filter\'")
+                print("\t  4. \'Display Specified Status\'")
                 print("\t  5. \'Display Transactions\'")
                 print("\t  6. \'Display Liabilities\'")
                 print("\t  7. \'Display Savings\'")
@@ -52,15 +52,8 @@ class Main():
                 if status == 1: print("\n" ," Entry successfully deleted! ".center(spacing,"~"), "\n")
                 else:           print("\n" ," Entry deletion failed... ".center(spacing,"~"), "\n")
 
-            elif user == 4: # Search for specific categories
-                '''(-) note: debug option, can be changed for something else'''
-                status = audit.search_entry()
-
-                if status != None: 
-                    TableDisplays.debug_display_table_single_entry(Auditing.mainLogList[status], show_header=True)
-                    print("\n" ," Entry search success! ".center(spacing,"~"), "\n")
-                else:              
-                    print("\n" ," Entry search failed... ".center(spacing,"~"), "\n")
+            elif user == 4: # Display STATUS table
+                audit.display_status()
 
             elif user == 5: # Display all TRANSACTIONS
                 audit.display_transactions()
@@ -81,8 +74,17 @@ class Main():
             elif user == 444: # DEBUG display
                 audit.debug_display_entries()
 
+            elif user == 555: # Search for specific categories
+                status = audit.search_entry()
+
+                if status != None: 
+                    TableDisplays.debug_display_table_single_entry(Auditing.mainLogList[status], show_header=True)
+                    print("\n" ," Entry search success! ".center(spacing,"~"), "\n")
+                else:              
+                    print("\n" ," Entry search failed... ".center(spacing,"~"), "\n")
+
         audit.save_all_entries()
-        print(f"\'{AM.DEFAULT_FILE_PATH}\' saved successfully".center(100,"~"), "\n")
+        print("\n", f"\'{AM.DEFAULT_FILE_PATH}\' saved successfully".center(100,"~"))
         print("exiting...")
         del audit
         return

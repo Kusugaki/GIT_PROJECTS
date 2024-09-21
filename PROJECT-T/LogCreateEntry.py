@@ -55,7 +55,6 @@ class LogDetails(ABC):
     @classmethod
     def get_log_type(cls) -> str:
         return cls.logTypeDetail
-        # return cls.logTypeDetail[:3].lower()  # previously for "Transactions", "Liabilities", "Savings" LogTypeFulltitles
     
     @classmethod
     def get_log_subtype(cls) -> str:

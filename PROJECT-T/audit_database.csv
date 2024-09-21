@@ -86,12 +86,12 @@ COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID,LIABLE NAME
 85,7,17-09-2024,tra,cred,pamasahe,21.0,85//tra//cred//17-09-2024,NON-LIA
 86,7,17-09-2024,sav,with,Withdrawal,0.0,86//sav//with//17-09-2024,NON-LIA
 87,8,18-09-2024,tra,debi,Day In,300.0,87//tra//debi//18-09-2024,NON-LIA
-88,8,18-09-2024,lia,owed,Owed -> (Jeff Bezos),3000000.0,88//lia//owed//18-09-2024,Jeff Bezos
+88,8,18-09-2024,lia,owed,Owed -> (Jeff Bezos),30000.0,88//lia//owed//18-09-2024,Jeff Bezos
 89,8,18-09-2024,lia,owed,Owed -> (Amongus),300.0,89//lia//owed//18-09-2024,Amongus
 90,9,19-09-2024,lia,paid,Paid     -> (Amogus),300.0,90//lia//paid//19-09-2024,Amogus
 91,9,19-09-2024,lia,owed,Owed     -> (Amogus),200.0,91//lia//owed//19-09-2024,Amogus
 92,9,19-09-2024,lia,retu,Returned -> (Amogus),100.0,92//lia//retu//19-09-2024,Amogus
-93,9,19-09-2024,lia,loan,Loaned    -> (Amogus),500.0,93//lia//loan//19-09-2024,Amogus
+93,9,19-09-2024,lia,loan,Loaned   -> (Amogus),500.0,93//lia//loan//19-09-2024,Amogus
 94,9,19-09-2024,tra,debi,Day In,20.0,94//tra//debi//19-09-2024,NON-LIA
 95,9,19-09-2024,lia,paid,Paid     -> (Karp),10.0,95//lia//paid//19-09-2024,Karp
 96,9,19-09-2024,tra,cred,Pamasahe 1,56.0,96//tra//cred//19-09-2024,NON-LIA
@@ -106,7 +106,7 @@ COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID,LIABLE NAME
 105,10,20-09-2024,tra,cred,Pamasahe 3,11.0,105//tra//cred//20-09-2024,NON-LIA
 106,10,20-09-2024,sav,with,Withdrawal,100.0,106//sav//with//20-09-2024,NON-LIA
 107,10,20-09-2024,lia,retu,Returned -> (Mynamejeff),20000.0,107//lia//retu//20-09-2024,Mynamejeff
-108,10,20-09-2024,lia,retu,Returned -> (Gaben),4000000.0,108//lia//retu//20-09-2024,Gaben
+108,10,20-09-2024,lia,retu,Returned -> (Gaben),4000.0,108//lia//retu//20-09-2024,Gaben
 109,10,20-09-2024,tra,cred,Pamasahe 4,19.0,109//tra//cred//20-09-2024,NON-LIA
 110,10,20-09-2024,lia,paid,Paid     -> (Jack),29.0,110//lia//paid//20-09-2024,Jack
 111,10,20-09-2024,tra,cred,Ice Cream,28.0,111//tra//cred//20-09-2024,NON-LIA
@@ -116,3 +116,8 @@ COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID,LIABLE NAME
 115,10,20-09-2024,sav,with,Withdrawal 2,100.0,115//sav//with//20-09-2024,~~~~~~~
 116,10,20-09-2024,lia,loan,Loaned   -> (Jack),214.0,116//lia//loan//20-09-2024,Jack
 117,10,20-09-2024,tra,cred,Shop,56.0,117//tra//cred//20-09-2024,~~~~~~~
+118,11,21-09-2024,tra,debi,B,20.0,118//tra//debi//21-09-2024,~~~~~~~
+119,11,21-09-2024,lia,loan,Loaned   -> (M),3350.0,119//lia//loan//21-09-2024,M
+120,11,21-09-2024,sav,with,Withdrawal,3350.0,120//sav//with//21-09-2024,~~~~~~~
+121,11,21-09-2024,tra,cred,403,21.0,121//tra//cred//21-09-2024,~~~~~~~
+121,11,21-09-2024,tra,cred,Idfk,403.0,121//tra//cred//21-09-2024,~~~~~~~

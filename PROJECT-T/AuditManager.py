@@ -1,4 +1,5 @@
 import os
+import time
 
 from datetime import datetime
 
@@ -24,16 +25,9 @@ class Auditing(LogEntry):
 
     def __init__(self) -> None:
         ''' Program Startup sequence '''
-        self.date = self.get_current_date()
+        self.date = datetime.now().strftime("%d-%m-%Y")
         Auditing.mainLogList = FileGetter.fetch_saved_database(path=DEFAULT_FILE_PATH)
         Auditing.currLoglist = FileGetter.fetch_curr_list(dateToday=self.date)
-        
-        # Auditing.end_of_day_totaling()
-
-    @classmethod
-    def end_of_day_totaling(cls):
-        prevDate = Auditing.mainLogList[-1].date
-        raise NotImplementedError
 
     # OBJECT MANIPULATION
     def create_entry(self) -> int:
@@ -44,7 +38,7 @@ class Auditing(LogEntry):
 
         self.count   = self.get_total_entry_count()
         self.day     = self.get_day()
-        self.date    = self.get_current_date()        
+        self.date    = self.get_current_date()
         self.logType = CreateEntry.logType
         self.subtype = CreateEntry.subtype
         self.title   = CreateEntry.title.title()    # built in string method ".title()"
@@ -204,6 +198,98 @@ class Auditing(LogEntry):
     def debug_display_entries(filtered=False, search_parameter=None) -> None:
         TableDisplays.debug_display_table(filtered=filtered, search_parameter=search_parameter)
 
+
+    def display_status(self) -> int:
+        '''Gets the totals of all subtypes of each entry and displays them'''
+        '''This is an absolute abomination, this whole method is.'''
+        debiTotal:float = 0.0
+        credTotal:float = 0.0
+        loanTotal:float = 0.0
+        retuTotal:float = 0.0
+        owedTotal:float = 0.0
+        paidTotal:float = 0.0
+        depoTotal:float = 0.0
+        withTotal:float = 0.0
+
+        startDate:str
+        endDate:str
+
+
+        TableDisplays.display_all_entries()
+
+        startDate = input("Choose start date\n\t> ")
+        endDate = input("Choose end date (leave blank for same date)\n\t> ")
+
+        if endDate == '':
+            endDate = startDate
+
+        startPtr:int = 0
+        endPtr:int = 0
+        endPtrDateFound = False
+        logSize:int = len(Auditing.mainLogList)
+
+        ''' 
+        (-) note: inefficient 2 pointer approach instead of directly comparing date values (Worst Case: 3n)
+        (-) note: Put this 2 pointer search in its own method so that other methods can use it too
+        '''
+        for i in range(logSize):
+            if Auditing.mainLogList[i].date == startDate:
+                startPtr = i
+                break
+        for i in range(startPtr, logSize):
+            try:
+                if endPtrDateFound:
+                    if i == logSize-1 or Auditing.mainLogList[i+1].date != endDate:
+                        endPtr = i
+                        break
+                elif Auditing.mainLogList[i].date == endDate:
+                    endPtrDateFound = True
+            except IndexError as e:
+                print("INDEX_ERROR:", i, e)
+
+        print("\n", " Displaying Entries Status ".center(52,'~'), '\n')
+
+        print(f"Starting on: {Auditing.mainLogList[startPtr].date} - no. {startPtr+1}")
+        print(f"Ending on:   {Auditing.mainLogList[endPtr].date} - no. {endPtr+1}")
+
+        for i in range(startPtr, endPtr+1):
+            entry = Auditing.mainLogList[i]
+
+            # MAIN LOG STATUS (all logs)
+            if entry.subtype in ['debi', 'retu', 'owed', 'with']:
+                debiTotal += entry.amount
+            else:
+                credTotal += entry.amount
+
+            # LIABILITIES LOG STATUS
+            if entry.logType == Liabili.get_log_type():
+                if   entry.subtype == "loan":
+                    loanTotal += entry.amount
+                elif entry.subtype == "retu":
+                    retuTotal += entry.amount
+                elif entry.subtype == "owed":
+                    owedTotal += entry.amount
+                elif entry.subtype == "paid":
+                    paidTotal += entry.amount
+
+            # SAVINGS LOG STATUS
+            if entry.logType == Savings.get_log_type():
+                if   entry.subtype == "depo":
+                    depoTotal += entry.amount                
+                elif entry.subtype == "with":
+                    withTotal += entry.amount
+
+
+        netTotal   = debiTotal - credTotal
+        loanTotal  = loanTotal - retuTotal
+        owedTotal  = owedTotal - paidTotal
+        netSavings = depoTotal - withTotal
+
+        TableDisplays.display_status_table(netTotal=netTotal, loans=loanTotal, owed=owedTotal, savings=netSavings)
+
+        return 1
+
+
     @classmethod
     def search_entry(cls) -> int | None:
         ''' Returns index of searched entry based on the main log list, returns None if none was found'''
@@ -260,7 +346,7 @@ class Auditing(LogEntry):
     def get_total_entry_count(self) -> int:
         '''Fetches the total count of log Entries in the dynamic main list'''
         return len(Auditing.mainLogList) + 1
-    
+
     def get_current_date(self) -> str:
         return datetime.now().strftime("%d-%m-%Y")
 
@@ -330,11 +416,11 @@ class TableDisplays(Auditing):
 
     @classmethod
     def display_table(cls, specifiedLogtype:list[str], debitList:list[str]) -> None:
-        perTotal = cls.percount + cls.perday + cls.perdate + cls.pertitle + cls.perdebit + cls.percredit + 19 # accounting for table vertical line spacings
+        perTotal = cls.percount + cls.perday + cls.perdate + cls.pertitle + cls.perdebit + cls.percredit + 17 # accounting for table vertical line spacings
         prevDate = None
 
         '''Show header'''
-        print(f"{"":_<{perTotal}}")
+        print(f" {"":_<{perTotal}}")
         print(f"| {"COUNT":^{cls.percount}} | {"DAY":^{cls.perday}} | {"DATE":^{cls.perdate}} | {"TITLE":^{cls.pertitle}} | {"DEBIT":^{cls.perdebit}} | {"CREDIT":^{cls.percredit}} |")
         for entry in cls.mainLogList[-MAX_DISPLAY_LIMIT-1:]:
 
@@ -360,6 +446,21 @@ class TableDisplays(Auditing):
         print(f"|-{"":-<{cls.percount}}-|-{"":-<{cls.perday}}-|-{"":-<{cls.perdate}}-|-{"":-<{cls.pertitle}}-|-{"":-<{cls.perdebit}}-|-{"":-<{cls.percredit}}-|")
     
     @classmethod
+    def display_status_table(cls, netTotal, loans, owed, savings):
+        amountWidth = cls.peramount + 4
+        print(f" {"":_<{cls.pertitle + amountWidth + 5}}")
+        print(f"| {"TOTALS":^{cls.pertitle}} | {"AMOUNT":^{amountWidth}} |")
+        print(f"|-{"":-<{cls.pertitle}}-|-{"":-<{amountWidth}}-|")
+        print(f"| {"Net Total":<{cls.pertitle}} | {netTotal:^{amountWidth}} |")
+        print(f"|-{"":-<{cls.pertitle}}-|-{"":-<{amountWidth}}-|")
+        print(f"| {"Loaned Amount":<{cls.pertitle}} | {loans:^{amountWidth}} |")
+        print(f"| {"Owed Amount":<{cls.pertitle}} | {owed:^{amountWidth}} |")
+        print(f"|-{"":-<{cls.pertitle}}-|-{"":-<{amountWidth}}-|")
+        print(f"| {"Current Savings":<{cls.pertitle}} | {savings:^{amountWidth}} |")
+        print(f"|-{"":-<{cls.pertitle}}-|-{"":-<{amountWidth}}-|")
+
+
+    @classmethod
     def debug_display_table(cls, filtered=False, search_parameter=None) -> None:
         perTotal = cls.percount + cls.perday + cls.perdate + cls.perlogtype + cls.persubtype + cls.pertitle + cls.peramount + cls.perID + cls.perliaName + 27 # accounting for table vertical line spacings
 
@@ -370,7 +471,8 @@ class TableDisplays(Auditing):
                 cls.debug_display_table_single_entry(entry)
             elif search_parameter in entry.logType or search_parameter in entry.subtype:
                 cls.debug_display_table_single_entry(entry)
-            elif search_parameter in entry.liaName:
+                                                                        # (-) note: REMOVE THESE PLACEHOLDER LIABILITY NAMES
+            elif search_parameter in entry.liaName and entry.liaName != "~~~~~~~" and entry.liaName != "NON-LIA" and entry.liaName != "NOT_SET":
                 cls.debug_display_table_single_entry(entry)
 
         '''Show footer details'''
