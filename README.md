@@ -6,9 +6,13 @@ Highly recommend for Beginner OOP Introduction: [Python Object Oriented Programm
 
 ## To-do List: Ver 1.1
 
-- [ ] Auto create "Total" rows per new day
+<!-- - [ ] Auto create "Total" rows per new day -->
 - [x] Change display_single_entry() to use variables for column widths
+- [x] Implement status screen
 - [ ] Find other lackluster features
+- [ ] Automatically create "Previous" log entries
+- [ ] Create independent 'date_search()' method
+- [ ] Make a better Status table
 
 ## To-do List: Ver 2.0
 
