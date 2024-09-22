@@ -113,8 +113,12 @@ class Auditing(LogEntry):
                     print("\nMODIFYING_SUBTYPE_ERROR\n")
 
             elif user_input == 'C':   # Title
-                print(f"Previous title: \'{moddedEntry.title}\'\n")
-                moddedEntry.title = input("Input new Entry Title\n   > ").strip()
+                if moddedEntry.logType != 'lia':
+                    print(f"Previous title: \'{moddedEntry.title}\'\n")
+                    moddedEntry.title = input("Input new Entry Title\n   > ").strip()
+                else:
+                    moddedEntry.liaName = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
+                    moddedEntry.title = Liabili.get_log_title_from_subtype(name=moddedEntry.liaName)
 
             elif user_input == 'D':   # Amount
                 print(f"Previous amount: \'{moddedEntry.amount}\'\n")
@@ -281,11 +285,26 @@ class Auditing(LogEntry):
 
 
         netTotal   = debiTotal - credTotal
-        loanTotal  = loanTotal - retuTotal
-        owedTotal  = owedTotal - paidTotal
+        netPercent = netTotal / debiTotal   # not yet multiplied by 100
         netSavings = depoTotal - withTotal
+        netDebts   = owedTotal - paidTotal
+        netLoans   = loanTotal - retuTotal
 
-        TableDisplays.display_status_table(netTotal=netTotal, loans=loanTotal, owed=owedTotal, savings=netSavings)
+        TableDisplays.display_status_table(
+                debiTotal, 
+                credTotal, 
+                loanTotal, 
+                retuTotal, 
+                owedTotal, 
+                paidTotal, 
+                depoTotal, 
+                withTotal, 
+                netTotal, 
+                netPercent, 
+                netLoans, 
+                netDebts, 
+                netSavings
+            )
 
         return 1
 
@@ -446,17 +465,32 @@ class TableDisplays(Auditing):
         print(f"|-{"":-<{cls.percount}}-|-{"":-<{cls.perday}}-|-{"":-<{cls.perdate}}-|-{"":-<{cls.pertitle}}-|-{"":-<{cls.perdebit}}-|-{"":-<{cls.percredit}}-|")
     
     @classmethod
-    def display_status_table(cls, netTotal, loans, owed, savings):
+    def display_status_table(cls, debi, cred, loan, retu, owed, paid, depo, draw, netTotal, netPercent, netLoans, netDebts, netSavings):
         amountWidth = cls.peramount + 4
+        netPercent = str(f"{netPercent*100:2f}") + "%"
         print(f" {"":_<{cls.pertitle + amountWidth + 5}}")
-        print(f"| {"TOTALS":^{cls.pertitle}} | {"AMOUNT":^{amountWidth}} |")
-        print(f"|-{"":-<{cls.pertitle}}-|-{"":-<{amountWidth}}-|")
-        print(f"| {"Net Total":<{cls.pertitle}} | {netTotal:^{amountWidth}} |")
-        print(f"|-{"":-<{cls.pertitle}}-|-{"":-<{amountWidth}}-|")
-        print(f"| {"Loaned Amount":<{cls.pertitle}} | {loans:^{amountWidth}} |")
-        print(f"| {"Owed Amount":<{cls.pertitle}} | {owed:^{amountWidth}} |")
-        print(f"|-{"":-<{cls.pertitle}}-|-{"":-<{amountWidth}}-|")
-        print(f"| {"Current Savings":<{cls.pertitle}} | {savings:^{amountWidth}} |")
+        print(f"| {"TOTALS"           :^{cls.pertitle}} | {"AMOUNT"  :^{amountWidth}} |")
+        print(f"|-{"~"                 :^{cls.pertitle}}-|-{""        :<{amountWidth}}-|")
+        print(f"| {"Total Debit "     :<{cls.pertitle}} | {debi      :^{amountWidth}} |")
+        print(f"| {"Total Credit"     :<{cls.pertitle}} | {cred      :^{amountWidth}} |")
+        print(f"| {"~"                 :^{cls.pertitle}} | {""        :<{amountWidth}} |")
+        print(f"| {"Total Loans"      :<{cls.pertitle}} | {loan      :^{amountWidth}} |")
+        print(f"| {"Total Returns"    :<{cls.pertitle}} | {retu      :^{amountWidth}} |")
+        print(f"| {"~"                 :^{cls.pertitle}} | {""        :<{amountWidth}} |")
+        print(f"| {"Total Owed"       :<{cls.pertitle}} | {owed      :^{amountWidth}} |")
+        print(f"| {"Total Payments"   :<{cls.pertitle}} | {paid      :^{amountWidth}} |")
+        print(f"| {"~"                 :^{cls.pertitle}} | {""        :<{amountWidth}} |")
+        print(f"| {"Total Deposits"   :<{cls.pertitle}} | {depo      :^{amountWidth}} |")
+        print(f"| {"Total Withdrawals":<{cls.pertitle}} | {draw      :^{amountWidth}} |")
+        print(f"|-{""                 :-<{cls.pertitle}}-|-{""       :-<{amountWidth}}-|")
+        print(f"| {"DETAILS"          :^{cls.pertitle}} | {""        :^{amountWidth}} |")
+        print(f"| {"Net Amount"       :<{cls.pertitle}} | {netTotal  :^{amountWidth}} |")
+        print(f"| {"Net Percentage"   :<{cls.pertitle}} | {netPercent:^{amountWidth}} |")
+        print(f"|-{""                 :-<{cls.pertitle}}-|-{""       :-<{amountWidth}}-|")
+        print(f"| {"EXTRAS"           :^{cls.pertitle}} | {""        :^{amountWidth}} |")
+        print(f"| {"Current Savings"  :<{cls.pertitle}} | {netSavings:^{amountWidth}} |")
+        print(f"| {"Unpayed Debts"    :<{cls.pertitle}} | {netDebts  :^{amountWidth}} |")
+        print(f"| {"Unpayed Lendings" :<{cls.pertitle}} | {netLoans  :^{amountWidth}} |")
         print(f"|-{"":-<{cls.pertitle}}-|-{"":-<{amountWidth}}-|")
 
 

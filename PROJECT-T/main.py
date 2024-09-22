@@ -7,7 +7,7 @@ from AuditManager import Auditing, TableDisplays
 # GLOBAL VARIABLES
 AM.DEFAULT_FILE_NAME = "audit_database.csv" 
 AM.DEFAULT_FILE_PATH = os.path.join(os.path.dirname(__file__), AM.DEFAULT_FILE_NAME)
-AM.MAX_DISPLAY_LIMIT = 150
+AM.MAX_DISPLAY_LIMIT = 100
 
 
 class Main():
@@ -74,7 +74,7 @@ class Main():
             elif user == 444: # DEBUG display
                 audit.debug_display_entries()
 
-            elif user == 555: # Search for specific categories
+            elif user == 555: # DEBUG Search for specific categories
                 status = audit.search_entry()
 
                 if status != None: 
@@ -89,8 +89,6 @@ class Main():
         del audit
         return
     
-
-
 
 
 

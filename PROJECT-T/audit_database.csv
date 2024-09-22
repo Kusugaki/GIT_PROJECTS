@@ -69,7 +69,7 @@ COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID,LIABLE NAME
 68,6,16-09-2024,lia,loan,Loaned -> (John Doe),2000.0,68//lia//loan//16-09-2024,John Doe
 69,6,16-09-2024,tra,cred,Double Burgersilog,38.0,69//tra//cred//16-09-2024,NON-LIA
 70,6,16-09-2024,lia,owed,Owed -> (My Name Jeff),450.5,70//lia//owed//16-09-2024,My Name Jeff
-71,6,16-09-2024,sav,with,Withdrawal,432.987,71//sav//with//16-09-2024,NON-LIA
+71,6,16-09-2024,sav,with,Withdrawal,432.0,71//sav//with//16-09-2024,NON-LIA
 72,6,16-09-2024,lia,loan,Loaned -> (Spungbob),777.0,72//lia//loan//16-09-2024,Spungbob
 73,6,16-09-2024,lia,owed,Owed -> (Squidward),3405.0,73//lia//owed//16-09-2024,Squidward
 74,6,16-09-2024,lia,loan,Loaned -> (Sonic),1111.0,74//lia//loan//16-09-2024,Sonic
@@ -121,3 +121,6 @@ COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID,LIABLE NAME
 120,11,21-09-2024,sav,with,Withdrawal,3350.0,120//sav//with//21-09-2024,~~~~~~~
 121,11,21-09-2024,tra,cred,403,21.0,121//tra//cred//21-09-2024,~~~~~~~
 121,11,21-09-2024,tra,cred,Idfk,403.0,121//tra//cred//21-09-2024,~~~~~~~
+123,12,22-09-2024,tra,cred,Pamasahe 1,19.0,123//tra//cred//22-09-2024,~~~~~~~
+124,12,22-09-2024,tra,debi,Day In,20.0,124//tra//debi//22-09-2024,~~~~~~~
+125,12,22-09-2024,lia,paid,Paid     -> (Jack),10.0,125//lia//paid//22-09-2024,Jack

@@ -12,7 +12,7 @@ Highly recommend for Beginner OOP Introduction: [Python Object Oriented Programm
 - [ ] Find other lackluster features
 - [ ] Automatically create "Previous" log entries
 - [ ] Create independent 'date_search()' method
-- [ ] Make a better Status table
+- [x] Make a better Status table (abomination 😭)
 
 ## To-do List: Ver 2.0
 
