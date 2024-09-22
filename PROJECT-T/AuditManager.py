@@ -224,9 +224,6 @@ class Auditing(LogEntry):
         startDate = input("Choose start date\n\t> ")
         endDate = input("Choose end date (leave blank for same date)\n\t> ")
 
-        if endDate == '':
-            endDate = startDate
-
         startPtr:int = 0
         endPtr:int = 0
         endPtrDateFound = False
@@ -240,6 +237,10 @@ class Auditing(LogEntry):
             if Auditing.mainLogList[i].date == startDate:
                 startPtr = i
                 break
+
+        if endDate == '':
+            endDate = Auditing.mainLogList[startPtr].date
+
         for i in range(startPtr, logSize):
             try:
                 if endPtrDateFound:
