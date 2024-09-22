@@ -467,7 +467,7 @@ class TableDisplays(Auditing):
     
     @classmethod
     def display_status_table(cls, debi, cred, loan, retu, owed, paid, depo, draw, netTotal, netPercent, netLoans, netDebts, netSavings):
-        amountWidth = cls.peramount + 4
+        amountWidth = cls.peramount + 5
         netPercent = str(f"{netPercent*100:2f}") + "%"
         print(f" {"":_<{cls.pertitle + amountWidth + 5}}")
         print(f"| {"TOTALS"           :^{cls.pertitle}} | {"AMOUNT"  :^{amountWidth}} |")
