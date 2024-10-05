@@ -20,8 +20,6 @@ class TableDisplays():
         perTotal = cls.percount + cls.perday + cls.perdate + cls.pertitle + cls.perdebit + cls.percredit + 17 # accounting for table vertical line spacings
         prevDate = None
 
-        print(logList)
-
         '''Show header'''
         print(f" {"":_<{perTotal}}")
         print(f"| {"COUNT":^{cls.percount}} | {"DAY":^{cls.perday}} | {"DATE":^{cls.perdate}} | {"TITLE":^{cls.pertitle}} | {"DEBIT":^{cls.perdebit}} | {"CREDIT":^{cls.percredit}} |")

@@ -1,13 +1,16 @@
 import os
 
 import AuditManager as AM   # to externally overwrite & configure global variables
+from LogTableDisplays import TableDisplays as TD # to externally overwrite & configure global variables
 from AuditManager import Auditing, TableDisplays
 
 
-# GLOBAL VARIABLES
+# AuditManager GLOBAL VARIABLES CONFIG
 AM.DEFAULT_FILE_NAME = "audit_database.csv" 
 AM.DEFAULT_FILE_PATH = os.path.join(os.path.dirname(__file__), AM.DEFAULT_FILE_NAME)
-AM.MAX_DISPLAY_LIMIT = 100
+
+# TableDisplays ATTRIBUTES CONFIG
+TD.MAX_DISPLAY_LIMIT = 150
 
 
 class Main():
