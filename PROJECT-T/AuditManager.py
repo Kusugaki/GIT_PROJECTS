@@ -17,7 +17,6 @@ MAX_DISPLAY_LIMIT:int = 100
 # AUDIT MANAGER MAIN CLASS
 class Auditing(LogEntry):
     mainLogList:list = []
-    currLoglist:list = []
 
     def __str__(self) -> str:
         return str(self.count)
@@ -26,7 +25,6 @@ class Auditing(LogEntry):
         ''' Program Startup sequence '''
         self.date = datetime.now().strftime("%d-%m-%Y")
         Auditing.mainLogList = FileGetter.fetch_saved_database(path=DEFAULT_FILE_PATH)
-        Auditing.currLoglist = FileGetter.fetch_curr_list(dateToday=self.date)
 
     # OBJECT MANIPULATION
     def create_entry(self) -> int:
@@ -61,7 +59,6 @@ class Auditing(LogEntry):
                     liaName=self.liaName
                 ) 
         Auditing.mainLogList.append(entry)
-        Auditing.currLoglist.append(entry)
         FileSaver.save_and_append_data(entry.__dict__, DEFAULT_FILE_PATH)
 
         return 1
