@@ -124,3 +124,4 @@ COUNT,DAY,DATE,LOGTYPE,SUBTYPE,TITLE,AMOUNT,LOG-ID,LIABLE NAME
 123,12,22-09-2024,tra,cred,Pamasahe 1,19.0,123//tra//cred//22-09-2024,~~~~~~~
 124,12,22-09-2024,tra,debi,Day In,20.0,124//tra//debi//22-09-2024,~~~~~~~
 125,12,22-09-2024,lia,paid,Paid     -> (Jack),10.0,125//lia//paid//22-09-2024,Jack
+126,13,04-10-2024,tra,cred,Lunch,60.0,126//tra//cred//04-10-2024,~~~~~~~

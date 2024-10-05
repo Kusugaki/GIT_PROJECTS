@@ -228,15 +228,16 @@ class Auditing(LogEntry):
             endDate = input("Choose end date (leave blank for same date)\n\t> ")
         else:
             startDate = Auditing.mainLogList[-1].date
-            endDate = startDate
+            endDate   = startDate
 
         startPtr:int = 0
-        endPtr:int = 0
+        endPtr:int = startPtr
         logSize:int = len(Auditing.mainLogList)
 
         ''' 
         (-) note: inefficient 2 pointer approach instead of directly comparing date values (Worst Case: 3n)
-        (-) note: Put this 2 pointer search in its own method so that other methods can use it too
+        (-) note: Put this 2 pointer search in its own method so that other methods can use it too,
+                  possible make a return type of list[obj] for an attribute 'specifiedLogList'
         '''
         for i in range(logSize):
             if Auditing.mainLogList[i].date == startDate:
@@ -248,10 +249,10 @@ class Auditing(LogEntry):
 
         for i in range(startPtr, logSize):
             try:
-                if Auditing.mainLogList[i].date == endDate:
-                    if i == logSize-1 or Auditing.mainLogList[i+1].date != endDate:
-                        endPtr = i
-                        break
+                if Auditing.mainLogList[i].date == endDate and \
+                i == logSize-1 or Auditing.mainLogList[i+1].date != endDate:
+                    endPtr = i
+                    break
             except IndexError as e:
                 print("INDEX_ERROR:", i, e)
 
