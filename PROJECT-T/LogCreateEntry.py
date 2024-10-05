@@ -1,6 +1,3 @@
-from abc import ABC, abstractmethod
-
-
 class CreateEntry:
     logType:str = "CREATE_ENTRY_DEFAULT"
     subtype:str = "CREATE_ENTRY_DEFAULT"
@@ -46,8 +43,7 @@ class CreateEntry:
 
 
 
-# ABSTRACT CLASS
-class LogDetails(ABC):
+class LogDetails:
     logTypeDetail:       str
     subtypeChoiceDetail: list[str] # peaniths
     logTitleDetail:      str
@@ -72,7 +68,6 @@ class LogDetails(ABC):
                 print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
 
     @classmethod
-    @abstractmethod
     def get_log_title_from_subtype(cls) -> str:
         return cls.logTitleDetail
 
@@ -84,6 +79,7 @@ class Transac(LogDetails):
     logTypeDetail = "tra" # "Transactions"
     subtypeChoiceDetail = ["Debit", "Credit"]
 
+    @staticmethod
     def get_log_title_from_subtype() -> str:
         return input("Input Entry Title: ").strip()
 
