@@ -55,7 +55,7 @@ class TableDisplays():
         print(f"| {"  Total Saved"      :<{cls.pertitle}} | {debi      :^{amountWidth}} |")
         print(f"| {"  Total Loss"       :<{cls.pertitle}} | {cred      :^{amountWidth}} |")
         print(f"| {""                   :^{cls.pertitle}} | {""        :<{amountWidth}} |")
-        print(f"| {"  Total Loans"      :<{cls.pertitle}} | {loan      :^{amountWidth}} |")
+        print(f"| {"  Total Loaned"     :<{cls.pertitle}} | {loan      :^{amountWidth}} |")
         print(f"| {"  Total Returns"    :<{cls.pertitle}} | {retu      :^{amountWidth}} |")
         print(f"| {""                   :^{cls.pertitle}} | {""        :<{amountWidth}} |")
         print(f"| {"  Total Owed"       :<{cls.pertitle}} | {owed      :^{amountWidth}} |")

@@ -1,5 +1,6 @@
 import os
 
+from copy import deepcopy
 from datetime import datetime
 
 from LogEntry_dataclass import LogEntry
@@ -23,7 +24,7 @@ class Auditing(LogEntry):
 
     def __init__(self) -> None:
         ''' Program Startup sequence '''
-        self.date = datetime.now().strftime("%d-%m-%Y")
+        self.date            = self.get_current_date()
         Auditing.mainLogList = FileGetter.fetch_saved_database(path=DEFAULT_FILE_PATH)
         Auditing.currLogList = FileGetter.fetch_curr_list(dateToday=self.date)
 
@@ -155,22 +156,25 @@ class Auditing(LogEntry):
             print(f"Stopping deletion process...\n")
             return None
         
-        '''Fixing entry count jumps'''
-        for i in range(searched_index, len(cls.mainLogList)):
-            if cls.mainLogList[i].count != i:
-                cls.mainLogList[i].count = i + 1
-                cls.mainLogList[i].logID = CreateEntry.create_ID(
-                                                cls.mainLogList[i].count, 
-                                                cls.mainLogList[i].logType, 
-                                                cls.mainLogList[i].subtype, 
-                                                cls.mainLogList[i].date
-                                            )
+        cls.fix_entry_count_jumps(loglist=cls.mainLogList, index=searched_index)
+
         return 1
 
 
     @classmethod
     def save_all_entries(cls) -> int:
         FileSaver.save_all_data(cls.mainLogList, DEFAULT_FILE_PATH)
+        return 1
+    
+    @classmethod
+    def export_range_of_entries(cls) -> int:
+        cls.display_all_entries()
+        listOfEntries:list[LogEntry] = deepcopy(cls.get_ranged_list_of_entries())
+        custom_file_path:str = FileSaver.get_custom_path(os.path.dirname(__file__))
+
+        cls.fix_entry_count_jumps(loglist=listOfEntries, index=0)
+        FileSaver.save_all_data(listOfEntries, custom_file_path)
+        print(f"\nExported to \'{custom_file_path}\'")
         return 1
     
     @staticmethod
@@ -204,7 +208,6 @@ class Auditing(LogEntry):
     @classmethod
     def display_status(cls) -> int:
         '''Gets the totals of all subtypes of each entry and displays them'''
-        '''This is an absolute abomination, this whole method is.'''
         debiTotal:float = 0.0
         credTotal:float = 0.0
         loanTotal:float = 0.0
@@ -220,59 +223,10 @@ class Auditing(LogEntry):
         netDebts:float  = 0.0
         netLoans:float  = 0.0
 
-        startDate:str   = None
-        endDate:str     = None
-
-        startPtr:int    = 0
-        endPtr:int      = startPtr
-        logSize:int     = len(cls.mainLogList)
-
-        ''' 
-        (-) note: inefficient 2 pointer approach instead of directly comparing date values (Worst Case: 3n)
-        (-) note: Put this 2 pointer search in its own method so that other methods can use it too,
-                  possible make a return type of list[obj] for an attribute 'specifiedLogList'
-        '''
-
         cls.display_all_entries()
 
-        startDate = input("Choose start date (##-##-####/today) (\'leave blank for first date\'))\n\t> ").strip().lower()
-
-        if startDate != "today":
-            endDate = input("Choose end date (##-##-####/today) (\'leave blank for same date\'))\n\t> ").strip().lower()
-            if startDate == '':
-                startDate = cls.mainLogList[0].date
-        else:
-            startDate = cls.mainLogList[-1].date
-            endDate = startDate
-
-        if endDate == "today":
-            endDate = cls.mainLogList[-1].date
-        elif endDate == '':
-            endDate = startDate
-
-
-        for i in range(logSize):
-            if cls.mainLogList[i].date == startDate:
-                startPtr = i
-                break
-
-        for i in range(startPtr, logSize):
-            try:
-                if cls.mainLogList[i].date == endDate and \
-                (i == logSize-1 or cls.mainLogList[i+1].date != endDate):
-                    endPtr = i
-                    break
-            except IndexError as e:
-                print("INDEX_ERROR:", i, e)
-
-        print("\n", " Displaying Entries Status ".center(52,'~'), '\n')
-
-        print(f"Starting on: {cls.mainLogList[startPtr].date} - no. {startPtr+1}")
-        print(f"Ending on:   {cls.mainLogList[endPtr].date} - no. {endPtr+1}")
-
-        for i in range(startPtr, endPtr+1):
-            entry = cls.mainLogList[i]
-
+        # SUMMATION OF LOGS
+        for entry in cls.get_ranged_list_of_entries():
             # MAIN LOG STATUS (all logs)
             if entry.subtype in ['debi', 'retu', 'owed', 'with']:
                 debiTotal += entry.amount
@@ -297,7 +251,7 @@ class Auditing(LogEntry):
                 elif entry.subtype == "with":
                     withTotal += entry.amount
 
-
+        # CALCULATIONS
         netTotal   = debiTotal - credTotal
         
         if debiTotal != 0:
@@ -395,6 +349,19 @@ class Auditing(LogEntry):
         except IndexError as e:
             ''' (-) note: should only happen if no Database CSV file was found '''
             return 1
+        
+    @staticmethod
+    def fix_entry_count_jumps(loglist:list[LogEntry], index:int):
+        for i in range(index, len(loglist)):
+            entry = loglist[i]
+            if entry.count != i:
+                entry.count = i + 1
+                entry.logID = CreateEntry.create_ID(
+                                                entry.count, 
+                                                entry.logType, 
+                                                entry.subtype, 
+                                                entry.date
+                                            )
     
     @classmethod
     def check_generic_or_duplicate_titles(cls, title:str) -> str:
@@ -430,6 +397,58 @@ class Auditing(LogEntry):
                 title = add_title_count(title)
         return title
     
+    @classmethod
+    def get_ranged_list_of_entries(cls) -> list[LogEntry]:
+        ''' 
+        Returns beginning and ending indexes within a specified range of dates inputted
+
+        (-) note: inefficient 2 pointer approach instead of directly comparing date values (Worst Case: 3n)
+            \nThis is an absolute abomination, this whole method is.
+        '''
+        startDate:str   = None
+        endDate:str     = None
+
+        startPtr:int    = 0
+        endPtr:int      = startPtr
+        logSize:int     = len(cls.mainLogList)
+
+        startDate = input("Choose start date (##-##-####/today) (\'leave blank for first date\')\n\t> ").replace(' ', '').lower()
+
+        if startDate != "today":
+            endDate = input("Choose end date (##-##-####/today) (\'leave blank for same date\')\n\t> ").replace(' ', '').lower()
+            if startDate == '':
+                startDate = cls.mainLogList[0].date
+        else:
+            startDate = cls.mainLogList[-1].date
+            endDate = startDate
+
+        if endDate == "today":
+            endDate = cls.mainLogList[-1].date
+        elif endDate == '':
+            endDate = startDate
+
+
+        for i in range(logSize):
+            if cls.mainLogList[i].date == startDate:
+                startPtr = i
+                break
+
+        for i in range(startPtr, logSize):
+            try:
+                if cls.mainLogList[i].date == endDate and \
+                (i == logSize-1 or cls.mainLogList[i+1].date != endDate):
+                    endPtr = i
+                    break
+            except IndexError as e:
+                print("INDEX_ERROR:", i, e)
+
+        print("\n", " Displaying Entries Status ".center(52,'~'), '\n')
+
+        print(f"Starting on: {cls.mainLogList[startPtr].date} - no. {startPtr+1}")
+        print(f"Ending on:   {cls.mainLogList[endPtr].date} - no. {endPtr+1}\n")
+
+        return cls.mainLogList[startPtr:endPtr+1]
+
 
 
 if __name__ == "__main__":

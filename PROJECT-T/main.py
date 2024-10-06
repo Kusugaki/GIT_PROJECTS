@@ -1,8 +1,8 @@
 import os
 
 import AuditManager as AM   # to externally overwrite & configure global variables
-from LogTableDisplays import TableDisplays as TD # to externally overwrite & configure global variables
-from AuditManager import Auditing, TableDisplays
+from LogTableDisplays import TableDisplays as TD # to externally overwrite & configure class attributes
+from AuditManager import Auditing
 
 
 # AuditManager GLOBAL VARIABLES CONFIG
@@ -10,7 +10,7 @@ AM.DEFAULT_FILE_NAME = "audit_database.csv"
 AM.DEFAULT_FILE_PATH = os.path.join(os.path.dirname(__file__), AM.DEFAULT_FILE_NAME)
 
 # TableDisplays ATTRIBUTES CONFIG
-TD.MAX_DISPLAY_LIMIT = 150
+TD.MAX_DISPLAY_LIMIT = 100
 
 
 class Main():
@@ -31,9 +31,9 @@ class Main():
                 print("\t  5. \'Display Transactions\'")
                 print("\t  6. \'Display Liabilities\'")
                 print("\t  7. \'Display Savings\'")
-                print("\t  8. \'Display all Entries\'") 
-                print("\t  9. \'Save all Entries\'") 
-                print("\t  0. \'Save and Exit\'") 
+                print("\t  8. \'Display all Entries\'")
+                print("\t  9. \'Save all Entries\'")
+                print("\t  0. \'Save and Exit\'")
 
                 user = int(input("   > ").strip())
             except ValueError as e: 
@@ -81,10 +81,18 @@ class Main():
                 status = audit.search_entry()
 
                 if status != None: 
-                    TableDisplays.debug_display_table_single_entry(Auditing.mainLogList[status], show_header=True)
+                    TD.debug_display_table_single_entry(Auditing.mainLogList[status], show_header=True)
                     print("\n" ," Entry search success! ".center(spacing,"~"), "\n")
                 else:              
                     print("\n" ," Entry search failed... ".center(spacing,"~"), "\n")
+            
+            elif user == 777: # EXPORTS range of entries
+                status = audit.export_range_of_entries()
+                print("\n" ," Succesfully exported range of entries! ".center(spacing,"~"), "\n")
+
+            elif user == 888: # DEBUG Fix ALL entry counts (whole list)
+                status = audit.fix_entry_count_jumps(audit.mainLogList, 0)
+                print("\n" ," fixed counts ".center(spacing,"~"), "\n")
 
         audit.save_all_entries()
         print("\n", f"\'{AM.DEFAULT_FILE_PATH}\' saved successfully".center(100,"~"))
@@ -92,7 +100,6 @@ class Main():
         del audit
         return
     
-
 
 
 if __name__ == '__main__':

@@ -1,9 +1,18 @@
 import csv
 import os
 
+from abc import ABC, abstractmethod
+
 from LogEntry_dataclass import LogEntry
 
-class FileGetter():
+
+class FileHandler(ABC):
+    @abstractmethod
+    def get_custom_path():
+        pass
+
+
+class FileGetter(FileHandler):
     fetched_list: list[LogEntry] = []
     fetched_todayList: list[LogEntry] = []
 
@@ -44,16 +53,17 @@ class FileGetter():
 
     @staticmethod
     def get_custom_path(default_path:str) -> str: 
-        path_input = input("Enter CSV file path:\n>")
+        path_input = input("Enter CSV file path:\n>").strip()
         if path_input == '':
             print("No input, going with DEFAULT path.")
             return default_path
         return path_input
     
 
-class FileSaver():
+class FileSaver(FileHandler):
     @staticmethod
     def save_and_append_data(dict:dict, path: str) -> bool:
+        ''' appends new data to csv file '''
         try:
             if not os.path.exists(path):
                 with open(path, 'w', newline='', encoding="utf-8") as csv_header:
@@ -81,6 +91,7 @@ class FileSaver():
 
     @staticmethod
     def save_all_data(mainlog:list, path: str) -> bool:
+        ''' overwrites whole csv file '''
         try:
             if not os.path.exists(path):
                 with open(path, 'x') as created_file:
@@ -108,8 +119,38 @@ class FileSaver():
         except Exception as e:
             print(f"ERROR_SAVING_FILE \'{path}\': {e}")
             return False
+        
+    @staticmethod
+    def get_custom_path(default_path:str) -> str: 
+        path_input:str = ''
+
+        while True:
+            path_input = input("Enter custom file name:\n>").strip().replace(' ', '')
+            if path_input == '':
+                print("\tPlease input something.\n")
+                continue
+        
+            path_input += ".csv"
+            custom_path = os.path.join(default_path, path_input)
+
+            if os.path.exists(custom_path):
+                overwrite = input("File already exists... Overwrite? (y/n)\n\t> ")
+                if overwrite == 'y':
+                    break
+                else:
+                    continue
+            break
+        return custom_path
 
 
 
 if __name__ == '__main__':
-    ...
+    ''' 
+        abstract class testing, cannot instantiate an object without defining 
+        abstract method first but the other methods can be used by other modules 
+        as long as an object is not instantiated for the FileSaver / FileGetter classes
+    '''
+    print(f"YOU ARE RUNNING {__file__}!!!")
+
+    sav = FileSaver()
+    get = FileGetter()
