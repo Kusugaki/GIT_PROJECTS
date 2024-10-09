@@ -117,20 +117,24 @@ class Liabili(LogDetails):
     def get_log_title_from_subtype(cls, name) -> str:
         return f"{cls.logTitleDetail:<9}-> ({name})"
 
-    @staticmethod
-    def get_liable_entity(liable_subtype) -> str:
+    @classmethod
+    def get_liable_entity(cls, liable_subtype) -> str:
         charLimit:int = 11  # Based off of the CLI table display 'title' column width
         name:str
         
         while True:
             if   liable_subtype == Liabili.subtypeChoiceDetail[0][:4].lower(): # Loaned
                 name = input("Loaned to whom?: ").strip().title()
+                cls.logTitleDetail = cls.subtypeChoiceDetail[0]
             elif liable_subtype == Liabili.subtypeChoiceDetail[1][:4].lower(): # Returned
                 name = input("Who returned your loan?: ").strip().title()
+                cls.logTitleDetail = cls.subtypeChoiceDetail[1]
             elif liable_subtype == Liabili.subtypeChoiceDetail[2][:4].lower(): # Owed
                 name = input("Who do you owe?: ").strip().title()
+                cls.logTitleDetail = cls.subtypeChoiceDetail[2]
             elif liable_subtype == Liabili.subtypeChoiceDetail[3][:4].lower(): # Paid
                 name = input("Who did you pay back?: ").strip().title()
+                cls.logTitleDetail = cls.subtypeChoiceDetail[3]
             else:
                 print(f"LIABLE_NAME_ERROR: subtype was not found.\n")
 
@@ -138,6 +142,7 @@ class Liabili(LogDetails):
                 break
         
             print("Name is too long, maximum of 11 characters only\n")
+
         return name
 
 

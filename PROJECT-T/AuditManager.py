@@ -88,12 +88,8 @@ class Auditing(LogEntry):
                 CreateEntry.fetch_entry_details()
                 moddedEntry.logType = CreateEntry.logType
                 moddedEntry.subtype = CreateEntry.subtype
-
-                if moddedEntry.logType == Liabili.logTypeDetail:
-                    moddedEntry.liaName = Liabili.get_liable_entity(liable_subtype=moddedEntry.subtype)
-                    moddedEntry.title   = Liabili.get_log_title_from_subtype(name=moddedEntry.liaName)
-                else:
-                    moddedEntry.title   = CreateEntry.title
+                moddedEntry.liaName = CreateEntry.liaName
+                moddedEntry.title   = CreateEntry.title
 
             elif user_input == 'B':   # Subtype
 
@@ -126,7 +122,7 @@ class Auditing(LogEntry):
             else:
                 print(f"INPUT_ERROR: \'{user_input}\' is not part of the options.\n")
 
-        moddedEntry.title = Auditing.check_generic_or_duplicate_titles(moddedEntry.title)
+        moddedEntry.title = Auditing.check_generic_or_duplicate_titles(moddedEntry.title).title()
         moddedEntry.logID = CreateEntry.create_ID(moddedEntry.count, moddedEntry.logType, moddedEntry.subtype, moddedEntry.date)
 
         print("Entry has been modified. Save changes to update the CSV file.")
