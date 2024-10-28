@@ -3,7 +3,7 @@ from dataclasses import dataclass
 @dataclass(kw_only=True)
 class LogEntry:
     count:   int   = 0
-    day:     str   = 0
+    day:     int   = 0
     date:    str   = "NOT_SET"    
     logType: str   = "NOT_SET" 
     subtype: str   = "NOT_SET" 
